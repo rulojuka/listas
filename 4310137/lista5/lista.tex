@@ -1,0 +1,76 @@
+\input{../../templates/header.tex}
+\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
+\title{Lista 5 - Física 2}
+\author{Alessandro Wagner Palmeira}
+\begin{document}
+\maketitle
+
+\section{Ex. 1}
+O buraco também expande, como se fosse feito pelo material. É fácil perceber
+isso imaginando um cubo de moléculas ligadas por molas. Quando aquecemos o material,
+o comprimento das molas aumenta e o buraco interno também aumenta.
+
+\section{Ex. 2}
+
+
+$l = l_{0}(1+\alpha\Delta T)$ \\
+$s = l^{2} = (l_{0}(1+\alpha\Delta T))^2 = (l_{0})^2(1+\alpha\Delta T)^2 = s_{0}(1+\alpha\Delta T)^2$ \\
+
+- Magic Happens (Alguma aproximação para $\Delta T$ pequeno?) -
+
+\section{Ex. 3}
+
+Dados: \\
+$ \left\{
+	  \begin{array}{l l}
+		  T_{1} = -78,5ºC \\
+		  P_{1}=0,900atm \\
+	  \end{array}
+  \right.
+$ \\
+$ \left\{
+  	\begin{array}{l l}
+	  	T_{2} = 78,0ºC \\
+      P_{1}=1,635atm 
+	  \end{array}
+  \right.
+$ \\
+
+Ligando os pontos com uma reta temos que o $x$ com $y=0$ é: \\ \\
+$\frac{1,635}{78+78,5+x} = \frac{0,9}{x}$ \\ \\
+$(1,635-0,9)x = 0,9 * 156,5$\\ \\
+$x = 191,63$\\ \\
+
+Portanto o \textit{zero absoluto} será em \boxed{-78,5 - x = -270,13ºC}\\
+
+\section{Ex. 4}
+
+Dados: \\
+$ \left\{
+	  \begin{array}{l l}
+		  T_{1} = 20ºC \\
+		  l_{1}=10cm \\
+	  \end{array}
+  \right.
+$ \\
+$ \left\{
+  	\begin{array}{l l}
+		  T_{2} = 100ºC \\
+		  l_{2}=10,015cm \\
+	  \end{array}
+  \right.
+$ \\
+
+Para $\Delta T=80ºC$ temos $\Delta L=0,015cm$\\
+$\Delta L = \alpha l_{0}\Delta T$\\
+Logo, $\alpha = \frac{0,015cm}{10cm*80ºC} = 1,875\e{-5}ºC^{-1}$\\
+$ l = l_{0}(1 + \alpha\Delta T)$\\
+Item a)\\
+$l = 10(1+1,875\e{-5}*-20)$\\
+\boxed{l = 9,99625cm}\\
+Item b)\\
+$\Delta L = \alpha l_{0}\Delta T$\\
+$T_{f} - T_{i} = \Delta T = \frac{\Delta L}{\alpha l_{0}} = \frac{0,009}{1,875\e{-5}*10} = 48ºC$\\
+$T_{f} = 48ºC + 20ºC$\\
+\boxed{T_{f} = 68ºC}\\
+\end{document}
