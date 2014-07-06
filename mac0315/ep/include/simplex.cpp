@@ -58,7 +58,8 @@ void atualiza(Arvore *t, int n, int u, int v, int (* custo)[MAX_NOS]){
 	encontra_f(t);
 	atualiza_x(t,n);
 	atualiza_y(t,n,custo);
-	return ;
+	atualiza_arvore(t,n);
+	return;
 }
 
 // Determina u->v como arco de entrada em T
@@ -239,5 +240,103 @@ void atualiza_y(Arvore *t, int n, int (* custo)[MAX_NOS] ){
 }
 
 void atualiza_arvore(Arvore *t, int n){
-	return;
+	int a,b;
+	int i,j;
+	int r,k;
+	int e1,e2,f1,f2; // e2 e f2 pertencem a S
+
+	int c_atual; //Para atualizar D. Para cada árvore S_k, o novo d*[x] = d_x + c_k
+			// para qualquer x pertencente a S_k. c_k = c_k-1 + 2
+	int ant,atual,prox;
+
+	if((*t).depois){
+		e1=(*t).u;
+		e2=(*t).v;
+	}
+	else{
+		e1=(*t).v;
+		e2=(*t).u;
+	}
+	f2=(*t).sai;
+	f1=(*t).p[f2];
+
+
+	//ATUALIZANDO S
+
+	//Step 0: Inicializa a,b,i
+	a = f1;
+	while( (*t).s[a] != f2 )
+		a = (*t).s[a];
+	b = (*t).s[e1];
+	i = e2;
+	// a é o predecessor de f2
+	// b é o sucessor de e1
+	// S* sai de logo depois de a e entre exatamente entre e1 e b
+	// i é o nó atual do caminho e2 ~> f2 (pivot stem)
+
+	//Step 1: Acha o último nó k de S1 e inicializa r
+	k=i;
+	while( (*t).d[ (*t).s[k] ] > (*t).d[i] )
+		k = (*t).s[k];
+	r = (*t).s[k];
+	//Step 2: Se estiver no final de S*, remove S e insere S*
+	while(true){
+		if(i==f2){
+			if(e1==a){ // Se S* continua no mesmo lugar de S
+				(*t).s[e1]=e2;
+				(*t).s[k]=r;
+			}
+			else{ // Caso geral
+				(*t).s[a] = r;
+				(*t).s[e1] = e2;
+				(*t).s[k]=b;
+			}
+			break;
+		}
+		//Step 3: Sobe no caminho e2 ~> f2 e atualiza s[k]
+		j = i;
+		i = (*t).p[i];
+		(*t).s[k] = i;
+		//Step 4: Ache o último nó k do lado esquerdo de S_t
+		k = i;
+		while((*t).s[k]!=j)
+			k = (*t).s[k];
+		//Step 5: Se o lado direito de S_t é não-vazio então atualiza s[k],
+		// acha o último nó k em S_t e atualiza r
+		if((*t).d[r] > (*t).d[i]) // Se o lado direito é não-vazio
+			(*t).s[k] = r; // Atualiza s[k]
+		while((*t).d[ (*t).s[k] ] > (*t).d[i]){
+			k = (*t).s[k];
+		}
+		r = (*t).s[k];
+		// Step 6: Retorne ao Step 2.
+	}
+
+	//ATUALIZANDO D
+	atual = e2;
+	prox = (*t).p[atual];
+
+	c_atual = (*t).d[e1] - (*t).d[e2] + 1;
+
+	while( atual != (*t).s[k]){ //Enquanto atual pertence a S*
+		if(atual == prox){ // Subiu no pivot stem
+			prox = (*t).p[atual];
+			c_atual+=2;
+		}
+		(*t).d[atual] += c_atual;
+		atual = (*t).s[atual];
+	}
+
+	//ATUALIZANDO P
+	ant = e2;
+	atual = (*t).p[ant];
+	prox = (*t).p[atual];
+	while(ant!=f2){
+		(*t).p[atual] = ant;
+		ant = atual;
+		atual = prox;
+		prox = (*t).p[atual];
+	}
+	(*t).p[e2]=e1;
+
 }
