@@ -1,0 +1,5 @@
+simplex_redes
+roda.sh
+*.o
+*.~
+*.dat
