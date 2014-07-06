@@ -12,8 +12,7 @@ void simplex(Grafo *g, Arvore *t, int (* custo)[MAX_NOS]){
 		printf("Arvore depois da primeira atualizacao:\n");
 		imprime_arvore(g, t);
 #endif
-		break; //TODO tirar isso aqui!
-	};
+	}
 	return;
 }
 

@@ -73,7 +73,7 @@ void cria_arvore_inicial(Grafo *g, Arvore *t, int root){
 }
 
 void simplex_para_redes(Grafo *g, Arvore *t){
-	if(examina(g, t)==false){ // Checa se existe solucao para o problema.
+	if(examina(g, t)==true){ // Checa se existe solucao para o problema.
 		simplex(g,t,&((*g).custo[0])); //Simplex final para resolver o problema.
 		imprime_resposta_final(g, t);
 	}
