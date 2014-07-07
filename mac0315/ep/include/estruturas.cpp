@@ -60,7 +60,15 @@ void imprime_arvore(Grafo *g, Arvore *t){
 	printf("\n");
 	printf("y:                    ");
 	for(i=0; i<n; i++){
-		printf(" % d",(*t).y[i]);
+		if((*t).y[i] >= INF){
+			printf(" INF");
+		}
+		else{
+			if((*t).y[i] <= -INF)
+				printf(" -INF");
+			else
+				printf(" % d",(*t).y[i]);
+		}
 	}
 	printf("\n");
 

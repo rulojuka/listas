@@ -30,8 +30,8 @@ bool pivoteia(Aresta *lista, int n, int (* custo)[MAX_NOS], int *y, int *u, int 
 		b = lista[i].destino;
 		atual = y[ a ] - y[ b ] + custo[a][b];
 #ifdef DEBUG
-		printf("Testando (%d %d) = %d\n", a,b,custo[a][b]);
-		printf("atual eh %d\n",atual);
+		//printf("Testando (%d %d) = %d\n", a,b,custo[a][b]);
+		//printf("atual eh %d\n",atual);
 #endif
 		if(atual < menor){
 			menor = atual;
@@ -50,14 +50,21 @@ void atualiza(Arvore *t, int n, int u, int v, int (* custo)[MAX_NOS]){
 	atualiza_e(t,u,v);
 	atualiza_ciclo(t, n);
 #ifdef DEBUG
+	printf("Atualizou ciclo. Novo ciclo e: ");
 	for (int i = 0; i < sz((*t).ciclo); ++i)
 		printf("%d ",(*t).ciclo[i]);
 	printf("\n");
 #endif
 	encontra_f(t);
-	atualiza_x(t,n);
-	atualiza_arvore(t,n);
-	atualiza_y(t,n,custo); //precisa que p e pracima estejam corretos.
+#ifdef DEBUG
+	if( (*t).pracima[ (*t).sai ] )
+		printf("Encontrou f. Arco eh (%d,%d)\n", (*t).sai, (*t).p[ (*t).sai ]);
+	else
+		printf("Encontrou f. Arco eh (%d,%d)\n", (*t).p[ (*t).sai ], (*t).sai);
+#endif
+	atualiza_x(t,n); printf("Atualizou x.\n");
+	atualiza_arvore(t,n); printf("Atualizou arvore.\n");
+	atualiza_y_e_d(t,n,custo); printf("Atualizou y.\n"); //precisa que p e pracima estejam corretos.
 	return;
 }
 
@@ -132,7 +139,6 @@ void encontra_f(Arvore *t){
 		atual = (*t).ciclo[i];
 		if((*t).forward[atual]==false){
 			valor = (*t).x[atual];
-			printf("i=%d, Testando %d > %d\n",i, valor, maior);
 			if(valor > maior){ // Por não usarmos >=, escolheremos automaticamente
 				maior = valor; // o primeiro candidato.
 				escolhido = atual;
@@ -149,9 +155,9 @@ void atualiza_x(Arvore *t, int n){
 	int quantidade = (*t).x[sai];
 	int atual;
 	int u,v;
+	bool depois; //Recebe true se f está entre v e j e false se f está entre u e j
 	v = (*t).v;
 	u = (*t).u;
-	bool depois; //Recebe true se f está entre v e j e false se f está entre u e j
 
 	//Descobre se f está antes ou depois de e (no sentido de e)
 	depois=false;
@@ -163,9 +169,9 @@ void atualiza_x(Arvore *t, int n){
 		}
 		atual=(*t).p[atual];
 	}
-
+	//TODO: Isso deve estar errado, fazer do zero.
 	// Atualiza o vetor x.
-	for (int i = 0; i < sz((*t).ciclo); ++i){
+	for (int i = 1; i < sz((*t).ciclo); ++i){ // Começa de 1 pois o join não muda
 		atual=(*t).ciclo[i];
 		if((*t).forward[atual])
 			(*t).x[atual]+=quantidade;
@@ -194,15 +200,12 @@ void atualiza_x(Arvore *t, int n){
 	else
 		(*t).x[u]=quantidade; //Pois agora esse vertice representa a aresta e
 
-#ifdef DEBUG
-	printf("O nó escolhido foi %d, com o arco (%d,%d) = %d (o arco pode ser em qualquer direcao)\n",sai,sai,(*t).p[sai],(*t).x[sai]);
-#endif
 	return;
 }
 
 
 // Precisa que os vetores p[] e pracima[] já estejam atualizados.
-void atualiza_y(Arvore *t, int n, int (* custo)[MAX_NOS] ){
+void atualiza_y_e_d(Arvore *t, int n, int (* custo)[MAX_NOS] ){
 
 	// Em uma versão anterior do EP, eu utilizei o método descrito no Chvátal
 	// de atualizar somente a árvore S, que não contém a raiz.
@@ -240,16 +243,23 @@ void atualiza_y(Arvore *t, int n, int (* custo)[MAX_NOS] ){
 	}
 
 	// Atualizando y e d
+
 	(*t).y[ (*t).root ]=0;
 	(*t).d[ (*t).root ]=1;
 	for (int i = 1; i < n; ++i){
 		atual = fila[i];
 		pai = (*t).p[atual];
 		(*t).d[atual] = (*t).d[pai] + 1;
-		if( (*t).pracima[atual] )
+		if( (*t).pracima[atual] ){
 			(*t).y[atual] = (*t).y[pai] - custo[atual][pai];
+		}
 		else
 			(*t).y[atual] = (*t).y[pai] + custo[pai][atual];
+		// Retira possíveis overflows e underflows
+		if((*t).y[atual] > INF )
+			(*t).y[atual] = INF;
+		if((*t).y[atual] < -INF )
+			(*t).y[atual] = INF;
 	}
 	return;
 }

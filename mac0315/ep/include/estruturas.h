@@ -25,8 +25,8 @@ struct Aresta{
 
 struct Arvore{
 	// Estruturas da árvore
+	int root; // Raiz - Continua a mesma por todo o problema.
 	int p[MAX_NOS], d[MAX_NOS]; // Pai e profundidade
-	int root; // Raiz
 	bool pracima[MAX_NOS]; // true indica um arco i->p[i] e false indica um arco p[i]-> i
 	int x[MAX_NOS]; // Solução do problema atual
 	int y[MAX_NOS]; // Vetor de custos atuais de cada nó
@@ -46,7 +46,7 @@ struct Grafo{
 	// no lugar de <origem>, <destino> e <quantidade> para generalizar o algoritmo.
 	// Aqui, b_t[x]>0 representa demanda e b_t[x]<0 representa fonte.
 	int custo[MAX_NOS][MAX_NOS];
-	
+
 	int n_arestas;
 	Aresta lista[MAX_ARESTAS];
 };

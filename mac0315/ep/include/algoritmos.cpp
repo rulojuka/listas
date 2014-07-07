@@ -2,7 +2,7 @@
 
 void obtem_solucao_inicial(Grafo *g, Arvore *t, int root){
 	cria_arvore_inicial(g, t, root);
-	atualiza_y(t, (*g).n, &((*g).custo[0]));
+	atualiza_y_e_d(t, (*g).n, &((*g).custo[0]));
 }
 
 // Cria a árvore inicial t, com base no grafo g e em uma raiz dada
@@ -22,6 +22,7 @@ void cria_arvore_inicial(Grafo *g, Arvore *t, int root){
 // Por fim, precisamos saber se os arcos vao em direção à raiz ou em sentido contrário.
 // Para isso, usamos o vetor pracima, que é true se o arco é i -> p[i] e false se o arco é p[i] -> i
 	int n = (*g).n;
+	(*t).root=root;
 	for(int i=0; i<n; i++){
 		if(i==root){
 			(*t).d[i]=1;
@@ -48,7 +49,6 @@ void cria_arvore_inicial(Grafo *g, Arvore *t, int root){
 			}
 		}
 	}
-	(*t).root=root;
 }
 
 void cria_arco_artificial(Grafo *g, int origem, int destino){

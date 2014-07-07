@@ -24,7 +24,7 @@ int main(){
 	/*Leitura de dados*/
 	le_entrada(&g);
 #ifdef DEBUG
-	imprime_entrada(&g);
+	//imprime_entrada(&g);
 #endif
 
 //-------------------------------------------------//
@@ -33,8 +33,8 @@ int main(){
 	/* Esta árvore pode conter arcos artificiais. */
 	obtem_solucao_inicial(&g, &t, 0); //Pode ser qualquer vertice como raiz. 0 foi escolhido arbitrariamente.
 #ifdef DEBUG
-	printf("Entrada atualizada, com arcos artificiais:\n");
-	imprime_entrada(&g);
+	//printf("Entrada atualizada, com arcos artificiais:\n");
+	//imprime_entrada(&g);
 	printf("Arvore inicial (possivelmente com arcos artificiais):\n");
 	imprime_arvore(&g, &t);
 #endif
