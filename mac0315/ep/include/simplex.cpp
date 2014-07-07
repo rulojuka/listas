@@ -4,16 +4,8 @@
 void simplex(Grafo *g, Arvore *t, int (* custo)[MAX_NOS]){
 	int u,v; //Pivô é o arco u->v
 	while( pivoteia(&((*g).lista[0]), (*g).n_arestas, custo, (*t).y , &u, &v) ){
-#ifdef DEBUG
-		printf("Pivo escolhido foi (%d,%d) = %d\n", u,v,custo[u][v]);
-#endif
 		atualiza(t, (*g).n, u, v, custo);
-#ifdef DEBUG
-		printf("Arvore depois da atualizacao:\n");
-		imprime_arvore(g, t);
-#endif
 	}
-	return;
 }
 
 // Encontra o próximo pivô u->v. Se não existem mais pivôs, retorna false.
@@ -29,16 +21,16 @@ bool pivoteia(Aresta *lista, int n, int (* custo)[MAX_NOS], int *y, int *u, int 
 		a = lista[i].origem;
 		b = lista[i].destino;
 		atual = y[ a ] - y[ b ] + custo[a][b];
-#ifdef DEBUG
-		//printf("Testando (%d %d) = %d\n", a,b,custo[a][b]);
-		//printf("atual eh %d\n",atual);
-#endif
 		if(atual < menor){
 			menor = atual;
 			(*u) = a;
 			(*v) = b;
 		}
 	}
+#ifdef DEBUG
+	if(menor<0)
+		printf("Pivo escolhido foi (%d,%d) = %d\n", u,v,custo[u][v]);
+#endif
 	return (menor < 0);
 }
 
@@ -49,23 +41,14 @@ bool pivoteia(Aresta *lista, int n, int (* custo)[MAX_NOS], int *y, int *u, int 
 void atualiza(Arvore *t, int n, int u, int v, int (* custo)[MAX_NOS]){
 	atualiza_e(t,u,v);
 	atualiza_ciclo(t, n);
-#ifdef DEBUG
-	printf("Atualizou ciclo. Novo ciclo e: ");
-	for (int i = 0; i < sz((*t).ciclo); ++i)
-		printf("%d ",(*t).ciclo[i]);
-	printf("\n");
-#endif
 	encontra_f(t);
+	atualiza_depois(t,n);
+	atualiza_x(t,n);
+	atualiza_y_e_d(t,n,custo); //precisa que p e pracima estejam corretos.
 #ifdef DEBUG
-	if( (*t).pracima[ (*t).sai ] )
-		printf("Encontrou f. Arco eh (%d,%d)\n", (*t).sai, (*t).p[ (*t).sai ]);
-	else
-		printf("Encontrou f. Arco eh (%d,%d)\n", (*t).p[ (*t).sai ], (*t).sai);
+	printf("Arvore depois da atualizacao:\n");
+	imprime_arvore(g, t);
 #endif
-	atualiza_x(t,n); printf("Atualizou x.\n");
-	atualiza_arvore(t,n); printf("Atualizou arvore.\n");
-	atualiza_y_e_d(t,n,custo); printf("Atualizou y.\n"); //precisa que p e pracima estejam corretos.
-	return;
 }
 
 // Determina u->v como arco de entrada em T
@@ -118,6 +101,12 @@ void atualiza_ciclo(Arvore *t, int n){
 		atual = (*t).ciclo[i];
 		(*t).forward[atual] = (*t).pracima[atual];
 	}
+#ifdef DEBUG
+	printf("Atualizou ciclo. Novo ciclo e: ");
+	for (int i = 0; i < sz((*t).ciclo); ++i)
+		printf("%d ",(*t).ciclo[i]);
+	printf("\n");
+#endif
 }
 
 // Acha arco de saída f, retornando o vertice que o representa.
@@ -128,9 +117,9 @@ void encontra_f(Arvore *t){
 	//   sentido de e, começando do join, será escolhido. (Regra de Cunningham)
 
 	// Nosso ciclo está no formato j ~> u -> v ~> j, portanto, a escolha será o primeiro
-	// arco reverso de x máximo.
+	// arco reverso de x mínimo.
 
-	int maior=-1, escolhido;
+	int menor=INF, escolhido;
 	int i;
 	int atual,valor;
 
@@ -139,37 +128,66 @@ void encontra_f(Arvore *t){
 		atual = (*t).ciclo[i];
 		if((*t).forward[atual]==false){
 			valor = (*t).x[atual];
-			if(valor > maior){ // Por não usarmos >=, escolheremos automaticamente
-				maior = valor; // o primeiro candidato.
+			if(valor < menor){ // Por não usarmos >=, escolheremos automaticamente
+				menor = valor; // o primeiro candidato.
 				escolhido = atual;
 			}
 		}
 	}
 	// Se maior_modulo for igual a 0, o pivô é degenerado e o algoritmo continua normalmente.
 	(*t).sai=escolhido;
+#ifdef DEBUG
+	if( (*t).pracima[ (*t).sai ] )
+		printf("Encontrou f. Arco eh (%d,%d)\n", (*t).sai, (*t).p[ (*t).sai ]);
+	else
+		printf("Encontrou f. Arco eh (%d,%d)\n", (*t).p[ (*t).sai ], (*t).sai);
+#endif
 }
 
-// Atualiza a quantidade de material escoado por cada aresta
+//Descobre se f está antes ou depois de e (no sentido de e)
+void atualiza_depois(Arvore *t, int n){
+	bool depois;
+	int atual;
+
+	depois=false;
+	atual=(*t).v;
+	while(depois==false && atual!=(*t).join){
+		if((*t).sai == atual)
+			depois=true;
+		atual=(*t).p[atual];
+	}
+	(*t).depois=depois;
+	(*t).f2=(*t).sai;
+	(*t).f1=(*t).p [ (*t).sai ];
+	if(depois){
+		(*t).e1=(*t).u;
+		(*t).e2=(*t).v;
+	}
+	else{
+		(*t).e1=(*t).v;
+		(*t).e2=(*t).u;
+	}
+#ifdef DEBUG
+	printf("Atualizou depois.\n");
+	printf("x antes:  ");
+	for (int i = 0; i < n; ++i){
+		printf("%d ",(*t).x[i]);
+	}
+	printf("\n");
+#endif
+}
+
+// Atualiza a quantidade de material escoada por cada aresta
 void atualiza_x(Arvore *t, int n){
 	int sai = (*t).sai;
 	int quantidade = (*t).x[sai];
-	int atual;
-	int u,v;
+	int atual,prox;
+	int e2,f2;
+	e2 = (*t).e2;
+	f2 = (*t).f2;
 	bool depois; //Recebe true se f está entre v e j e false se f está entre u e j
-	v = (*t).v;
-	u = (*t).u;
+	depois = (*t).depois;
 
-	//Descobre se f está antes ou depois de e (no sentido de e)
-	depois=false;
-	atual=(*t).v;
-	while(atual!=(*t).join){
-		if(sai==atual){
-			depois=true;
-			break;
-		}
-		atual=(*t).p[atual];
-	}
-	//TODO: Isso deve estar errado, fazer do zero.
 	// Atualiza o vetor x.
 	for (int i = 1; i < sz((*t).ciclo); ++i){ // Começa de 1 pois o join não muda
 		atual=(*t).ciclo[i];
@@ -178,29 +196,47 @@ void atualiza_x(Arvore *t, int n){
 		else
 			(*t).x[atual]-=quantidade;
 	}
-	(*t).depois=depois;
+	// Aqui, todos os x antigos estão atualizados, porem, ainda existe f (com x=0)
+	//  e não existe e. Todos os vértices entre v e f2 precisam ser alterados.
 
-	// Tudo está quase atualizado, porém, os vértices entre e e f
-	// estão apontando para os valores das arestas erradas.
-	// O trecho a seguir inverte e corrige os apontamentos.
-	//TODO conferir exaustivamente essa funcao!!!
-	//TODO conferir se isso não é anulado pela atualização do p[x]
-	//TODO ver se não é possível atualizar o pracima[] aqui.
-	if(depois)
-		atual = v;
-	else
-		atual = u;
-
-	while(atual!=sai){
-		(*t).x[ (*t).p[atual] ] = (*t).x[atual];
-		atual = (*t).p[atual];
+	int indice_e2,indice_f2;
+	for (int i = 0; i < n; ++i){
+		if((*t).ciclo[i]==e2)
+			indice_e2=i;
+		if((*t).ciclo[i]==f2)
+			indice_f2=i;
 	}
-	if(depois)
-		(*t).x[v]=quantidade; //Pois agora esse vertice representa a aresta e
-	else
-		(*t).x[u]=quantidade; //Pois agora esse vertice representa a aresta e
+	if(depois==true){ // Precisamos alterar o caminho f2~>e2
+		for(int i=indice_f2; i>indice_e2; i--){
+			atual=(*t).ciclo[i];
+			prox =(*t).ciclo[i-1];
+			(*t).p[atual] = prox;
+			(*t).x[atual] = (*t).x[prox];
+			(*t).pracima[atual] = !((*t).pracima[prox]); //"inverte" o sentido
+		}
+	}
+	else{
+		for(int i=indice_f2; i<indice_e2; i++){
+			atual=(*t).ciclo[i];
+			prox =(*t).ciclo[i+1];
+			(*t).p[atual] = prox;
+			(*t).x[atual] = (*t).x[prox];
+			(*t).pracima[atual] = !((*t).pracima[prox]); //"inverte" o sentido
+		}
+	}
+	//Agora, precisamos alterar e2, que apontará para e, e terá e1 como pai.
+	(*t).p[e2] = (*t).e1;
+	(*t).x[e2] = quantidade; //Fluxo que passa por e sempre é esse
+	(*t).pracima[e2] = !depois; // Devido ao sentido do ciclo
 
-	return;
+#ifdef DEBUG
+	printf("Atualizou x.\n");
+	printf("x depois: ");
+	for (int i = 0; i < n; ++i){
+		printf("%d ",(*t).x[i]);
+	}
+	printf("\n");
+#endif
 }
 
 
@@ -222,6 +258,8 @@ void atualiza_y_e_d(Arvore *t, int n, int (* custo)[MAX_NOS] ){
 
 	int atual,pai;
 
+
+
 	for (int i = 0; i < n; ++i){
 		filhos[i].clear();
 	}
@@ -229,7 +267,6 @@ void atualiza_y_e_d(Arvore *t, int n, int (* custo)[MAX_NOS] ){
 		if(i==(*t).root) continue;
 		filhos[ (*t).p[i] ].push_back(i);
 	}
-
 	// Cria uma fila tal que se v vem depois de u, então quando v tiver seu y
 	// calculado, y(u) já estará atualizado.
 
@@ -238,7 +275,7 @@ void atualiza_y_e_d(Arvore *t, int n, int (* custo)[MAX_NOS] ){
 	for(int i =0; i<n; ++i){
 		atual = fila[i];
 		for (int j = 0; j < sz(filhos[atual]); ++j){
-			fila.push_back(filhos[i][j]);
+			fila.push_back(filhos[atual][j]);
 		}
 	}
 
@@ -261,36 +298,7 @@ void atualiza_y_e_d(Arvore *t, int n, int (* custo)[MAX_NOS] ){
 		if((*t).y[atual] < -INF )
 			(*t).y[atual] = INF;
 	}
-	return;
-}
-
-void atualiza_arvore(Arvore *t, int n){
-	int ant,atual,prox;
-	int f2; //f2 é o endpoint de f que está em S
-	f2 = (*t).sai;
-	int e1,e2; //e2 é o endpoint de e que está em S, e1 é o outro endpoint
-	int u,v;
-	u = (*t).u;
-	v = (*t).v;
-	if((*t).d[ u ] > (*t).d[ v ]){
-		e1 = v;
-		e2 = u;
-	}
-	else{
-		e1 = u;
-		e2 = v;
-	}
-
-	//ATUALIZANDO P
-	ant = e2;
-	atual = (*t).p[ant];
-	prox = (*t).p[atual];
-	while(ant!=f2){
-		(*t).p[atual] = ant;
-		ant = atual;
-		atual = prox;
-		prox = (*t).p[atual];
-	}
-	(*t).p[e2]=e1;
-
+#ifdef DEBUG
+	printf("Atualizou y.\n");
+#endif
 }

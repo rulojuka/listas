@@ -32,9 +32,11 @@ struct Arvore{
 	int y[MAX_NOS]; // Vetor de custos atuais de cada nó
 
 	// Estruturas da iteracao: 'e', 'f', 'join' e ciclo
-	int u,v; // Vértices do arco de entrada e
 	int join; // Primeiro antecessor comum dos vértices u e v
+	int u,v; // Vértices do arco de entrada e
+	int e1,e2; // e2 pertence a S.
 	int sai; // Endpoint de f, tal que o arco f é composto por f - p[f]
+	int f1,f2; // f2 pertence a S.
 	vector<int> ciclo; // Ciclo gerado em T+e começando em join e no mesmo sentido de e
 	bool forward[MAX_NOS]; // Atualizado em atualiza_ciclo: true indica que o arco com endpoint i segue no mesmo sentido que e
 	bool depois; //Recebe true se f está entre v e j e false se f está entre u e j
