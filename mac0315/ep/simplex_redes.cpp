@@ -5,7 +5,7 @@
 
 #include<cstdio>
 
-//#define DEBUG
+#define DEBUG
 
 #include "include/estruturas.h"
 #include "include/entrada.h"

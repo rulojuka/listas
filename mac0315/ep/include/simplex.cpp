@@ -5,6 +5,10 @@ void simplex(Grafo *g, Arvore *t, int (* custo)[MAX_NOS]){
 	int u,v; //Pivô é o arco u->v
 	while( pivoteia(&((*g).lista[0]), (*g).n_arestas, custo, (*t).y , &u, &v) ){
 		atualiza(t, (*g).n, u, v, custo);
+#ifdef DEBUG
+	printf("Arvore depois da atualizacao:\n");
+	imprime_arvore(g, t);
+#endif
 	}
 }
 
@@ -29,7 +33,7 @@ bool pivoteia(Aresta *lista, int n, int (* custo)[MAX_NOS], int *y, int *u, int 
 	}
 #ifdef DEBUG
 	if(menor<0)
-		printf("Pivo escolhido foi (%d,%d) = %d\n", u,v,custo[u][v]);
+		printf("Pivo escolhido foi (%d,%d) = %d\n", *u,*v,custo[*u][*v]);
 #endif
 	return (menor < 0);
 }
@@ -45,10 +49,6 @@ void atualiza(Arvore *t, int n, int u, int v, int (* custo)[MAX_NOS]){
 	atualiza_depois(t,n);
 	atualiza_x(t,n);
 	atualiza_y_e_d(t,n,custo); //precisa que p e pracima estejam corretos.
-#ifdef DEBUG
-	printf("Arvore depois da atualizacao:\n");
-	imprime_arvore(g, t);
-#endif
 }
 
 // Determina u->v como arco de entrada em T
