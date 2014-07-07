@@ -14,4 +14,4 @@ all: simplex_redes.cpp $(OBJS)
 .PHONY: clean
 
 clean:
-	rm -f *.o *~
+	rm -f *.o *~ include/*~
