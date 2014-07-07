@@ -4,8 +4,8 @@
 
 Para compilar o programa:
 $ make
-Para rodar o programa (já com um arquivo programa.dat no diretório):
+Para rodar o programa (já com um arquivo problema.dat no diretório):
 $ ./simplex_redes
 
-Um arquivo programa.dat.sample está disponível no diretório, com a entrada do
+Um arquivo problema.dat.sample está disponível no diretório, com a entrada do
 enunciado do ep.
