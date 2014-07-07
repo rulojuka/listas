@@ -56,8 +56,8 @@ void atualiza(Arvore *t, int n, int u, int v, int (* custo)[MAX_NOS]){
 #endif
 	encontra_f(t);
 	atualiza_x(t,n);
-	atualiza_y(t,n,custo);
 	atualiza_arvore(t,n);
+	atualiza_y(t,n,custo); //precisa que p e pracima estejam corretos.
 	return;
 }
 
@@ -200,6 +200,8 @@ void atualiza_x(Arvore *t, int n){
 	return;
 }
 
+
+// Precisa que os vetores p[] e pracima[] já estejam atualizados.
 void atualiza_y(Arvore *t, int n, int (* custo)[MAX_NOS] ){
 
 	// Em uma versão anterior do EP, eu utilizei o método descrito no Chvátal
@@ -212,7 +214,43 @@ void atualiza_y(Arvore *t, int n, int (* custo)[MAX_NOS] ){
 	// Apesar de um pouco mais lenta, tem a mesma complexidade (O(v+e)) e deixa
 	// o código inteiro muito mais limpo.
 
-	//TODO: Fazer isso aqui.
+	vector<int> filhos[MAX_NOS]; //Um vector para cada nó
+	vector<int> fila;
+
+	int atual,pai;
+
+	for (int i = 0; i < n; ++i){
+		filhos[i].clear();
+	}
+	for (int i = 0; i < n; ++i){
+		if(i==(*t).root) continue;
+		filhos[ (*t).p[i] ].push_back(i);
+	}
+
+	// Cria uma fila tal que se v vem depois de u, então quando v tiver seu y
+	// calculado, y(u) já estará atualizado.
+
+	fila.clear();
+	fila.push_back( (*t).root );
+	for(int i =0; i<n; ++i){
+		atual = fila[i];
+		for (int j = 0; j < sz(filhos[atual]); ++j){
+			fila.push_back(filhos[i][j]);
+		}
+	}
+
+	// Atualizando y e d
+	(*t).y[ (*t).root ]=0;
+	(*t).d[ (*t).root ]=1;
+	for (int i = 1; i < n; ++i){
+		atual = fila[i];
+		pai = (*t).p[atual];
+		(*t).d[atual] = (*t).d[pai] + 1;
+		if( (*t).pracima[atual] )
+			(*t).y[atual] = (*t).y[pai] - custo[atual][pai];
+		else
+			(*t).y[atual] = (*t).y[pai] + custo[pai][atual];
+	}
 	return;
 }
 
@@ -232,9 +270,6 @@ void atualiza_arvore(Arvore *t, int n){
 		e1 = u;
 		e2 = v;
 	}
-
-	//ATUALIZANDO D
-	//TODO: Fazer uma BFS pra atualizar isso aqui.
 
 	//ATUALIZANDO P
 	ant = e2;
