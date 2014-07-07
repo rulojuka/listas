@@ -2,18 +2,7 @@
 
 void obtem_solucao_inicial(Grafo *g, Arvore *t, int root){
 	cria_arvore_inicial(g, t, root);
-
-#ifdef DEBUG
-	printf("Arvore inicial (possivelmente com arcos artificiais):\n");
-	imprime_arvore(g, t);
-#endif
-
-	simplex(g,t,&((*g).artificial[0])); //Simplex inicial para descobrir a primeira t
-
-#ifdef DEBUG
-	printf("Depois da solucao do problema artificial:\n");
-	imprime_arvore(g, t);
-#endif
+	atualiza_y(t, (*g).n, &((*g).custo[0]));
 }
 
 // Cria a árvore inicial t, com base no grafo g e em uma raiz dada
@@ -28,28 +17,16 @@ void cria_arvore_inicial(Grafo *g, Arvore *t, int root){
 
 // Analogamente, atribuimos o x inicial.
 
-// Para calcularmos o y, lembramos que temos um sistema do tipo:
-//    -y0 +y1         = art_01?
-//    -y0     +y2     = art_02?
-//	          .
-//	          .
-//	          .
-//    -y0         +yn = art_0n?
-// Onde art_xy? é 1 se x->y é artificial e 0 caso contrário.
-// Definindo y0=0, temos y1=art_01?, y2=art_02?, ..., yn=art_0n?
-
 // Assim, escolhendo w como raiz, temos que d[i]=1 e p[i]=w para todo i!=w
-// Além disso, como qualquer permutação é uma preordem de n, escolhemos s[x]=x+1
 
 // Por fim, precisamos saber se os arcos vao em direção à raiz ou em sentido contrário.
-// Para isso, usamos o vetor forward, que é true se o arco é w -> x e false se o arco é x -> w
+// Para isso, usamos o vetor pracima, que é true se o arco é i -> p[i] e false se o arco é p[i] -> i
 	int n = (*g).n;
 	for(int i=0; i<n; i++){
 		if(i==root){
 			(*t).d[i]=1;
 			(*t).p[i]=-1; // p[root] não é determinado
 			(*t).x[i]=-1; // x[root] não é determinado
-			(*t).y[i]=0;  // definimos y[root] como 0
 		}
 		else{
 			(*t).d[i]=2;
@@ -58,27 +35,40 @@ void cria_arvore_inicial(Grafo *g, Arvore *t, int root){
 			if((*g).b_t[i]>=0){ // Cria um arco root -> i
 				(*t).x[i]=(*g).b_t[i];
 				(*t).pracima[i]=false;
+				if((*g).custo[root][i]==-1){ // Se tal arco não existe no grafo original
+					cria_arco_artificial(g, root, i);
+				}
 			}
 			else{ // Vértice atual é fonte (b_t[i]<0). Cria um arco i -> root
 				(*t).x[i]=-((*g).b_t[i]); // Para ficar positivo
 				(*t).pracima[i]=true;
+				if((*g).custo[i][root]==-1){ // Se tal arco não existe no grafo original
+					cria_arco_artificial(g, i, root);
+				}
 			}
-			(*t).y[i]=(*g).artificial[root][i]; //artificial[x][y] = art_x_y?
 		}
-		(*t).s[i]=i+1;
-		if((*t).s[i] == n)
-			(*t).s[i]=0;
 	}
 	(*t).root=root;
 }
 
+void cria_arco_artificial(Grafo *g, int origem, int destino){
+	Aresta art;
+	(*g).custo[origem][destino] = INF;
+	art.origem = origem;
+	art.destino = destino;
+	art.custo = INF;
+	(*g).lista[(*g).n_arestas] = art;
+	(*g).n_arestas ++;
+}
+
 void simplex_para_redes(Grafo *g, Arvore *t){
+	simplex(g,t,&((*g).custo[0])); //Simplex final para resolver o problema.
+
 	if(examina(g, t)==true){ // Checa se existe solucao para o problema.
-		simplex(g,t,&((*g).custo[0])); //Simplex final para resolver o problema.
 		imprime_resposta_final(g, t);
 	}
 	else{
-		printf("A solução inicial contem arcos artificiais, portanto, nao ha solucao viavel para o problema.\n");
+		printf("A solução final contem arcos artificiais, portanto, nao ha solucao viavel para o problema.\n");
 		printf("Saindo do programa.\n");
 	}
 }

@@ -14,6 +14,9 @@
 #define MAX_ARESTAS (MAX_NOS * MAX_NOS) // Número máximo de arestas do grafo original
 #endif
 
+#define INF 1000000000
+// MAX_INT é 2147483647
+
 using namespace std;
 
 struct Aresta{
@@ -22,7 +25,7 @@ struct Aresta{
 
 struct Arvore{
 	// Estruturas da árvore
-	int p[MAX_NOS], d[MAX_NOS], s[MAX_NOS]; // Pai, profundidade e sucessor preordem
+	int p[MAX_NOS], d[MAX_NOS]; // Pai e profundidade
 	int root; // Raiz
 	bool pracima[MAX_NOS]; // true indica um arco i->p[i] e false indica um arco p[i]-> i
 	int x[MAX_NOS]; // Solução do problema atual
@@ -43,7 +46,7 @@ struct Grafo{
 	// no lugar de <origem>, <destino> e <quantidade> para generalizar o algoritmo.
 	// Aqui, b_t[x]>0 representa demanda e b_t[x]<0 representa fonte.
 	int custo[MAX_NOS][MAX_NOS];
-	int artificial[MAX_NOS][MAX_NOS]; // 1 para arcos artificiais, 0 caso contrario
+	
 	int n_arestas;
 	Aresta lista[MAX_ARESTAS];
 };

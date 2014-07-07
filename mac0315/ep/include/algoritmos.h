@@ -10,6 +10,7 @@
 
 void obtem_solucao_inicial(Grafo *g, Arvore *t, int root);
 void cria_arvore_inicial(Grafo *g, Arvore *t, int root);
+void cria_arco_artificial(Grafo *g, int origem, int destino);
 
 void simplex_para_redes(Grafo *g, Arvore *t);
 

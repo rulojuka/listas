@@ -30,11 +30,6 @@ void imprime_arvore(Grafo *g, Arvore *t){
 		printf(" % d",(*t).d[i]);
 	}
 	printf("\n");
-	printf("Sucessor (Pre-ordem): ");
-	for(i=0; i<n; i++){
-		printf(" % d",(*t).s[i]);
-	}
-	printf("\n");
 	printf("pracima?              ");
 	for(i=0; i<n; i++){
 		if((*t).d[i]==1)
@@ -47,8 +42,12 @@ void imprime_arvore(Grafo *g, Arvore *t){
 	for(i=0; i<n; i++){
 		if((*t).d[i]==1)
 			printf("  *");
-		else
-			printf(" % d",(*g).artificial[ (*t).p[i] ][ i ]);
+		else{
+			if((*t).pracima[i])
+				printf(" % d",(*g).custo[ i ][ (*t).p[i] ]>=INF);
+			else
+				printf(" % d",(*g).custo[ (*t).p[i] ][ i ]>=INF);
+		}
 	}
 	printf("\n");
 	printf("x:                    ");
@@ -76,11 +75,11 @@ bool examina(Grafo *g, Arvore *t){
 		printf("Testando arco com endpoints %d e %d\n", i ,(*t).p[i]);
 #endif
 		if((*t).pracima[i]==false){ // Se aresta da árvore é p[i] -> i
-			if((*g).artificial[ (*t).p[i] ][ i ]) // Verifica se ela nao existe
+			if((*g).custo[ (*t).p[i] ][ i ]>=INF) // Verifica se ela nao existe
 				return false;
 		}
 		else{ // Se aresta da árvore é i -> p[i]
-			if((*g).artificial[ i ][ (*t).p[i] ]) // Verifica se ela nao existe
+			if((*g).custo[ i ][ (*t).p[i] ]>=INF) // Verifica se ela nao existe
 				return false;
 		}
 	}

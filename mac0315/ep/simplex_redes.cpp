@@ -29,13 +29,19 @@ int main(){
 
 //-------------------------------------------------//
 
-	/*Obtenção de solução inicial*/
+	/*Obtenção da árvore solução inicial*/
+	/* Esta árvore pode conter arcos artificiais. */
 	obtem_solucao_inicial(&g, &t, 0); //Pode ser qualquer vertice como raiz. 0 foi escolhido arbitrariamente.
-
+#ifdef DEBUG
+	printf("Entrada atualizada, com arcos artificiais:\n");
+	imprime_entrada(&g);
+	printf("Arvore inicial (possivelmente com arcos artificiais):\n");
+	imprime_arvore(&g, &t);
+#endif
 //-------------------------------------------------//
 
 	/*Simplex para redes*/
-	simplex_para_redes(&g,&t);
+	//simplex_para_redes(&g,&t);
 #ifdef DEBUG
 	//imprime_arvore(&g, &t);
 #endif

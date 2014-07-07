@@ -9,7 +9,7 @@ void simplex(Grafo *g, Arvore *t, int (* custo)[MAX_NOS]){
 #endif
 		atualiza(t, (*g).n, u, v, custo);
 #ifdef DEBUG
-		printf("Arvore depois da primeira atualizacao:\n");
+		printf("Arvore depois da atualizacao:\n");
 		imprime_arvore(g, t);
 #endif
 	}
@@ -179,6 +179,7 @@ void atualiza_x(Arvore *t, int n){
 	// O trecho a seguir inverte e corrige os apontamentos.
 	//TODO conferir exaustivamente essa funcao!!!
 	//TODO conferir se isso não é anulado pela atualização do p[x]
+	//TODO ver se não é possível atualizar o pracima[] aqui.
 	if(depois)
 		atual = v;
 	else
@@ -200,131 +201,40 @@ void atualiza_x(Arvore *t, int n){
 }
 
 void atualiza_y(Arvore *t, int n, int (* custo)[MAX_NOS] ){
-	// A árvore T-e-f é separada em duas árvores, T_u (contém u) e T_v (contém v)
 
-	// c = y_v - y_u - custo[u][v] (Oposto em relação ao c_e do Chvátal)
-	// Esse número é sempre positivo, pois representa a melhoria em custo
-	// do arco de entrada para 1 unidade.
+	// Em uma versão anterior do EP, eu utilizei o método descrito no Chvátal
+	// de atualizar somente a árvore S, que não contém a raiz.
+	// Apesar desse método ser mais rápido, tem uma implementação mais complexa
+	// pois adiciona um vetor auxiliar sucessor[x] e não permite uma inicialização
+	// do y em uma árvore intermediária.
 
-	// Para atualizar o y, podemos dizer que todos os y_k da árvore T_v diminuem em c,
-	// pois tal melhoria se aplica a todos os vértices desse lado de u->v
+	// Assim, resolvi usar uma simples DFS para "resolver" o sistema linear y
+	// Apesar de um pouco mais lenta, tem a mesma complexidade (O(v+e)) e deixa
+	// o código inteiro muito mais limpo.
 
-	// Analogamente, podemos aumentar todos os y_k da árvore T_u, pois os valores de y_k
-	// são relativos. Assim, facilitamos a implementação e sempre atualizamos a árvore (T_u ou T_v)
-	// que NÃO contém a raiz (árvore S), por ser mais fácil de utilizar nosso vetor s[x].
-	int f,k;
-	int c;
-
-	int u,v;
-	u = (*t).u;
-	v = (*t).v;
-
-	c = (*t).y[ v ] - (*t).y[ u ] - custo[u][v]; // c > 0 sempre
-
-	//Precisamos agora saber se S = T_v ou S = T_u
-	// Tal informação já está em (*t).depois. Se depois==true => S = T_v, c.c., S=T_u
-	if((*t).depois) // Se S = T_v
-		c=-c; // Então eu devo subtrair valores ao invés de somar.
-
-	f = k = (*t).sai; // Filho no arco f, portanto, pertencente à S
-
-	(*t).y[k]+=c; // Atualiza y para o vértice de f que pertence a S
-
-	// Atualiza y para todos a árvore S, utilizando o vetor de sucessores para descobrir
-	// quando a árvore acaba (profundidade atual é menor ou igual a inicial)
-	for( k=(*t).s[k]; (*t).d[k] > (*t).d[f]; k=(*t).s[k]){
-		(*t).y[k]+=c;
-	}
-
+	//TODO: Fazer isso aqui.
+	return;
 }
 
 void atualiza_arvore(Arvore *t, int n){
-	int a,b;
-	int i,j;
-	int r,k;
-	int e1,e2,f1,f2; // e2 e f2 pertencem a S
-
-	int c_atual; //Para atualizar D. Para cada árvore S_k, o novo d*[x] = d_x + c_k
-			// para qualquer x pertencente a S_k. c_k = c_k-1 + 2
 	int ant,atual,prox;
-
-	if((*t).depois){
-		e1=(*t).u;
-		e2=(*t).v;
+	int f2; //f2 é o endpoint de f que está em S
+	f2 = (*t).sai;
+	int e1,e2; //e2 é o endpoint de e que está em S, e1 é o outro endpoint
+	int u,v;
+	u = (*t).u;
+	v = (*t).v;
+	if((*t).d[ u ] > (*t).d[ v ]){
+		e1 = v;
+		e2 = u;
 	}
 	else{
-		e1=(*t).v;
-		e2=(*t).u;
-	}
-	f2=(*t).sai;
-	f1=(*t).p[f2];
-
-
-	//ATUALIZANDO S
-
-	//Step 0: Inicializa a,b,i
-	a = f1;
-	while( (*t).s[a] != f2 )
-		a = (*t).s[a];
-	b = (*t).s[e1];
-	i = e2;
-	// a é o predecessor de f2
-	// b é o sucessor de e1
-	// S* sai de logo depois de a e entre exatamente entre e1 e b
-	// i é o nó atual do caminho e2 ~> f2 (pivot stem)
-
-	//Step 1: Acha o último nó k de S1 e inicializa r
-	k=i;
-	while( (*t).d[ (*t).s[k] ] > (*t).d[i] )
-		k = (*t).s[k];
-	r = (*t).s[k];
-	//Step 2: Se estiver no final de S*, remove S e insere S*
-	while(true){
-		if(i==f2){
-			if(e1==a){ // Se S* continua no mesmo lugar de S
-				(*t).s[e1]=e2;
-				(*t).s[k]=r;
-			}
-			else{ // Caso geral
-				(*t).s[a] = r;
-				(*t).s[e1] = e2;
-				(*t).s[k]=b;
-			}
-			break;
-		}
-		//Step 3: Sobe no caminho e2 ~> f2 e atualiza s[k]
-		j = i;
-		i = (*t).p[i];
-		(*t).s[k] = i;
-		//Step 4: Ache o último nó k do lado esquerdo de S_t
-		k = i;
-		while((*t).s[k]!=j)
-			k = (*t).s[k];
-		//Step 5: Se o lado direito de S_t é não-vazio então atualiza s[k],
-		// acha o último nó k em S_t e atualiza r
-		if((*t).d[r] > (*t).d[i]) // Se o lado direito é não-vazio
-			(*t).s[k] = r; // Atualiza s[k]
-		while((*t).d[ (*t).s[k] ] > (*t).d[i]){
-			k = (*t).s[k];
-		}
-		r = (*t).s[k];
-		// Step 6: Retorne ao Step 2.
+		e1 = u;
+		e2 = v;
 	}
 
 	//ATUALIZANDO D
-	atual = e2;
-	prox = (*t).p[atual];
-
-	c_atual = (*t).d[e1] - (*t).d[e2] + 1;
-
-	while( atual != (*t).s[k]){ //Enquanto atual pertence a S*
-		if(atual == prox){ // Subiu no pivot stem
-			prox = (*t).p[atual];
-			c_atual+=2;
-		}
-		(*t).d[atual] += c_atual;
-		atual = (*t).s[atual];
-	}
+	//TODO: Fazer uma BFS pra atualizar isso aqui.
 
 	//ATUALIZANDO P
 	ant = e2;

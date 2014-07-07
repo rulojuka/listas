@@ -25,7 +25,6 @@ void le_entrada(Grafo *g){
 			(*g).b_t[i]=0;
 			for(int j=0; j<n; j++){
 				(*g).custo[i][j]=-1;
-				(*g).artificial[i][j]=1; //Inicializa todos os arcos como artificiais
 			}
 		}
 		(*g).b_t[origem]=-x; // Inicializa a origem em b_t
@@ -36,7 +35,6 @@ void le_entrada(Grafo *g){
 			sscanf(buffer, " %d %d %d ",&a,&b,&c);
 			//Adiciona aresta no grafo
 			(*g).custo[a][b]=c;
-			(*g).artificial[a][b]=0; //Adiciona arco como nao-artificial
 			//Adiciona aresta na lista de arestas
 			aresta.origem=a;
 			aresta.destino=b;
@@ -58,7 +56,7 @@ void imprime_entrada(Grafo *g){
 	printf("\nGrafo de custos:\n");
 	for(int i=0; i<n; i++){
 		for(int j=0; j<n; j++){
-			if((*g).artificial[i][j]==false)
+			if((*g).custo[i][j]!=-1)
 				printf("%d -> %d (%d)\n",i,j,(*g).custo[i][j]);
 		}
 	}
