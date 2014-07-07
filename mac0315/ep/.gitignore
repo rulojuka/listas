@@ -3,3 +3,4 @@ roda.sh
 *.o
 *.~
 *.dat
+*.swp
