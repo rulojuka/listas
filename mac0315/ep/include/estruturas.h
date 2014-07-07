@@ -47,6 +47,10 @@ struct Grafo{
 	int b_t[MAX_NOS]; // Vetor transposto de oferta e demanda. Ele será utilizado
 	// no lugar de <origem>, <destino> e <quantidade> para generalizar o algoritmo.
 	// Aqui, b_t[x]>0 representa demanda e b_t[x]<0 representa fonte.
+
+  // O vetor de custos é inteiro. A mudança para ponto flutuante é simples, mas
+  // não vi necessidade de implementá-la. O algoritmo é essencialmente o mesmo
+  // nos dois casos.
 	int custo[MAX_NOS][MAX_NOS];
 
 	int n_arestas;

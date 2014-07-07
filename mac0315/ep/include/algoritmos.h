@@ -1,7 +1,7 @@
 #ifndef ALGORITMOS_H
 #define ALGORITMOS_H
 
-#define DEBUG
+//#define DEBUG
 
 #include<cstdio>
 

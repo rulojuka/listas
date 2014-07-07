@@ -68,6 +68,7 @@ void atualiza_ciclo(Arvore *t, int n){
 
 	vector<int> aux;
 
+
 	(*t).join = j = join(t,(*t).u,(*t).v);
 	(*t).ciclo.clear();
 
@@ -90,11 +91,19 @@ void atualiza_ciclo(Arvore *t, int n){
 		atual = (*t).p[atual];
 	}
 
+#ifdef DEBUG
+	printf("Atualizou ciclo. Novo ciclo e: ");
+	for (int i = 0; i < sz((*t).ciclo); ++i)
+		printf("%d ",(*t).ciclo[i]);
+	printf("\n");
+#endif
+
 	// Atualiza sentidos.
 	// * No caminho j ~> u, todos os arcos que apontam para o pai (pracima[i] = true) são reversos.
 	// * No caminho v ~> j, todos os arcos que apontam para o filho (pracima[i] = false) são reversos.
 
-	for(i = 1; (*t).ciclo[i]!=(*t).v; ++i){ // Caminho j(exclusive) ~> u (inclusive)
+	for(i = 1; i<sz((*t).ciclo) && (*t).ciclo[i]!=(*t).v; ++i){ // Caminho j(exclusive) ~> u (inclusive)
+    // i<sz((*t).ciclo) impede que um Segmentation Fault quando v = j
 		atual = (*t).ciclo[i];
 		(*t).forward[atual] = !(*t).pracima[atual];
 	}
@@ -102,12 +111,6 @@ void atualiza_ciclo(Arvore *t, int n){
 		atual = (*t).ciclo[i];
 		(*t).forward[atual] = (*t).pracima[atual];
 	}
-#ifdef DEBUG
-	printf("Atualizou ciclo. Novo ciclo e: ");
-	for (int i = 0; i < sz((*t).ciclo); ++i)
-		printf("%d ",(*t).ciclo[i]);
-	printf("\n");
-#endif
 }
 
 // Acha arco de saída f, retornando o vertice que o representa.
