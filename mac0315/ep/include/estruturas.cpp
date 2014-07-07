@@ -20,6 +20,11 @@ int join(Arvore *t, int u, int v){
 void imprime_arvore(Grafo *g, Arvore *t){
 	int i;
 	int n = (*g).n;
+  printf("i:                    ");
+	for(i=0; i<n; i++){
+		printf(" % d",i);
+	}
+	printf("\n");
 	printf("Pai:                  ");
 	for(i=0; i<n; i++){
 		printf(" % d",(*t).p[i]);

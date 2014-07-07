@@ -31,7 +31,7 @@ int main(){
 
 	/*Obtenção da árvore solução inicial*/
 	/* Esta árvore pode conter arcos artificiais. */
-	obtem_solucao_inicial(&g, &t, 0); //Pode ser qualquer vertice como raiz. 0 foi escolhido arbitrariamente.
+	obtem_solucao_inicial(&g, &t, 3); //Pode ser qualquer vertice como raiz. 0 foi escolhido arbitrariamente.
 #ifdef DEBUG
 	printf("Entrada atualizada, com arcos artificiais:\n");
 	imprime_entrada(&g);

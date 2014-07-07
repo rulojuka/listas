@@ -73,6 +73,7 @@ void atualiza_ciclo(Arvore *t, int n){
 
 	(*t).ciclo.push_back( j ); // Adicionando o join.
 
+
 	aux.clear();
 	atual = (*t).u;
 	while(atual!=j){ // Adicionando os vértices u ~> join no vetor auxiliar.
@@ -200,12 +201,13 @@ void atualiza_x(Arvore *t, int n){
 	//  e não existe e. Todos os vértices entre v e f2 precisam ser alterados.
 
 	int indice_e2,indice_f2;
-	for (int i = 0; i < n; ++i){
+	for (int i = 0; i < sz((*t).ciclo); ++i){
 		if((*t).ciclo[i]==e2)
 			indice_e2=i;
 		if((*t).ciclo[i]==f2)
 			indice_f2=i;
 	}
+
 	if(depois==true){ // Precisamos alterar o caminho f2~>e2
 		for(int i=indice_f2; i>indice_e2; i--){
 			atual=(*t).ciclo[i];
