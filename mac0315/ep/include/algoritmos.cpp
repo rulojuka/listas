@@ -64,30 +64,36 @@ void cria_arco_artificial(Grafo *g, int origem, int destino){
 void simplex_para_redes(Grafo *g, Arvore *t){
 	simplex(g,t,&((*g).custo[0])); //Simplex final para resolver o problema.
 
-	if(examina(g, t)==true){ // Checa se existe solucao para o problema.
-		imprime_resposta_final(g, t);
-	}
-	else{
-		printf("A solução final contem arcos artificiais, portanto, nao ha solucao viavel para o problema.\n");
-		printf("Saindo do programa.\n");
-	}
+	imprime_resposta_final(g, t);
+
 }
 
 // Calcula o custo de uma solução t e imprime na tela
 void imprime_resposta_final(Grafo *g, Arvore *t){
 	int custo=0;
 	int n = (*g).n;
+	bool impossivel=false;
 	printf("Pela aresta (i -> j), passam x unidades.\n");
 	for (int i = 0; i < n; ++i){
 		if(i==(*t).root) continue;
 		if((*t).pracima[i]==false){ // Se aresta da árvore é p[i] -> i
+			if( (*g).custo[ (*t).p[i] ][ i ] >= INF && (*t).x[i]>0)
+				impossivel=true;
 			custo += (*g).custo[ (*t).p[i] ][ i ] * (*t).x[i];
 			printf("(%d -> %d) - %d\n",(*t).p[i],i,(*t).x[i]);
 		}
 		else{
+			if( (*g).custo[ i ][ (*t).p[i] ] >= INF && (*t).x[i]>0)
+				impossivel=true;
 			custo += (*g).custo[ i ][ (*t).p[i] ] * (*t).x[i];
 			printf("(%d -> %d) - %d\n",i,(*t).p[i],(*t).x[i]);
 		}
 	}
-	printf("O custo total do transporte e %d\n", custo);
+	if(impossivel){
+		printf("A solução final contem arcos artificiais com fluxo>0, portanto, nao ha solucao viavel para o problema.\n");
+
+	}
+	else{
+		printf("O custo total do transporte e %d\n", custo);
+	}
 }

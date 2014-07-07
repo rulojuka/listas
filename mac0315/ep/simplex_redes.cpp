@@ -42,9 +42,6 @@ int main(){
 
 	/*Simplex para redes*/
 	simplex_para_redes(&g,&t);
-#ifdef DEBUG
-	//imprime_arvore(&g, &t);
-#endif
 
 	return 0;
 }
