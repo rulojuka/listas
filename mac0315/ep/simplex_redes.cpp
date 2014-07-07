@@ -1,7 +1,6 @@
 // Alessandro Wagner Palmeira
 // NUSP: 6850476
 // Exercício-Programa de MAC0315
-//
 
 #include<cstdio>
 
