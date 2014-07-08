@@ -1,4 +1,4 @@
-CC = g++
+CC = g++-4.6
 CFLAGS = -Wall -ansi -pedantic
 
 I_DIR = include
