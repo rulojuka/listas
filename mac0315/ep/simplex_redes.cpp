@@ -19,6 +19,7 @@ int main(){
 	// memoria, mas dei preferencia para a minimizacao do tempo de execução.
 	// De qualquer jeito, a troca entre as duas implementações é trivial.
 	Arvore t; // Árvore que representa o estado atual do algoritmo.
+  bool viavel; // Se false, o algoritmo é inviável e o simplex não roda.
 
 	/*Leitura de dados*/
 	le_entrada(&g);
@@ -30,7 +31,7 @@ int main(){
 
 	/*Obtenção da árvore solução inicial*/
 	/* Esta árvore pode conter arcos artificiais. */
-	obtem_solucao_inicial(&g, &t, 0); //Pode ser qualquer vertice como raiz. 0 foi escolhido arbitrariamente.
+	viavel = obtem_solucao_inicial(&g, &t, 0); //Pode ser qualquer vertice como raiz. 0 foi escolhido arbitrariamente.
 #ifdef DEBUG
 	printf("Entrada atualizada, com arcos artificiais:\n");
 	imprime_entrada(&g);
@@ -40,7 +41,8 @@ int main(){
 //-------------------------------------------------//
 
 	/*Simplex para redes*/
-	simplex_para_redes(&g,&t);
+	if(viavel)
+    simplex_para_redes(&g,&t);
 
 	return 0;
 }

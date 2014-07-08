@@ -1,9 +1,54 @@
 #include"algoritmos.h"
 
-void obtem_solucao_inicial(Grafo *g, Arvore *t, int root){
-	cria_arvore_inicial(g, t, root);
-	atualiza_y_e_d(t, (*g).n, &((*g).custo[0]));
+bool obtem_solucao_inicial(Grafo *g, Arvore *t, int root){
+  if (checa_viabilidade(g) == false){
+    printf("O problema e inviavel. O simplex nao sera executado.\n");
+    return false;
+  }
+  else{
+	  cria_arvore_inicial(g, t, root);
+	  atualiza_y_e_d(t, (*g).n, &((*g).custo[0]));
+    return true;
+  }
 }
+
+bool checa_viabilidade(Grafo *g){
+  int origem,destino;
+  int visitado[MAX_NOS];
+  vector<int> arestas[MAX_NOS];
+
+  for(int i=0;i<(*g).n;i++){
+    visitado[i]=0;
+    arestas[i].clear();
+    if((*g).b_t[i]<0)
+      origem = i;
+    if((*g).b_t[i]>0)
+      destino = i;
+  }
+
+  for(int i=0; i<(*g).n_arestas; i++){
+    arestas[ (*g).lista[i].origem ].push_back( (*g).lista[i].destino );
+  }
+
+  busca(origem,destino,visitado,arestas);
+  return visitado[destino]==1;
+}
+
+void busca(int atual, int destino, int * visitado, vector<int> *arestas){
+  int prox;
+  if(atual==destino)
+    return;
+  else{
+    for(int i=0; i< sz(arestas[atual]); i++){
+      prox = arestas[atual][i];
+      if( visitado[prox] != 1 ){
+        visitado[ prox ] = 1;
+        busca(prox,destino,visitado,arestas);
+      }
+    }
+  }
+}
+
 
 // Cria a árvore inicial t, com base no grafo g e em uma raiz dada
 void cria_arvore_inicial(Grafo *g, Arvore *t, int root){

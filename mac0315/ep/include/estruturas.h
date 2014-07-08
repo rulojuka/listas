@@ -29,6 +29,9 @@ struct Arvore{
 	int p[MAX_NOS], d[MAX_NOS]; // Pai e profundidade
 	bool pracima[MAX_NOS]; // true indica um arco i->p[i] e false indica um arco p[i]-> i
 	int x[MAX_NOS]; // Solução do problema atual
+  // O vetor de fluxo é inteiro. A mudança para ponto flutuante é simples, mas
+  // não vi necessidade de implementá-la. O algoritmo é essencialmente o mesmo
+  // nos dois casos.
 	int y[MAX_NOS]; // Vetor de custos atuais de cada nó
 
 	// Estruturas da iteracao: 'e', 'f', 'join' e ciclo
