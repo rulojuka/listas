@@ -1,0 +1,8 @@
+// Alessandro Wagner Palmeira
+// NUSP: 6850476
+// Exercício-Programa 1 de MAC0448
+
+Para compilar o programa:
+$ make
+Para rodar o servidor:
+$ ./ep1 <porta>
