@@ -1,0 +1,64 @@
+Larga: bang
+Delay (ms): 18581
+Volume do ruido: 78.2028 db
+Larga: bang
+Delay (ms): 13277
+Volume do ruido: 76.3375 db
+Larga: bang
+Delay (ms): 2146
+Volume do ruido: 81.1381 db
+Estreita: bang
+Delay (ms): 14735
+Volume do ruido: 82.9208 db
+Larga: bang
+Delay (ms): 7754
+Volume do ruido: 77.7493 db
+Larga: bang
+Delay (ms): 8824
+Volume do ruido: 78.9299 db
+Estreita: bang
+Delay (ms): 11673
+Volume do ruido: 75.5883 db
+Larga: bang
+Delay (ms): 17079
+Volume do ruido: 78.0483 db
+Larga: bang
+Delay (ms): 5114
+Volume do ruido: 74.7759 db
+Estreita: bang
+Delay (ms): 15466
+Volume do ruido: 64.5034 db
+Estreita: bang
+Delay (ms): 3912
+Volume do ruido: 66.6736 db
+Larga: bang
+Delay (ms): 14216
+Volume do ruido: 73.8076 db
+Estreita: bang
+Delay (ms): 16013
+Volume do ruido: 74.1441 db
+Larga: bang
+Delay (ms): 10472
+Volume do ruido: 77.0922 db
+Larga: bang
+Delay (ms): 16778
+Volume do ruido: 77.1699 db
+Estreita: bang
+Delay (ms): 3747
+Volume do ruido: 75.1975 db
+Estreita: bang
+Delay (ms): 2097
+Volume do ruido: 66.8491 db
+Estreita: bang
+Delay (ms): 9320
+Volume do ruido: 66.0554 db
+Estreita: bang
+Delay (ms): 3707
+Volume do ruido: 65.6057 db
+Estreita: bang
+Delay (ms): 15993
+Volume do ruido: 66.0435 db
+Estreita: bang
+Delay (ms): 19780
+Volume do ruido: 60.9231 db
+
