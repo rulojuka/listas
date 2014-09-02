@@ -1,0 +1,14 @@
+#N canvas 670 352 450 300 10;
+#X msg 99 90 open \$1;
+#X obj 96 45 openpanel;
+#X obj 102 132 readsf~;
+#X obj 100 165 dac~;
+#X msg 53 92 1, f 4;
+#X obj 96 15 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 2 0 3 1;
+#X connect 4 0 2 0;
+#X connect 5 0 1 0;
