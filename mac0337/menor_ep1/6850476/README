@@ -1,0 +1,13 @@
+Alessandro Wagner Palmeira
+NUSP: 6850476
+EP1_menor - MAC0337 - Computação Musical
+Prof. Marcelo Queiroz
+
+----------------------------------------
+
+O patch puredata está em src/
+Os resultados obtidos estão em results/io/*.txt
+
+Rodando make run, o programa cria-resultado é rodado e cada arquivo de entrada
+results/io/*.txt gera um arquivo de saída results/io/*.txt.out correspondente
+contendo as médias dos valores do ruído para cada uma das experiências feitas.
