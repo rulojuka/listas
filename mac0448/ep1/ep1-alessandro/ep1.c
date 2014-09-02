@@ -44,6 +44,25 @@
 #define MAXDATASIZE 100
 #define MAXLINE 4096
 
+#define USER "USER"
+#define QUIT "QUIT"
+
+#define USER_CMD 1
+#define QUIT_CMD 2
+
+int retorna_funcao(char *s){
+  printf("funcao retorna %s\n",s);
+  char comando[MAXLINE];
+  sscanf(s, "%s", comando); 
+  printf("comando = %s\n",comando);
+  if(strcmp(comando,USER)==0)
+    return USER_CMD;
+  if(strcmp(comando,QUIT)==0)
+    return QUIT_CMD;
+  return -1;
+}
+
+
 int main (int argc, char **argv) {
    /* Os sockets. Um que será o socket que vai escutar pelas conexões
     * e o outro que vai ser o socket específico de cada conexão */
@@ -57,6 +76,10 @@ int main (int argc, char **argv) {
 	char	recvline[MAXLINE + 1];
    /* Armazena o tamanho da string lida do cliente */
    ssize_t  n;
+
+   /*********** MINHAS VARIAVEIS *************/
+   char usuario[MAXLINE], senha[MAXLINE], resposta[MAXLINE];
+   int comando;
 
 	if (argc != 2) {
       fprintf(stderr,"Uso: %s <Porta>\n",argv[0]);
@@ -154,6 +177,7 @@ int main (int argc, char **argv) {
          /* ========================================================= */
          /* TODO: É esta parte do código que terá que ser modificada
           * para que este servidor consiga interpretar comandos FTP */
+          printf("godz gay\n"); 
          while ((n=read(connfd, recvline, MAXLINE)) > 0) {
             recvline[n]=0;
             printf("[Cliente conectado no processo filho %d enviou:] ",getpid());
@@ -161,7 +185,25 @@ int main (int argc, char **argv) {
                perror("fputs :( \n");
                exit(6);
             }
-            write(connfd, recvline, strlen(recvline));
+            else{
+               comando = retorna_funcao(recvline);
+               switch( comando ){
+                  
+                  case(USER_CMD):
+                    sscanf(recvline, "%*s %s",usuario);
+                    strcat(resposta, "331 ");
+                    strcat(resposta, "Seu usuario e ");
+                    strcat(resposta, usuario);
+                    strcat(resposta, "\n\0");
+                    printf("%s\n",recvline);
+                    break;
+                  case(QUIT_CMD):
+                    strcat(resposta, "221 Goodbye\n");
+                    exit(0);
+
+               }
+            }
+            write(connfd, resposta, strlen(resposta));
          }
          /* ========================================================= */
          /* ========================================================= */
