@@ -46,9 +46,15 @@
 
 #define USER "USER"
 #define QUIT "QUIT"
+#define PASS "PASS"
+#define SYST "SYST"
+#define PASV "PASV"
 
 #define USER_CMD 1
-#define QUIT_CMD 2
+#define PASS_CMD 2
+#define QUIT_CMD 3
+#define SYST_CMD 4
+#define PASV_CMD 5
 
 int retorna_funcao(char *s){
   printf("funcao retorna %s\n",s);
@@ -57,11 +63,25 @@ int retorna_funcao(char *s){
   printf("comando = %s\n",comando);
   if(strcmp(comando,USER)==0)
     return USER_CMD;
+  if(strcmp(comando,PASS)==0)
+    return PASS_CMD;
   if(strcmp(comando,QUIT)==0)
     return QUIT_CMD;
+  if(strcmp(comando,SYST)==0)
+    return SYST_CMD;
+  if(strcmp(comando,PASV)==0)
+    return PASV_CMD;
+
   return -1;
 }
-
+int cria_socket(){
+  int sock;
+	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+		perror("socket :(\n");
+		exit(2);
+	}
+  return sock;
+}
 
 int main (int argc, char **argv) {
    /* Os sockets. Um que será o socket que vai escutar pelas conexões
@@ -79,7 +99,14 @@ int main (int argc, char **argv) {
 
    /*********** MINHAS VARIAVEIS *************/
    char usuario[MAXLINE], senha[MAXLINE], resposta[MAXLINE];
+   char boas_vindas[]="220 Bem vindo ao servidor FTP.\r\n";
    int comando;
+   int datafd; /*Socket de dados*/
+   struct sockaddr_in dataaddr;
+   char recvdata[MAXLINE + 1];
+   char *buffer;
+   int a,b,c,d; /*bytes do ip*/
+   int x,y; /*bytes de port*/
 
 	if (argc != 2) {
       fprintf(stderr,"Uso: %s <Porta>\n",argv[0]);
@@ -116,6 +143,8 @@ int main (int argc, char **argv) {
 		perror("bind :(\n");
 		exit(3);
 	}
+                    printf("porta eh %d, a outra eh %d\n",dataaddr.sin_port,servaddr.sin_port);
+
 
    /* Como este código é o código de um servidor, o socket será um
     * socket passivo. Para isto é necessário chamar a função listen
@@ -177,7 +206,8 @@ int main (int argc, char **argv) {
          /* ========================================================= */
          /* TODO: É esta parte do código que terá que ser modificada
           * para que este servidor consiga interpretar comandos FTP */
-          printf("godz gay\n"); 
+          printf("godz gay\n");
+         write(connfd, boas_vindas, strlen(boas_vindas));
          while ((n=read(connfd, recvline, MAXLINE)) > 0) {
             recvline[n]=0;
             printf("[Cliente conectado no processo filho %d enviou:] ",getpid());
@@ -191,15 +221,47 @@ int main (int argc, char **argv) {
                   
                   case(USER_CMD):
                     sscanf(recvline, "%*s %s",usuario);
-                    strcat(resposta, "331 ");
-                    strcat(resposta, "Seu usuario e ");
-                    strcat(resposta, usuario);
-                    strcat(resposta, "\n\0");
-                    printf("%s\n",recvline);
+                    sprintf(resposta, "331 seu usuario e %s\r\n", usuario);
+                    break;
+                  case (PASS_CMD):
+                    sscanf(recvline, "%*s %s",senha);
+                    sprintf(resposta, "230 User %s logged in\r\n", usuario);
+                    break;
+                  case (SYST_CMD):
+                    sprintf(resposta, "215 UNIX Type: L8\r\n");
+                    break;
+                  case (PASV_CMD):
+                    printf("Entrou PASV\n");
+                    datafd = cria_socket();
+                    printf("Criou socket\n");
+
+                    bzero(&dataaddr, sizeof(dataaddr));
+                    dataaddr.sin_family      = AF_INET;
+                    dataaddr.sin_addr.s_addr = htonl(servaddr.sin_addr.s_addr);
+                    dataaddr.sin_port        = htons(0);
+                    printf("porta eh %hu, a outra eh %hu\n",dataaddr.sin_port,servaddr.sin_port);
+                    if (bind(datafd, (struct sockaddr *)&dataaddr, sizeof(dataaddr)) == -1) {
+                      perror("datafd bind :(\n");
+                      exit(3);
+                    }
+                    printf("Terminou bind\n");
+                    printf("s_addr: %d sin_port: %d\n",dataaddr.sin_addr.s_addr, dataaddr.sin_port);
+                    buffer = inet_ntoa(dataaddr.sin_addr);
+                    printf("Long (ip): %ld Ip: %s\n",servaddr.sin_addr.s_addr,buffer);
+                    printf("Porta:(unsigned short) %hu\n", dataaddr.sin_port);
+                    sscanf(buffer,"%d.%d.%d.%d ",&a,&b,&c,&d);
+                    y = dataaddr.sin_port/256;
+                    x = dataaddr.sin_port%256;
+                    sprintf(resposta, "227 Entering Passive Mode (%d,%d,%d,%d,%d,%d).\r\n",a,b,c,d,x,y);
+
                     break;
                   case(QUIT_CMD):
                     strcat(resposta, "221 Goodbye\n");
                     exit(0);
+                    break;
+                  default:
+                    break;
+
 
                }
             }
