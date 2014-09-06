@@ -238,61 +238,68 @@ int main (int argc, char **argv) {
                     sprintf(resposta, "215 UNIX Type: L8\r\n");
                     break;
                   case (PASV_CMD):
-                    printf("Entrou PASV\n");
-                    datafd = cria_socket();
-                    printf("Criou socket\n");
-
+                    datafd = cria_socket(); /* Cria socket para comunicação de dados*/
                     bzero(&dataaddr, sizeof(dataaddr));
-                    porta = htons(0);
+		    
+		    /*Seta protocolo, endereço e porta*/
                     dataaddr.sin_family      = AF_INET;
                     dataaddr.sin_addr.s_addr = htonl(INADDR_ANY);
                     dataaddr.sin_port        = htons(0);
-                    printf("porta eh %hu, a outra eh %hu\n",dataaddr.sin_port,servaddr.sin_port);
-                    if (bind(datafd, (struct sockaddr *)&dataaddr, sizeof(dataaddr)) == -1) {
+		    
+		    /* Bind: Relaciona datafd às informações representadas em dataaddr. */
+                    if ( bind(datafd, (struct sockaddr *)&dataaddr, sizeof(dataaddr)) == -1) {
                       perror("datafd bind :(\n");
                       exit(3);
                     }
                     data_len = sizeof(dataaddr);
-                    if (getsockname(datafd, (struct sockaddr *)&dataaddr, &data_len) == -1) {
+                    if ( getsockname(datafd, (struct sockaddr *)&dataaddr, &data_len) == -1) {
                       perror("datafd getsockname :(\n");
                       exit(3);
                     }
+                    /* Listen: Instrui o kernel a começar a escutar por conexões no socket. */
                     if ( listen(datafd, LISTENQ) == 1){
                       perror("listen :(\n");
                       exit(4);
                     }
-                    printf("Terminou bind\n");
 
+                    /* Descobre IP do próprio servidor... */
                     buffer = inet_ntoa(servaddr.sin_addr);
-                    printf("Long (ip): %ld Ip: %s\n",servaddr.sin_addr.s_addr,buffer);
+                    printf("Ip: %s\n",buffer);
                     sscanf(buffer,"%d.%d.%d.%d ",&a,&b,&c,&d);
-
+		    /* ... e porta do próprio socket de dados ... */
                     porta = (int) ntohs(dataaddr.sin_port);
                     printf("Porta: %d\n", porta);
 
                     
                     /* TODO isso depende do pc, tem que usar a funcao certa.*/
+		    /* ... e envia para o cliente. */
                     x = porta/256;
                     y = porta%256;
                     sprintf(resposta, "227 Entering Passive Mode (%d,%d,%d,%d,%d,%d).\r\n",a,b,c,d,x,y);
 
                     break;
                   case(LIST_CMD):
+		    
+		    /* Roda o comando ls no shell. */
                     fp = popen ("ls -l", "r");
+		    /* Troca todos os \n por \r\n e salva na string dados. */
                     dados[0]=0;
                     topo = 0;
                     while ((ch=fgetc(fp)) != EOF){
-                      printf("%c", ch);
+                      /*printf("%c", ch);*/
                       if (ch == '\n'){
-                      dados[topo] = 'r';
+                      dados[topo] = '\r';
                       dados[++topo]=0;
                       }
                       dados[topo] = ch;
                       dados[++topo]=0;
                     }
-                    //TODO basta acertar a linha de baixo mandando com write
-                    //a string dados 
+                    printf("Dados eh ----%s-----\n",dados);
+		    /* Envia a string dados pelo canal de comunicação */
+                    /*TODO basta acertar a linha de baixo mandando com write
+                    a string dados */
                     write (datafd, dados, strlen(dados));
+		    close(datafd);
                     break;
                   case(QUIT_CMD):
                     strcat(resposta, "221 Goodbye\n");
