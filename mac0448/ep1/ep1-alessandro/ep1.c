@@ -49,12 +49,14 @@
 #define PASS "PASS"
 #define SYST "SYST"
 #define PASV "PASV"
+#define LIST "LIST"
 
 #define USER_CMD 1
 #define PASS_CMD 2
 #define QUIT_CMD 3
 #define SYST_CMD 4
 #define PASV_CMD 5
+#define LIST_CMD 6
 
 int retorna_funcao(char *s){
   char comando[MAXLINE];
@@ -69,6 +71,8 @@ int retorna_funcao(char *s){
     return SYST_CMD;
   if(strcmp(comando,PASV)==0)
     return PASV_CMD;
+  if(strcmp(comando,LIST)==0)
+    return LIST_CMD;
 
   return -1;
 }
@@ -106,7 +110,11 @@ int main (int argc, char **argv) {
    int a,b,c,d; /*bytes do ip*/
    int x,y; /*bytes de port*/
    int porta;
+   FILE *fp;
    int data_len;
+   char ch;
+   char dados[MAXLINE];
+   int topo;
 
 	if (argc != 2) {
       fprintf(stderr,"Uso: %s <Porta>\n",argv[0]);
@@ -268,6 +276,23 @@ int main (int argc, char **argv) {
                     y = porta%256;
                     sprintf(resposta, "227 Entering Passive Mode (%d,%d,%d,%d,%d,%d).\r\n",a,b,c,d,x,y);
 
+                    break;
+                  case(LIST_CMD):
+                    fp = popen ("ls -l", "r");
+                    dados[0]=0;
+                    topo = 0;
+                    while ((ch=fgetc(fp)) != EOF){
+                      printf("%c", ch);
+                      if (ch == '\n'){
+                      dados[topo] = 'r';
+                      dados[++topo]=0;
+                      }
+                      dados[topo] = ch;
+                      dados[++topo]=0;
+                    }
+                    //TODO basta acertar a linha de baixo mandando com write
+                    //a string dados 
+                    write (datafd, dados, strlen(dados));
                     break;
                   case(QUIT_CMD):
                     strcat(resposta, "221 Goodbye\n");
