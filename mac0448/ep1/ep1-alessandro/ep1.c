@@ -365,6 +365,26 @@ int main (int argc, char **argv) {
 		envia_mensagem("226 Transfer complete\r\n",connfd);
 	      }
               break;
+	     
+	    case(PUT_CMD):
+	      sscanf(recvline, "%*s %s",endereco_arquivo);
+	      if( (arquivo_fd = open(endereco_arquivo, O_WRONLY | O_CREAT)) < 0 ){
+		sprintf(mensagem,"550 %s: Não foi possível criar o arquivo.\r\n", endereco_arquivo);
+		envia_mensagem(mensagem,connfd);
+	      }
+	      else{
+		if(tipo=='I'){
+		    sprintf(mensagem,"150 Opening BINARY mode data connection for %s\r\n",endereco_arquivo);
+		    envia_mensagem(mensagem,connfd);
+		}
+		while( (leu_bytes = read(data_transfer_fd, data_buffer, MAX_DATA_BUFFER))>0 ){
+		  write (arquivo_fd, data_buffer, leu_bytes);
+		}
+		close(arquivo_fd);
+		close(data_transfer_fd);
+		envia_mensagem("226 Transfer complete\r\n",connfd);
+	      }
+	      break;
 
             case(QUIT_CMD):
               envia_mensagem("221 Goodbye\r\n",connfd);
