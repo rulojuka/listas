@@ -39,13 +39,14 @@
 #include <arpa/inet.h>
 #include <time.h>
 #include <unistd.h>
+/*********** MEUS INCLUDES E DEFINES *************/
 #include <sys/stat.h> /* Para medir o tamanho do arquivo. */
 #include <fcntl.h> /* open() */
+#define MAX_DATA_BUFFER 4096
 
 #define LISTENQ 1
 #define MAXDATASIZE 100
 #define MAXLINE 4096
-#define MAX_DATA_BUFFER 4096
 
 #define USER "USER"
 #define QUIT "QUIT"
@@ -92,10 +93,15 @@ int retorna_funcao(char *s){
   return -1;
 }
 
+void mensagem_exit(){
+  printf("Processo com pid %d deu exit()\n",getpid());
+}
+
 int cria_socket(){
   int sock;
   if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
     perror("socket :(\n");
+    mensagem_exit();
     exit(2);
   }
   return sock;
@@ -139,12 +145,13 @@ int main (int argc, char **argv) {
   struct stat st;
   int arquivo_fd;
   int leu_bytes;
-  
+
   char tipo='A'; /*Tipo de transmissao*/
 
   if (argc != 2) {
     fprintf(stderr,"Uso: %s <Porta>\n",argv[0]);
     fprintf(stderr,"Vai rodar um servidor de echo na porta <Porta> TCP\n");
+    mensagem_exit();
     exit(1);
   }
 
@@ -156,6 +163,7 @@ int main (int argc, char **argv) {
    * a Internet (por causa do número 0) */
   if ((listenfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
     perror("socket :(\n");
+    mensagem_exit();
     exit(2);
   }
 
@@ -175,6 +183,7 @@ int main (int argc, char **argv) {
   servaddr.sin_port        = htons(atoi(argv[1]));
   if (bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) == -1) {
     perror("bind :(\n");
+    mensagem_exit();
     exit(3);
   }
 
@@ -185,6 +194,7 @@ int main (int argc, char **argv) {
    * por conexões nos endereços definidos na função bind. */
   if (listen(listenfd, LISTENQ) == -1) {
     perror("listen :(\n");
+    mensagem_exit();
     exit(4);
   }
 
@@ -203,6 +213,7 @@ int main (int argc, char **argv) {
      * deste novo socket é o retorno da função accept. */
     if ((connfd = accept(listenfd, (struct sockaddr *) NULL, NULL)) == -1 ) {
       perror("accept :(\n");
+      mensagem_exit();
       exit(5);
     }
 
@@ -218,7 +229,7 @@ int main (int argc, char **argv) {
      * processo filho. */
     if ( (childpid = fork()) == 0) {
       /**** PROCESSO FILHO ****/
-      printf("[Uma conexao aberta]\n");
+      printf("[Uma conexao aberta] (pid: %d)\n",getpid());
       /* Já que está no processo filho, não precisa mais do socket
        * listenfd. Só o processo pai precisa deste socket. */
       close(listenfd);
@@ -245,6 +256,7 @@ int main (int argc, char **argv) {
         printf("[Cliente conectado no processo filho %d enviou:] ",getpid());
         if ((fputs(recvline,stdout)) == EOF) {
           perror("fputs :( \n");
+          mensagem_exit();
           exit(6);
         }
         else{
@@ -279,16 +291,19 @@ int main (int argc, char **argv) {
               /* Bind: Relaciona datafd às informações representadas em dataaddr. */
               if ( bind(datafd, (struct sockaddr *)&dataaddr, sizeof(dataaddr)) == -1) {
                 perror("datafd bind :(\n");
+                mensagem_exit();
                 exit(3);
               }
               data_len = sizeof(dataaddr);
               if ( getsockname(datafd, (struct sockaddr *)&dataaddr, &data_len) == -1) {
                 perror("datafd getsockname :(\n");
+                mensagem_exit();
                 exit(3);
               }
               /* Listen: Instrui o kernel a começar a escutar por conexões no socket. */
               if ( listen(datafd, LISTENQ) == 1){
                 perror("listen :(\n");
+                mensagem_exit();
                 exit(4);
               }
 
@@ -299,7 +314,7 @@ int main (int argc, char **argv) {
               porta = (int) ntohs(dataaddr.sin_port);
 
               /* ... e envia para o cliente. */
-              /* TODO isso depende do pc, tem que usar a funcao certa.*/
+              /* TODO isso pode depender do pc, tem que usar a funcao certa.*/
               x = porta/256;
               y = porta%256;
               sprintf(mensagem, "227 Entering Passive Mode (%d,%d,%d,%d,%d,%d).\r\n",a,b,c,d,x,y);
@@ -308,6 +323,7 @@ int main (int argc, char **argv) {
               /*Trava processo até uma conexão acontecer no datafd*/
               if ((data_transfer_fd = accept(datafd, (struct sockaddr *) NULL, NULL)) == -1 ) {
                 perror("accept :(\n");
+                mensagem_exit();
                 exit(5);
               }
               /*Agora que a conexão em data_transfer_fd está feita, não precisamos mais do datafd. */
@@ -334,60 +350,61 @@ int main (int argc, char **argv) {
               /* Envia a string dados pelo canal de dados e fecha o canal*/
               write (data_transfer_fd, dados, strlen(dados));
               close(data_transfer_fd);
-	      pclose(fp);
+              pclose(fp);
               envia_mensagem("226 Transfer complete\r\n",connfd);
               break;
-	      
-	    case(TYPE_CMD):
-	      sscanf(recvline, "%*s %c",&tipo);
-	      sprintf(mensagem,"200 Type set to %c\r\n",tipo);
+
+            case(TYPE_CMD):
+              sscanf(recvline, "%*s %c",&tipo);
+              sprintf(mensagem,"200 Type set to %c\r\n",tipo);
               envia_mensagem(mensagem,connfd);
-	      break;
+              break;
 
             case(GET_CMD): /* Este comando supõe que um data_transfer_fd já esteja configurado. */
               sscanf(recvline, "%*s %s",endereco_arquivo);
-	      if( (arquivo_fd = open(endereco_arquivo, O_RDONLY, S_IREAD)) < 0 ){
-		sprintf(mensagem,"550 %s: Arquivo ou diretório não encontrado\r\n",endereco_arquivo);
-		envia_mensagem(mensagem,connfd);
-	      }
-	      else {
-		stat(endereco_arquivo,&st);
-		tamanho_arquivo = st.st_size;
-		if(tipo=='I'){
-		  sprintf(mensagem,"150 Opening BINARY mode data connection for %s (%d bytes)\r\n",endereco_arquivo, tamanho_arquivo);
-		  envia_mensagem(mensagem,connfd);
-		}
-		while( (leu_bytes = read(arquivo_fd, data_buffer, MAX_DATA_BUFFER))>0 ){
-		  write (data_transfer_fd, data_buffer, leu_bytes);
-		}
-		close(arquivo_fd);
-		close(data_transfer_fd);
-		envia_mensagem("226 Transfer complete\r\n",connfd);
-	      }
+              if( (arquivo_fd = open(endereco_arquivo, O_RDONLY, S_IREAD)) < 0 ){
+                sprintf(mensagem,"550 %s: Arquivo ou diretório não encontrado\r\n",endereco_arquivo);
+                envia_mensagem(mensagem,connfd);
+              }
+              else {
+                stat(endereco_arquivo,&st);
+                tamanho_arquivo = st.st_size;
+                if(tipo=='I'){
+                  sprintf(mensagem,"150 Opening BINARY mode data connection for %s (%d bytes)\r\n",endereco_arquivo, (int)tamanho_arquivo);
+                  envia_mensagem(mensagem,connfd);
+                }
+                while( (leu_bytes = read(arquivo_fd, data_buffer, MAX_DATA_BUFFER))>0 ){
+                  write (data_transfer_fd, data_buffer, leu_bytes);
+                }
+                close(arquivo_fd);
+                close(data_transfer_fd);
+                envia_mensagem("226 Transfer complete\r\n",connfd);
+              }
               break;
-	     
-	    case(PUT_CMD):
-	      sscanf(recvline, "%*s %s",endereco_arquivo);
-	      if( (arquivo_fd = open(endereco_arquivo, O_WRONLY | O_CREAT)) < 0 ){
-		sprintf(mensagem,"550 %s: Não foi possível criar o arquivo.\r\n", endereco_arquivo);
-		envia_mensagem(mensagem,connfd);
-	      }
-	      else{
-		if(tipo=='I'){
-		    sprintf(mensagem,"150 Opening BINARY mode data connection for %s\r\n",endereco_arquivo);
-		    envia_mensagem(mensagem,connfd);
-		}
-		while( (leu_bytes = read(data_transfer_fd, data_buffer, MAX_DATA_BUFFER))>0 ){
-		  write (arquivo_fd, data_buffer, leu_bytes);
-		}
-		close(arquivo_fd);
-		close(data_transfer_fd);
-		envia_mensagem("226 Transfer complete\r\n",connfd);
-	      }
-	      break;
+
+            case(PUT_CMD): /* Este comando supõe que um data_transfer_fd já esteja configurado. */
+              sscanf(recvline, "%*s %s",endereco_arquivo);
+              if( (arquivo_fd = open(endereco_arquivo, O_WRONLY | O_CREAT)) < 0 ){
+                sprintf(mensagem,"550 %s: Não foi possível criar o arquivo.\r\n", endereco_arquivo);
+                envia_mensagem(mensagem,connfd);
+              }
+              else{
+                if(tipo=='I'){
+                  sprintf(mensagem,"150 Opening BINARY mode data connection for %s\r\n",endereco_arquivo);
+                  envia_mensagem(mensagem,connfd);
+                }
+                while( (leu_bytes = read(data_transfer_fd, data_buffer, MAX_DATA_BUFFER))>0 ){
+                  write (arquivo_fd, data_buffer, leu_bytes);
+                }
+                close(arquivo_fd);
+                close(data_transfer_fd);
+                envia_mensagem("226 Transfer complete\r\n",connfd);
+              }
+              break;
 
             case(QUIT_CMD):
               envia_mensagem("221 Goodbye\r\n",connfd);
+              mensagem_exit();
               exit(0);
               break;
 
@@ -405,6 +422,7 @@ int main (int argc, char **argv) {
       /* Após ter feito toda a troca de informação com o cliente,
        * pode finalizar o processo filho */
       printf("[Uma conexao fechada]\n");
+      mensagem_exit();
       exit(0);
     }
     /**** PROCESSO PAI ****/
@@ -413,5 +431,6 @@ int main (int argc, char **argv) {
      * pelo processo filho) */
     close(connfd);
   }
+  mensagem_exit();
   exit(0);
 }
