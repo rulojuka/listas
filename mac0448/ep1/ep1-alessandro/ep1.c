@@ -39,10 +39,13 @@
 #include <arpa/inet.h>
 #include <time.h>
 #include <unistd.h>
+#include <sys/stat.h> /* Para medir o tamanho do arquivo. */
+#include <fcntl.h> /* open() */
 
 #define LISTENQ 1
 #define MAXDATASIZE 100
 #define MAXLINE 4096
+#define MAX_DATA_BUFFER 4096
 
 #define USER "USER"
 #define QUIT "QUIT"
@@ -52,6 +55,7 @@
 #define LIST "LIST"
 #define GET "RETR"
 #define TYPE "TYPE"
+#define PUT "STOR"
 
 #define USER_CMD 1
 #define PASS_CMD 2
@@ -61,6 +65,7 @@
 #define LIST_CMD 6
 #define GET_CMD 7
 #define TYPE_CMD 8
+#define PUT_CMD 9
 
 int retorna_funcao(char *s){
   char comando[MAXLINE];
@@ -81,6 +86,8 @@ int retorna_funcao(char *s){
     return GET_CMD;
   if(strcmp(comando,TYPE)==0)
     return TYPE_CMD;
+  if(strcmp(comando,PUT)==0)
+    return PUT_CMD;
 
   return -1;
 }
@@ -121,13 +128,17 @@ int main (int argc, char **argv) {
   int a,b,c,d; /*bytes do ip*/
   int x,y; /*bytes de port*/
   int porta;
-  FILE *fp, *arquivo;
+  FILE *fp;
   int data_len;
   char ch;
   char dados[MAXLINE];
   int topo;
+  char data_buffer[MAX_DATA_BUFFER + 10];
   char endereco_arquivo[MAXLINE];
-  int tamanho_arquivo;
+  off_t tamanho_arquivo;
+  struct stat st;
+  int arquivo_fd;
+  int leu_bytes;
   
   char tipo='A'; /*Tipo de transmissao*/
 
@@ -335,16 +346,21 @@ int main (int argc, char **argv) {
 
             case(GET_CMD): /* Este comando supõe que um data_transfer_fd já esteja configurado. */
               sscanf(recvline, "%*s %s",endereco_arquivo);
-	      if( fopen(endereco_arquivo,"r") == NULL){
+	      if( (arquivo_fd = open(endereco_arquivo, O_RDONLY, S_IREAD)) < 0 ){
 		sprintf(mensagem,"550 %s: Arquivo ou diretório não encontrado\r\n",endereco_arquivo);
 		envia_mensagem(mensagem,connfd);
 	      }
 	      else {
-		tamanho_arquivo = 0;
+		stat(endereco_arquivo,&st);
+		tamanho_arquivo = st.st_size;
 		if(tipo=='I'){
 		  sprintf(mensagem,"150 Opening BINARY mode data connection for %s (%d bytes)\r\n",endereco_arquivo, tamanho_arquivo);
 		  envia_mensagem(mensagem,connfd);
 		}
+		while( (leu_bytes = read(arquivo_fd, data_buffer, MAX_DATA_BUFFER))>0 ){
+		  write (data_transfer_fd, data_buffer, leu_bytes);
+		}
+		close(arquivo_fd);
 		close(data_transfer_fd);
 		envia_mensagem("226 Transfer complete\r\n",connfd);
 	      }
