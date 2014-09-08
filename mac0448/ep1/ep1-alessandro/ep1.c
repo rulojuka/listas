@@ -51,6 +51,7 @@
 #define PASV "PASV"
 #define LIST "LIST"
 #define GET "RETR"
+#define TYPE "TYPE"
 
 #define USER_CMD 1
 #define PASS_CMD 2
@@ -59,6 +60,7 @@
 #define PASV_CMD 5
 #define LIST_CMD 6
 #define GET_CMD 7
+#define TYPE_CMD 8
 
 int retorna_funcao(char *s){
   char comando[MAXLINE];
@@ -77,6 +79,8 @@ int retorna_funcao(char *s){
     return LIST_CMD;
   if(strcmp(comando,GET)==0)
     return GET_CMD;
+  if(strcmp(comando,TYPE)==0)
+    return TYPE_CMD;
 
   return -1;
 }
@@ -117,13 +121,15 @@ int main (int argc, char **argv) {
   int a,b,c,d; /*bytes do ip*/
   int x,y; /*bytes de port*/
   int porta;
-  FILE *fp;
+  FILE *fp, *arquivo;
   int data_len;
   char ch;
   char dados[MAXLINE];
   int topo;
   char endereco_arquivo[MAXLINE];
   int tamanho_arquivo;
+  
+  char tipo='A'; /*Tipo de transmissao*/
 
   if (argc != 2) {
     fprintf(stderr,"Uso: %s <Porta>\n",argv[0]);
@@ -317,19 +323,31 @@ int main (int argc, char **argv) {
               /* Envia a string dados pelo canal de dados e fecha o canal*/
               write (data_transfer_fd, dados, strlen(dados));
               close(data_transfer_fd);
+	      pclose(fp);
               envia_mensagem("226 Transfer complete\r\n",connfd);
               break;
+	      
+	    case(TYPE_CMD):
+	      sscanf(recvline, "%*s %c",&tipo);
+	      sprintf(mensagem,"200 Type set to %c\r\n",tipo);
+              envia_mensagem(mensagem,connfd);
+	      break;
 
             case(GET_CMD): /* Este comando supõe que um data_transfer_fd já esteja configurado. */
               sscanf(recvline, "%*s %s",endereco_arquivo);
-              tamanho_arquivo = 0;
-              sprintf(mensagem,"150 Opening BINARY mode data connection for %s (%d bytes)\r\n",endereco_arquivo, tamanho_arquivo);
-              envia_mensagem(mensagem,connfd);
-
-              /* TODO: ler arquivo e enviar pelo canal de dados */
-              
-              close(data_transfer_fd);
-              envia_mensagem("226 Transfer complete\r\n",connfd);
+	      if( fopen(endereco_arquivo,"r") == NULL){
+		sprintf(mensagem,"550 %s: Arquivo ou diretório não encontrado\r\n",endereco_arquivo);
+		envia_mensagem(mensagem,connfd);
+	      }
+	      else {
+		tamanho_arquivo = 0;
+		if(tipo=='I'){
+		  sprintf(mensagem,"150 Opening BINARY mode data connection for %s (%d bytes)\r\n",endereco_arquivo, tamanho_arquivo);
+		  envia_mensagem(mensagem,connfd);
+		}
+		close(data_transfer_fd);
+		envia_mensagem("226 Transfer complete\r\n",connfd);
+	      }
               break;
 
             case(QUIT_CMD):
