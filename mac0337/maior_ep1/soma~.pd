@@ -1,0 +1,203 @@
+#N canvas 594 113 764 629 10;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array \$0-x 64 float 3;
+#A 0 1.06096e-05 0.0571538 0.142869 0.228583 0.285727 0.34287 0.414299
+0.471442 0.5143 0.600014 0.642872 0.685729 0.700015 0.728587 0.771444
+0.800016 0.857159 0.88573 0.928588 0.942874 0.971445 0.971445 0.971445
+0.971445 0.914302 0.842873 0.742872 0.642872 0.5143 0.400013 0.228583
+0.114297 -0.0142752 -0.142847 -0.242848 -0.385706 -0.528564 -0.642851
+-0.757137 -0.842852 -0.899995 -0.942852 -0.971424 -0.98571 -0.98571
+-0.98571 -0.98571 -0.98571 -0.98571 -0.957138 -0.942852 -0.928567 -0.899995
+-0.857138 -0.799994 -0.757137 -0.699994 -0.628565 -0.585707 -0.499992
+-0.399992 -0.342849 -0.299991 -0.028561;
+#X coords 0 1 63 -1 200 140 1 0 0;
+#X restore 29 44 graph;
+#N canvas 65 87 450 300 (subpatch) 0;
+#X array \$0-y 64 float 3;
+#A 0 -0.071429 0.0285716 0.157144 0.257144 0.328573 0.414288 0.471431
+0.542861 0.61429 0.71429 0.771433 0.828577 0.88572 0.914291 0.942863
+0.957149 0.957149 0.942863 0.914291 0.88572 0.842862 0.814291 0.757148
+0.71429 0.642861 0.571432 0.471431 0.385717 0.245717 0.179051 0.0990506
+0.0257173 -0.0542826 -0.134282 -0.254282 -0.334282 -0.414288 -0.500003
+-0.600004 -0.671433 -0.700004 -0.857148 -0.871434 -0.914291 -0.928577
+-0.928577 -0.928577 -0.928577 -0.914291 -0.88572 -0.871434 -0.828577
+-0.800005 -0.757148 -0.71429 -0.671433 -0.61429 -0.528575 -0.471431
+-0.400002 -0.357145 -0.314288 -0.242859 -0.114286;
+#X coords 0 1 63 -1 200 140 1 0 0;
+#X restore 247 44 graph;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array \$0-z 64 float 3;
+#A 0 -0.0357092 0.0428627 0.150006 0.242864 0.30715 0.378579 0.442865
+0.507152 0.564295 0.657152 0.707152 0.757153 0.792867 0.821439 0.857153
+0.878582 0.907154 0.914297 0.921439 0.914297 0.907154 0.892868 0.864297
+0.842868 0.778582 0.707152 0.607152 0.514294 0.380008 0.289532 0.163817
+0.0700072 -0.0342789 -0.138565 -0.248565 -0.359994 -0.471426 -0.571427
+-0.678571 -0.757142 -0.799999 -0.9 -0.921429 -0.95 -0.957143 -0.957143
+-0.957143 -0.957143 -0.95 -0.921429 -0.907143 -0.878572 -0.85 -0.807143
+-0.757142 -0.714285 -0.657142 -0.57857 -0.528569 -0.449997 -0.378568
+-0.328568 -0.271425 -0.0714235;
+#X coords 0 1 63 -1 200 140 1 0 0;
+#X restore 34 301 graph;
+#X obj 494 212 loadbang;
+#N canvas 604 121 633 722 soma_elemento 1;
+#X obj 17 10 inlet;
+#X obj 78 9 inlet;
+#X obj 127 12 inlet;
+#X obj 188 11 inlet;
+#X floatatom 204 259 5 0 0 0 - - -;
+#X obj 149 341 +;
+#X floatatom 149 374 5 0 0 0 - - -;
+#X obj 40 293 print x;
+#X obj 225 290 print y;
+#X obj 98 232 tabread;
+#X msg 99 205 set \$1;
+#X msg 203 205 set \$1;
+#X obj 203 233 tabread;
+#X obj 116 561 tabwrite;
+#X obj 15 38 s x;
+#X obj 81 38 s y;
+#X obj 125 39 s z;
+#X obj 100 179 r x;
+#X obj 203 182 r y;
+#X floatatom 101 262 5 0 0 0 - - -;
+#X obj 191 37 s i;
+#X floatatom 48 210 5 0 0 0 - - -;
+#X obj 48 180 r le_x;
+#X floatatom 254 208 5 0 0 0 - - -;
+#X obj 254 178 r le_y;
+#X text 50 150 Entrada 1 (x);
+#X text 201 149 Entrada 2 (y);
+#X text 14 58 Inlet 1: Seta nome do vetor de entrada 1 (x);
+#X text 14 78 Inlet 2: Seta nome do vetor de entrada 2 (y);
+#X text 15 99 Inlet 3: Seta nome do vetor de saida (z);
+#X text 15 120 Inlet 4: Faz z[i] := x[i]+y[i] \, onde i eh o numero
+recebido;
+#X obj 146 283 r soma;
+#X obj 86 517 r z;
+#X obj 167 520 r seta_indice;
+#X obj 225 339 r escreve;
+#X obj 349 21 r i;
+#X obj 435 132 s le_x;
+#X obj 436 159 s le_y;
+#X obj 439 182 s soma;
+#X obj 433 108 s seta_indice;
+#X obj 439 209 s escreve;
+#X text 29 314;
+#X obj 182 557 print setou_indice;
+#X obj 194 415 counter;
+#X obj 430 83 s reseta_counter;
+#X obj 351 57 t b b f f f b;
+#X obj 252 365 r reseta_counter;
+#X obj 193 441 sel 2;
+#X msg 179 465 0;
+#X msg 249 467 1;
+#X obj 132 497 demux 1 2;
+#X obj 321 552 print escreveu;
+#X text 272 408 Essa gambiarra serve para escrever de verdade no vetor
+apenas na terceira vez que o valor eh computado (as duas primeiras
+acontecem quando os valores sao lidos);
+#X obj 131 428 / 2;
+#X connect 0 0 14 0;
+#X connect 1 0 15 0;
+#X connect 2 0 16 0;
+#X connect 3 0 20 0;
+#X connect 4 0 8 0;
+#X connect 4 0 5 1;
+#X connect 5 0 6 0;
+#X connect 6 0 43 0;
+#X connect 6 0 53 0;
+#X connect 9 0 19 0;
+#X connect 10 0 9 0;
+#X connect 11 0 12 0;
+#X connect 12 0 4 0;
+#X connect 17 0 10 0;
+#X connect 18 0 11 0;
+#X connect 19 0 7 0;
+#X connect 19 0 5 0;
+#X connect 21 0 9 0;
+#X connect 22 0 21 0;
+#X connect 23 0 12 0;
+#X connect 24 0 23 0;
+#X connect 31 0 5 0;
+#X connect 32 0 13 0;
+#X connect 33 0 13 1;
+#X connect 33 0 42 0;
+#X connect 34 0 6 0;
+#X connect 35 0 45 0;
+#X connect 43 0 47 0;
+#X connect 45 0 40 0;
+#X connect 45 1 38 0;
+#X connect 45 2 37 0;
+#X connect 45 3 36 0;
+#X connect 45 4 39 0;
+#X connect 45 5 44 0;
+#X connect 46 0 43 2;
+#X connect 46 0 49 0;
+#X connect 47 0 48 0;
+#X connect 48 0 50 1;
+#X connect 49 0 50 1;
+#X connect 50 0 13 0;
+#X connect 50 0 51 0;
+#X connect 53 0 50 0;
+#X restore 307 346 pd soma_elemento;
+#X obj 261 291 f \$0;
+#X obj 310 290 f \$0;
+#X obj 362 289 f \$0;
+#X msg 261 314 s \$1-x;
+#X msg 310 313 s \$1-y;
+#X msg 362 312 s \$1-z;
+#X floatatom 414 297 5 0 0 0 - - -;
+#N canvas 620 193 524 574 conta_ate_X 0;
+#X obj 64 107 float;
+#X obj 116 234 sel 1;
+#X obj 117 206 <;
+#X obj 207 173 - 1;
+#X obj 213 234 print amostra;
+#X obj 86 133 + 1;
+#X obj 116 80 r prox_valor;
+#X obj 95 159 s prox_valor;
+#X obj 100 292 s muda_prox;
+#X obj 121 52 r muda_prox;
+#X obj 37 168 t f f;
+#X msg 68 68 0;
+#X obj 38 -49 inlet;
+#X obj 92 -35 inlet;
+#X obj 93 -3 s N_TOTAL;
+#X obj 206 134 receive N_TOTAL;
+#X obj 55 334 outlet;
+#X connect 0 0 5 0;
+#X connect 0 0 10 0;
+#X connect 1 0 8 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 1;
+#X connect 3 0 4 0;
+#X connect 5 0 7 0;
+#X connect 6 0 0 1;
+#X connect 9 0 0 0;
+#X connect 10 0 2 0;
+#X connect 10 1 16 0;
+#X connect 11 0 0 0;
+#X connect 12 0 11 0;
+#X connect 13 0 14 0;
+#X connect 15 0 3 0;
+#X restore 414 267 pd conta_ate_X;
+#X obj 414 239 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 295 244 loadbang;
+#X text 237 221 Seta os nomes dos vetores;
+#X msg 495 242 64;
+#X text 459 189 Seta o tamanho da amostra;
+#X connect 3 0 16 0;
+#X connect 5 0 8 0;
+#X connect 6 0 9 0;
+#X connect 7 0 10 0;
+#X connect 8 0 4 0;
+#X connect 9 0 4 1;
+#X connect 10 0 4 2;
+#X connect 11 0 4 3;
+#X connect 12 0 11 0;
+#X connect 13 0 12 0;
+#X connect 14 0 5 0;
+#X connect 14 0 6 0;
+#X connect 14 0 7 0;
+#X connect 16 0 12 1;
