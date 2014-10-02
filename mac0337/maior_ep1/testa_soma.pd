@@ -1,0 +1,16 @@
+#N canvas 680 334 450 300 10;
+#X obj 228 34 osc~ 440;
+#X obj 321 34 osc~ 660;
+#X obj 263 112 +~;
+#X obj 236 184 output~;
+#X obj 48 36 osc~ 440;
+#X obj 141 36 osc~ 660;
+#X obj 84 187 output~;
+#X obj 88 109 soma~;
+#X connect 0 0 2 0;
+#X connect 1 0 2 1;
+#X connect 2 0 3 0;
+#X connect 2 0 3 1;
+#X connect 4 0 7 0;
+#X connect 5 0 7 1;
+#X connect 7 0 6 0;
