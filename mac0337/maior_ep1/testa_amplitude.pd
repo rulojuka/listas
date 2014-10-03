@@ -1,4 +1,4 @@
-#N canvas 870 105 450 300 10;
+#N canvas 864 115 450 300 10;
 #X obj 113 92 amplitude~ 1024;
 #X obj 113 47 osc~ 440;
 #X obj 190 247 print amplitude;
@@ -8,8 +8,8 @@
 #X obj 122 214 sel 0;
 #X obj 190 213 float;
 #X obj 112 129 t b f;
+#X obj 231 50 phasor~ 440;
 #X connect 0 0 8 0;
-#X connect 1 0 0 0;
 #X connect 3 0 4 0;
 #X connect 3 0 5 0;
 #X connect 4 0 3 1;
@@ -18,3 +18,4 @@
 #X connect 7 0 2 0;
 #X connect 8 0 3 0;
 #X connect 8 1 7 1;
+#X connect 9 0 0 0;
