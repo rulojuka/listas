@@ -1,4 +1,4 @@
-#N canvas 247 198 1130 679 10;
+#N canvas 244 203 1130 679 10;
 #X obj 83 189 inlet~;
 #X obj 208 568 outlet;
 #X obj 83 218 tabsend~ \$0-entrada;
@@ -7,8 +7,8 @@
 #X coords 0 1 64 -1 200 140 1 0 0;
 #X restore 26 26 graph;
 #N canvas 0 0 450 300 (subpatch) 0;
-#X array \$0-memoria 1024 float 2;
-#X coords 0 1 1024 -1 200 140 1 0 0;
+#X array \$0-memoria 1 float 2;
+#X coords 0 1 1 -1 200 140 1 0 0;
 #X restore 246 26 graph;
 #X obj 261 271 bang~;
 #X obj 307 369 timer;
@@ -101,7 +101,7 @@ apenas quando o N muda.;
 #X restore 548 125 pd dsp_ligou;
 #X obj 549 159 s reset;
 #X msg 650 124 64;
-#N canvas 599 190 727 590 calcula_rms 1;
+#N canvas 596 195 727 590 calcula_rms 0;
 #X obj 33 202 inlet;
 #X obj 279 707 outlet;
 #X msg 132 121 set \$1;
