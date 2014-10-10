@@ -1,4 +1,4 @@
-#N canvas 627 151 782 696 10;
+#N canvas 621 161 782 696 10;
 #X obj 158 59 osc~ 440;
 #X obj 225 27 noise~;
 #X obj 148 155 print pico;
