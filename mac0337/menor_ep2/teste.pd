@@ -1,0 +1,5 @@
+#N canvas 237 436 450 300 10;
+#X obj 121 67 rastreiaF0~;
+#X obj 119 18 osc~ 440;
+#X obj 218 20 noise~;
+#X connect 2 0 0 0;
