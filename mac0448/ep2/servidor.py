@@ -20,6 +20,8 @@ serverSocket.listen(TAMANHO_FILA)
 fd_list.append(serverSocket)
 print "Chat server started on port " + str(serverPort)
 
+lista_usuarios = []
+
 while 1:
   # Get the list sockets which are ready to be read through select
   read_sockets,write_sockets,error_sockets = select.select(fd_list,[],[])
@@ -27,6 +29,7 @@ while 1:
   for sock in read_sockets:
     #New connection
     print sock
+    mensagem = ""
     if sock == serverSocket:
       # Handle the case in which there is a new connection recieved through server_socket
       sockfd, addr = serverSocket.accept()
@@ -36,8 +39,25 @@ while 1:
     #Some incoming message from a client
     else:
       data = sock.recv(RECV_BUFFER)
-      print "Recebeu dados: " + data
-      modifiedMessage = data.upper()
-      sock.send(modifiedMessage)
+      print "Recebeu do cliente: ---%s---" % data
+      comando = data.split()[0]
+      if( comando == "LOGIN" ):
+        print "entrou no login"
+        usuario = data.split()[1]
+        dupla = (usuario,sock)
+        if(lista_usuarios.count( dupla ) == 0):
+          lista_usuarios.append( dupla ) 
+        mensagem = "User " + usuario + " logged in."
+      elif( comando == "LIST" ):
+        for dupla in lista_usuarios:
+          mensagem += dupla[0] + '\n'
+      elif( comando == "LOGOUT" ):
+        #TODO Descobre nick do usuario
+        usuario = data.split()[1]
+        lista_usuarios.remove( usuario )
+        #TODO FECHAR O SOCKET DO USUARIO
+       
+      print "Enviando para o cliente: ---%s---" % mensagem 
+      sock.send(mensagem)
 
 server_socket.close()
