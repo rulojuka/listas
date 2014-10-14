@@ -1,0 +1,6 @@
+Documentação do Python:
+  https://docs.python.org/
+Sample broadcast chat:
+  http://www.binarytides.com/code-chat-application-server-client-sockets-python/
+Socket server example:
+  http://www.binarytides.com/python-socket-server-code-example/
