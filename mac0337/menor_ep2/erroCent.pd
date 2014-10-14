@@ -1,0 +1,16 @@
+#N canvas 685 502 450 300 10;
+#X obj 100 34 inlet;
+#X obj 207 33 inlet;
+#X text 90 17 Estimativa;
+#X text 195 15 Valor Real;
+#X obj 142 104 /;
+#X obj 143 129 expr 1200*(log($f1)/log(2));
+#X obj 144 161 outlet;
+#X obj 59 73 print est;
+#X obj 226 79 print real;
+#X connect 0 0 4 0;
+#X connect 0 0 7 0;
+#X connect 1 0 4 1;
+#X connect 1 0 8 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;

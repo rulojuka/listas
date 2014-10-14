@@ -1,0 +1,40 @@
+#N canvas 416 271 1012 551 10;
+#X obj 189 95 osc~ 440;
+#X obj 150 183 print pico;
+#X obj 240 183 print quad;
+#X obj 324 191 print fase;
+#X obj 143 232 erroCent;
+#X msg 173 27 100;
+#X obj 172 7 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 205 6 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 244 6 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 206 26 1000;
+#X msg 245 26 10000;
+#X obj 140 272 print erro_pico;
+#X obj 262 230 erroCent;
+#X obj 259 270 print erro_quad;
+#X obj 376 228 erroCent;
+#X obj 373 268 print erro_fase;
+#X obj 193 139 rastreiaF0~ 1024;
+#X connect 0 0 16 0;
+#X connect 4 0 11 0;
+#X connect 5 0 0 0;
+#X connect 6 0 5 0;
+#X connect 7 0 9 0;
+#X connect 8 0 10 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X connect 10 0 4 1;
+#X connect 10 0 12 1;
+#X connect 10 0 14 1;
+#X connect 12 0 13 0;
+#X connect 14 0 15 0;
+#X connect 16 0 1 0;
+#X connect 16 0 4 0;
+#X connect 16 1 2 0;
+#X connect 16 1 12 0;
+#X connect 16 2 3 0;
+#X connect 16 2 14 0;
