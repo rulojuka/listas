@@ -3,7 +3,8 @@
 from socket import *
 import sys, select
 
-if( len(sys.argv)==1 ):
+
+if( len(sys.argv)==1 or len(sys.argv)>2 ):
   print "Usage: ./servidor.py porta"
   sys.exit(0)
 
@@ -24,10 +25,13 @@ lista_usuarios = []
 
 while 1:
   # Get the list sockets which are ready to be read through select
+  # Implementa multiplexacao
   read_sockets,write_sockets,error_sockets = select.select(fd_list,[],[])
 
   for sock in read_sockets:
     #New connection
+    print "\n"
+    print "Chegou mensagem: "
     print sock
     mensagem = ""
     if sock == serverSocket:
@@ -38,7 +42,9 @@ while 1:
      
     #Some incoming message from a client
     else:
+      print "Antes do sock.recv"
       data = sock.recv(RECV_BUFFER)
+      print "Depois do sock.recv"
       print "Recebeu do cliente: ---%s---" % data
       comando = data.split()[0]
       if( comando == "LOGIN" ):
@@ -56,8 +62,16 @@ while 1:
         usuario = data.split()[1]
         lista_usuarios.remove( usuario )
         #TODO FECHAR O SOCKET DO USUARIO
-       
+        
+      elif( comando == "CLOSE" ):
+        sock.close()
+        fd_list.remove(sock)
+        continue
+              
       print "Enviando para o cliente: ---%s---" % mensagem 
       sock.send(mensagem)
 
 server_socket.close()
+
+
+
