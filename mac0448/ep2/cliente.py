@@ -5,14 +5,17 @@ from threading import Thread
 from time import sleep
 import sys
 
+def envia(mensagem, sock):
+  sock.send( mensagem.encode('utf-8') )
+
 def heartbeat(time):
   while heartbeat_flag:
-    clientSocket.send("HB")
-    print "Mandou HB"
+    envia("HB", clientSocket)
+    print( "Mandou HB" )
     sleep(time)
 
 if( len(sys.argv)==1 ):
-  print "Usage: ./servidor.py ip porta"
+  print( "Usage: ./servidor.py ip porta" )
   sys.exit(0)
   
 serverName = sys.argv[1]
@@ -25,12 +28,12 @@ heartbeat_flag = 1
 thread = Thread(target = heartbeat, args = (3, ))
 thread.start()
 
-print "Digite HELP para ver os comandos disponiveis."
+print( "Digite HELP para ver os comandos disponiveis.")
 while 1:
-  comando = raw_input('Escreva o comando: ')
+  comando = input('Escreva o comando: ')
   mensagem = ""
   if( comando=="login" ):
-    usuario = raw_input('Escreva seu nickname: ')
+    usuario = input('Escreva seu nickname: ')
     mensagem = "LOGIN " + usuario
   elif( comando=="list" ):
     mensagem = "LIST"
@@ -39,11 +42,11 @@ while 1:
   elif( comando=="quit" or comando=="exit"):
     break
 
-  print "passou por aqui"
-  clientSocket.send(mensagem)
+  print( "passou por aqui")
+  envia(mensagem, clientSocket)
 
 heartbeat_flag = 0
-clientSocket.send("CLOSE")
+envia("CLOSE", clientSocket)
 clientSocket.close()
 
 
