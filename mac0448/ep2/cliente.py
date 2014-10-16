@@ -9,12 +9,13 @@ def envia(mensagem, sock):
   sock.send( mensagem.encode('utf-8') )
 
 def heartbeat(time):
-  while heartbeat_flag:
-    envia("HB", clientSocket)
-    print( "Mandou HB" )
+  while 1:
+    if heartbeat_flag:
+      envia("HB", clientSocket)
+      print( "Mandou HB" )
     sleep(time)
 
-if( len(sys.argv)==1 ):
+if( len(sys.argv)<=1 or len(sys.argv)>3):
   print( "Usage: ./servidor.py ip porta" )
   sys.exit(0)
   
@@ -24,7 +25,7 @@ clientSocket = socket(AF_INET, SOCK_STREAM)
 clientSocket.connect((serverName,serverPort))
 
 #Comeca heartbeat
-heartbeat_flag = 1
+heartbeat_flag = 0
 thread = Thread(target = heartbeat, args = (3, ))
 thread.start()
 
@@ -35,10 +36,12 @@ while 1:
   if( comando=="login" ):
     usuario = input('Escreva seu nickname: ')
     mensagem = "LOGIN " + usuario
+    heartbeat_flag = 1
   elif( comando=="list" ):
     mensagem = "LIST"
   elif( comando=="logout" ):
     mensagem = "LOGOUT"
+    heartbeat_flag = 0
   elif( comando=="quit" or comando=="exit"):
     break
 

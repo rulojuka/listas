@@ -8,14 +8,16 @@ import sys, select
 def envia(mensagem, sock):
   sock.send( mensagem.encode('utf-8') )
 
+global lista_usuarios
+lista_usuarios = []
 def atualiza_heartbeat(time):
   while heartbeat_flag:
-    #for entrada in lista_usuarios:
-      #entrada[2] += time
-      #print ("Hb de " + str(entrada[1]) + "eh " + str(entrada[2]))
-      #if(entrada[1] == sock):
-        #entrada[2] = 0;
-    print("entrou")
+    for entrada in lista_usuarios:
+      entrada[2] += time
+      print ("Hb de " + str(entrada[1]) + "eh " + str(entrada[2]))
+      if(entrada[1] == sock):
+        entrada[2] = 0;
+      print("entrou no while")
     sleep(time)
 
 if( len(sys.argv)==1 or len(sys.argv)>2 ):
@@ -40,7 +42,6 @@ serverSocket.listen(TAMANHO_FILA)
 fd_list.append(serverSocket)
 print( "Chat server started on port " + str(serverPort))
 
-lista_usuarios = []
 
 while 1:
   # Get the list sockets which are ready to be read through select
