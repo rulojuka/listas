@@ -18,7 +18,7 @@ def heartbeat(time):
 if( len(sys.argv)<=1 or len(sys.argv)>3):
   print( "Usage: ./servidor.py ip porta" )
   sys.exit(0)
-  
+
 serverName = sys.argv[1]
 serverPort = int(sys.argv[2])
 clientSocket = socket(AF_INET, SOCK_STREAM)
@@ -28,6 +28,8 @@ clientSocket.connect((serverName,serverPort))
 heartbeat_flag = 0
 thread = Thread(target = heartbeat, args = (3, ))
 thread.start()
+
+usuario = ""
 
 print( "Digite HELP para ver os comandos disponiveis.")
 while 1:
@@ -40,7 +42,7 @@ while 1:
   elif( comando=="list" ):
     mensagem = "LIST"
   elif( comando=="logout" ):
-    mensagem = "LOGOUT"
+    mensagem = "LOGOUT " + usuario
     heartbeat_flag = 0
   elif( comando=="quit" or comando=="exit"):
     break
