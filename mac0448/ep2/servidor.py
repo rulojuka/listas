@@ -104,10 +104,11 @@ while 1:
       elif( comando == "HB" ):
         zera_heartbeat(sock)
       elif( comando == "LOGOUT" ):
-        #TODO Descobre nick do usuario
         usuario = data.split()[1]
-        lista_usuarios.remove( usuario )
-        #TODO FECHAR O SOCKET DO USUARIO
+        for entrada in lista_usuarios:
+          if(entrada[0] == usuario):
+            socket_atual = entrada[1] #TODO fechar esse socket.
+            lista_usuarios.remove( entrada )
       elif( comando == "CLOSE" ):
         sock.close()
         fd_list.remove(sock)
