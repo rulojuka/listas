@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 from socket import *
+import threading
 from threading import Thread
 from time import sleep
 import sys
@@ -8,12 +9,19 @@ import sys
 def envia(mensagem, sock):
   sock.send( mensagem.encode('utf-8') )
 
-def heartbeat(time):
-  while 1:
-    if heartbeat_flag:
-      envia("HB", clientSocket)
-      print( "Mandou HB" )
-    sleep(time)
+class Heartbeat(object):
+
+  def __init__(self, sock, time):
+    self.on = True
+    self.isRunning = False
+    self.delay = time
+    self.sock = sock
+
+  def beat(self):
+    while self.on:
+      if( self.isRunning ):
+        envia("HB", self.sock)
+        sleep(self.delay)
 
 if( len(sys.argv)<=1 or len(sys.argv)>3):
   print( "Usage: ./servidor.py ip porta" )
@@ -25,9 +33,9 @@ clientSocket = socket(AF_INET, SOCK_STREAM)
 clientSocket.connect((serverName,serverPort))
 
 #Comeca heartbeat
-heartbeat_flag = 0
-thread = Thread(target = heartbeat, args = (3, ))
-thread.start()
+hb = Heartbeat(clientSocket, 1)
+t = threading.Thread(target = hb.beat)
+t.start()
 
 usuario = ""
 
@@ -38,21 +46,19 @@ while 1:
   if( comando=="login" ):
     usuario = input('Escreva seu nickname: ')
     mensagem = "LOGIN " + usuario
-    heartbeat_flag = 1
+    hb.isRunning = True
   elif( comando=="list" ):
     mensagem = "LIST"
   elif( comando=="logout" ):
     mensagem = "LOGOUT " + usuario
-    heartbeat_flag = 0
+    hb.isRunning = False
   elif( comando=="quit" or comando=="exit"):
     break
-
-  print( "passou por aqui")
+  else:
+    continue
   envia(mensagem, clientSocket)
 
-heartbeat_flag = 0
+hb.on = False
 envia("CLOSE", clientSocket)
 clientSocket.close()
-
-
 
