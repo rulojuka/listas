@@ -4,19 +4,29 @@ from socket import *
 from threading import Thread
 import threading
 from time import sleep
+from time import ctime
 import sys, select
 
 def envia(mensagem, sock):
   sock.send( mensagem.encode('utf-8') )
-  print( "Enviando para o cliente: ---%s---" % mensagem  )
+  peer_name = sock.getpeername()
+  log( "Enviando para %s:%d : ---%s---" % (peer_name[0], peer_name[1], mensagem ))
+
+def log(event):
+  arquivo = open('log.txt', 'a')
+  log_line = ctime() + "\n\t\t" + event + "\n"
+  #print (log_line)
+  arquivo.write(log_line)
+  arquivo.close()
 
 global lista_usuarios
 lista_usuarios = []
-    
+
 class HeartbeatChecker(object):
 
   def __init__(self, time, max_falhas):
     self.on = True
+    log("Iniciou Thread HB.")
     self.delay = time
     self.max_falhas = max_falhas
 
@@ -34,8 +44,11 @@ class HeartbeatChecker(object):
           tupla_nova = (nick, sock, falhas)
           lista_usuarios.append(tupla_nova)
         else:
-          print ("Usuario " + str(entrada[0]) + " foi desconectado do sistema por não responder ao Heartbeat.")
+          msg = "Usuario " + str(entrada[0]) + " foi desconectado do sistema por não responder ao Heartbeat."
+          print (msg)
+          log(msg)
       sleep(self.delay)
+    log("Fechou Thread HB.")
 
 def zera_heartbeat(sock):
   tupla_antiga = (0,0,0)
@@ -45,6 +58,10 @@ def zera_heartbeat(sock):
       lista_usuarios.remove(tupla_antiga)
       tupla_nova = (tupla_antiga[0], tupla_antiga[1] , 0)
       lista_usuarios.append(tupla_nova)
+      nick = str(tupla_antiga[0])
+      peer_name = sock.getpeername()
+      ip_porta = peer_name[0] + ":" + str(peer_name[1])
+      log("Zerando heartbeat de " + nick + " (" + ip_porta + ")")
       continue
 
 if( len(sys.argv)==1 or len(sys.argv)>2 ):
@@ -68,7 +85,9 @@ serverSocket.listen(TAMANHO_FILA)
 
 # Add server socket to the list of readable connections
 fd_list.append(serverSocket)
-print( "Chat server started on port " + str(serverPort))
+msg = "Chat server started on port " + str(serverPort)
+print( msg )
+log( msg )
 
 try:
   while 1:
@@ -83,16 +102,17 @@ try:
         # Handle the case in which there is a new connection recieved through server_socket
         sockfd, addr = serverSocket.accept()
         fd_list.append(sockfd)
-        print( "Client (%s, %s) connected" % addr )
+        msg = "Client (%s, %s) connected" % addr
+        print( msg )
+        log ( msg )
 
       #Some incoming message from a client
       else:
         data = sock.recv(RECV_BUFFER).decode('utf-8')
-        print( "Recebeu do cliente: ---%s---" % data )
+        peer_name = sock.getpeername()
+        log( "Recebeu de %s:%d: ---%s---" % (peer_name[0], peer_name[1], data ))
         comando = data.split()[0]
-        print( "Comando eh --%s--" % comando )
         if( comando == "LOGIN" ):
-          print( "entrou no login" )
           usuario = data.split()[1]
           entrada = (usuario,sock,0) # nick, socket, tempo_desde_o_ultimo_HB
           if(lista_usuarios.count( entrada ) == 0):
