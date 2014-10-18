@@ -7,66 +7,66 @@ from time import sleep
 from time import ctime
 import sys, select, ssl
 
-def envia(mensagem, sock):
-  sock.send( mensagem.encode('utf-8') )
-  peer_name = sock.getpeername()
-  log( "Enviando para %s:%d : ---%s---" % (peer_name[0], peer_name[1], mensagem ))
-
-def log(event):
-  arquivo = open('log.txt', 'a')
-  log_line = ctime() + "\n\t\t" + event + "\n"
-  #print (log_line)
-  arquivo.write(log_line)
-  arquivo.close()
-
-global lista_usuarios
-lista_usuarios = []
+class UserEntry(object):
+  def __init__(self, nickname, sock, failed_heartbeats):
+    self.nickname = nickname
+    self.socket = sock
+    self.failed_heartbeats = failed_heartbeats
+    
+  def refresh(self):
+    self.failed_heartbeats = 0
+  
+  def one_more_fail(self):
+    self.failed_heartbeats = self.failed_heartbeats + 1
 
 class HeartbeatChecker(object):
 
-  def __init__(self, time, max_falhas):
+  def __init__(self, time, max_failures):
     self.on = True
-    log("Iniciou Thread HB.")
+    log("Starting HeartbeatChecker thread...")
     self.delay = time
-    self.max_falhas = max_falhas
+    self.max_failures = max_failures
 
   def check(self):
-    tupla_antiga = (0,0,0)
     while self.on:
-      for entrada in lista_usuarios:
-        #print ("Hb de " + str(entrada[0]) + " eh " + str(entrada[2]))
-        tupla_antiga = entrada
-        lista_usuarios.remove(tupla_antiga)
-        nick = tupla_antiga[0]
-        sock = tupla_antiga[1]
-        falhas = tupla_antiga[2] + 1
-        if(falhas <= self.max_falhas):
-          tupla_nova = (nick, sock, falhas)
-          lista_usuarios.append(tupla_nova)
-        else:
-          msg = "Usuario " + str(entrada[0]) + " foi desconectado do sistema por não responder ao Heartbeat."
+      for entry in user_list:
+        entry.one_more_fail()
+        log("Checking %s: %d failures" % (entry.nickname, entry.failed_heartbeats))
+        if(entry.failed_heartbeats > self.max_failures):
+          msg = "User " + entry.nickname + " did not respond the heartbeat and has been disconnected."
+          user_list.remove( entry )
           print (msg)
           log(msg)
       sleep(self.delay)
-    log("Fechou Thread HB.")
-
-def zera_heartbeat(sock):
-  tupla_antiga = (0,0,0)
-  for entrada in lista_usuarios:
-    if(entrada[1] == sock):
-      tupla_antiga = entrada
-      lista_usuarios.remove(tupla_antiga)
-      tupla_nova = (tupla_antiga[0], tupla_antiga[1] , 0)
-      lista_usuarios.append(tupla_nova)
-      nick = str(tupla_antiga[0])
-      peer_name = sock.getpeername()
-      ip_porta = peer_name[0] + ":" + str(peer_name[1])
-      log("Zerando heartbeat de " + nick + " (" + ip_porta + ")")
-      continue
-      
-def fecha_conexao(sock):
+    log("Closing HeartbeatChecker thread...")
+    
+def send(msg, sock):
+  sock.send( msg.encode('utf-8') )
   peer_name = sock.getpeername()
-  msg = "Fechando conexão com %s:%d" % (peer_name[0], peer_name[1])
+  log( "Enviando para %s:%d : ---%s---" % (peer_name[0], peer_name[1], msg ))
+
+def log(event):
+  log_file = open('log.txt', 'a')
+  log_line = ctime() + "\n\t\t" + event + "\n"
+  #print (log_line)
+  log_file.write(log_line)
+  log_file.close()
+
+global user_list
+user_list = []
+
+def refresh_heartbeat(sock):
+  for entry in user_list:
+    if(entry.socket == sock):
+      entry.refresh()
+      peer_name = sock.getpeername()
+      ip_port = peer_name[0] + ":" + str(peer_name[1])
+      log("Refreshing heartbeat of " + entry.nickname + " (" + ip_port + ")")
+      break
+      
+def close_connection(sock):
+  peer_name = sock.getpeername()
+  msg = "Closing connection with %s:%d" % (peer_name[0], peer_name[1])
   print(msg)
   log (msg)
   sock.close()
@@ -124,30 +124,33 @@ try:
       else:
         data = sock.recv(RECV_BUFFER).decode('utf-8')
         if not data: #Fecha conexão
-          fecha_conexao(sock)
+          close_connection(sock)
           continue
         peer_name = sock.getpeername()
         log( "Recebeu de %s:%d: ---%s---" % (peer_name[0], peer_name[1], data ))
         comando = data.split()[0]
         if( comando == "LOGIN" ):
           usuario = data.split()[1]
-          entrada = (usuario,sock,0) # nick, socket, tempo_desde_o_ultimo_HB
-          if(lista_usuarios.count( entrada ) == 0):
-            lista_usuarios.append( entrada )
+          entry = UserEntry(usuario,sock,0)
+          if(user_list.count( entry ) == 0):
+            user_list.append( entry )
           mensagem = "User " + str(usuario) + " logged in."
-          print(str(len(lista_usuarios)) + " usuarios logados.")
-          envia(mensagem,sock)
+          print(str(len(user_list)) + " usuarios logados.")
+          send(mensagem,sock)
         elif( comando == "LIST" ):
-          for entrada in lista_usuarios:
-            mensagem += entrada[0] + '\n'
-          envia(mensagem,sock)
+          for entry in user_list:
+            mensagem += entry.nickname + '\n'
+          send(mensagem,sock)
         elif( comando == "HB" ):
-          zera_heartbeat(sock)
+          refresh_heartbeat(sock)
         elif( comando == "LOGOUT" ):
           usuario = data.split()[1]
-          for entrada in lista_usuarios:
-            if(entrada[0] == usuario):
-              lista_usuarios.remove( entrada )
+          for entry in user_list:
+            if(entry.nickname == usuario):
+              mensagem = "User " + str(usuario) + " logged out."
+              print(msg)
+              log (msg)
+              user_list.remove( entry )
 except (KeyboardInterrupt, SystemExit):
   print ('\nReceived keyboard interrupt, quitting program.')
   hb.on = False
