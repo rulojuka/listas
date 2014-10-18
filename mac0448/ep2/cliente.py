@@ -13,13 +13,13 @@ class Heartbeat(object):
 
   def __init__(self, sock, time):
     self.on = True
-    self.isRunning = False
+    self.beating = False
     self.delay = time
     self.sock = sock
 
   def beat(self):
     while self.on:
-      if( self.isRunning ):
+      if( self.beating ):
         envia("HB", self.sock)
         sleep(self.delay)
 
@@ -46,12 +46,12 @@ while 1:
   if( comando=="login" ):
     usuario = input('Escreva seu nickname: ')
     mensagem = "LOGIN " + usuario
-    hb.isRunning = True
+    hb.beating = True
   elif( comando=="list" ):
     mensagem = "LIST"
   elif( comando=="logout" ):
     mensagem = "LOGOUT " + usuario
-    hb.isRunning = False
+    hb.beating = False
   elif( comando=="quit" or comando=="exit"):
     break
   else:
