@@ -42,28 +42,32 @@ hb = Heartbeat(clientSocket, 1)
 t = threading.Thread(target = hb.beat)
 t.start()
 
-usuario = ""
+usuario = "anonymous"
 
 print( "Digite HELP para ver os comandos disponiveis.")
-while 1:
-  comando = input('Escreva o comando: ')
-  mensagem = ""
-  if( comando=="login" ):
-    usuario = input('Escreva seu nickname: ')
-    mensagem = "LOGIN " + usuario
-    hb.beating = True
-  elif( comando=="list" ):
-    mensagem = "LIST"
-  elif( comando=="logout" ):
-    mensagem = "LOGOUT " + usuario
-    hb.beating = False
-  elif( comando=="quit" or comando=="exit"):
-    break
-  else:
-    continue
-  envia(mensagem, clientSocket)
+try:
+  while 1:
+    comando = input('Escreva o comando: ')
+    mensagem = ""
+    if( comando=="login" ):
+      usuario = input('Escreva seu nickname: ')
+      mensagem = "LOGIN " + usuario
+      hb.beating = True
+    elif( comando=="list" ):
+      mensagem = "LIST"
+    elif( comando=="logout" ):
+      mensagem = "LOGOUT " + usuario
+      hb.beating = False
+    elif( comando=="quit" or comando=="exit"):
+      break
+    else:
+      continue
+    envia(mensagem, clientSocket)
+except (KeyboardInterrupt, SystemExit):
+  print ('\nReceived keyboard interrupt, quitting program.')
+  hb.on = False
+  clientSocket.close()
 
 hb.on = False
-envia("CLOSE", clientSocket)
 clientSocket.close()
 
