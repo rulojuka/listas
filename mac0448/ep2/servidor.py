@@ -5,7 +5,7 @@ from threading import Thread
 import threading
 from time import sleep
 from time import ctime
-import sys, select
+import sys, select, ssl
 
 def envia(mensagem, sock):
   sock.send( mensagem.encode('utf-8') )
@@ -18,14 +18,6 @@ def log(event):
   #print (log_line)
   arquivo.write(log_line)
   arquivo.close()
-
-def fecha_conexao(sock):
-  peer_name = sock.getpeername()
-  msg = "Fechando conexão com %s:%d" % (peer_name[0], peer_name[1])
-  print(msg)
-  log (msg)
-  sock.close()
-  fd_list.remove(sock)
 
 global lista_usuarios
 lista_usuarios = []
@@ -72,6 +64,7 @@ def zera_heartbeat(sock):
       log("Zerando heartbeat de " + nick + " (" + ip_porta + ")")
       continue
 
+#MAIN
 if( len(sys.argv)==1 or len(sys.argv)>2 ):
   print( "Usage: ./servidor.py porta")
   sys.exit(0)
@@ -90,6 +83,11 @@ t.start()
 serverSocket = socket(AF_INET, SOCK_STREAM)
 serverSocket.bind(('', serverPort))
 serverSocket.listen(TAMANHO_FILA)
+
+serverSocket = ssl.wrap_socket(serverSocket,
+                             server_side=True,
+                             certfile="server.crt",
+                             keyfile="server.key")
 
 # Add server socket to the list of readable connections
 fd_list.append(serverSocket)
@@ -118,9 +116,6 @@ try:
       else:
         data = sock.recv(RECV_BUFFER).decode('utf-8')
         peer_name = sock.getpeername()
-        if not data: #Fecha conexão
-          fecha_conexao(sock)
-          continue
         log( "Recebeu de %s:%d: ---%s---" % (peer_name[0], peer_name[1], data ))
         comando = data.split()[0]
         if( comando == "LOGIN" ):
@@ -141,10 +136,12 @@ try:
           usuario = data.split()[1]
           for entrada in lista_usuarios:
             if(entrada[0] == usuario):
-              socket_atual = entrada[1]
+              socket_atual = entrada[1] #TODO fechar esse socket.
               lista_usuarios.remove( entrada )
+        elif( comando == "CLOSE" ):
+          sock.close()
+          fd_list.remove(sock)
 except (KeyboardInterrupt, SystemExit):
   print ('\nReceived keyboard interrupt, quitting program.')
   hb.on = False
   serverSocket.close()
-
