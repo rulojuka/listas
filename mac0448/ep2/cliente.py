@@ -147,7 +147,6 @@ t2.start()
 
 
 usuario = "anonymous"
-print( "Digite HELP para ver os comandos disponiveis.")
 try:
   while 1:
     comando = input('Escreva a mensagem: ')
