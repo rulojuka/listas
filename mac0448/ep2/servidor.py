@@ -8,10 +8,12 @@ from time import ctime
 import sys, select, ssl
 
 class UserEntry(object):
-  def __init__(self, nickname, sock, failed_heartbeats):
+  def __init__(self, nickname, sock, failed_heartbeats, chat_port, is_chatting):
     self.nickname = nickname
     self.socket = sock
     self.failed_heartbeats = failed_heartbeats
+    self.chat_port = chat_port
+    self.is_chatting = is_chatting
     
   def refresh(self):
     self.failed_heartbeats = 0
@@ -65,11 +67,11 @@ def refresh_heartbeat(sock):
       break
       
 def close_connection(sock):
-  peer_name = sock.getpeername()
-  msg = "Closing connection with %s:%d" % (peer_name[0], peer_name[1])
-  print(msg)
-  log (msg)
-  sock.close()
+  #peer_name = sock.getpeername()
+  #msg = "Closing connection with %s:%d" % (peer_name[0], peer_name[1])
+  #print(msg)
+  #log (msg)
+  #sock.close()
   fd_list.remove(sock)
 
 #MAIN
@@ -131,16 +133,15 @@ try:
         comando = data.split()[0]
         if( comando == "LOGIN" ):
           usuario = data.split()[1]
-          entry = UserEntry(usuario,sock,0)
+          chat_port = data.split()[2]
+          entry = UserEntry(usuario,sock,0, chat_port, 0)
           if(user_list.count( entry ) == 0):
             user_list.append( entry )
-          mensagem = "User " + str(usuario) + " logged in."
           print(str(len(user_list)) + " usuarios logados.")
-          send(mensagem,sock)
         elif( comando == "LIST" ):
           for entry in user_list:
             mensagem += entry.nickname + '\n'
-          send(mensagem,sock)
+          #send(mensagem,sock)
         elif( comando == "HB" ):
           refresh_heartbeat(sock)
         elif( comando == "LOGOUT" ):
@@ -151,6 +152,27 @@ try:
               print(msg)
               log (msg)
               user_list.remove( entry )
+        elif( comando == "CHAT" ):
+          usuario = data.split()[1]
+          buddy = data.split()[2]
+          log ("%s pediu para conectar-se com %s" %(usuario,buddy))
+          find = 0
+          for entry in user_list:
+            if (entry.nickname == buddy):
+              find = 1
+          if (find == 0):
+            send("NOK", sock)
+          for entry in user_list:
+              if (entry.nickname == buddy):
+                if (entry.is_chatting == 1):
+                  send("NOK", sock)
+                else:
+                  ip = entry.socket.getpeername()[0]
+                  print (ip)
+                  send("OK " + ip + " " + str(entry.chat_port), sock)
+          
+          
+          
 except (KeyboardInterrupt, SystemExit):
   print ('\nReceived keyboard interrupt, quitting program.')
   hb.on = False
