@@ -84,6 +84,8 @@ if( len(sys.argv)==1 or len(sys.argv)>2 ):
 
 serverPort = int(sys.argv[1])
 fd_list = []
+udp_fd_list = []
+
 TAMANHO_FILA = 5
 RECV_BUFFER = 2048
 
@@ -96,14 +98,17 @@ t.start()
 serverSocket = socket(AF_INET, SOCK_STREAM)
 serverSocket.bind(('', serverPort))
 serverSocket.listen(TAMANHO_FILA)
-
 serverSocket = ssl.wrap_socket(serverSocket,
                              server_side=True,
                              certfile="server.crt",
                              keyfile="server.key")
+                             
+udp_serverSocket = socket(AF_INET, SOCK_DGRAM)
+udp_serverSocket.bind(('', serverPort))
 
 # Add server socket to the list of readable connections
 fd_list.append(serverSocket)
+fd_list.append(udp_serverSocket)
 msg = "Chat server started on port " + str(serverPort)
 print( msg )
 log( msg )
@@ -113,79 +118,84 @@ try:
     # Get the list sockets which are ready to be read through select
     # Implementa multiplexacao
     read_sockets,write_sockets,error_sockets = select.select(fd_list,[],[])
-
+    
     for sock in read_sockets:
-      #New connection
-      mensagem = ""
-      if sock == serverSocket:
-        # Handle the case in which there is a new connection recieved through server_socket
-        sockfd, addr = serverSocket.accept()
-        fd_list.append(sockfd)
-        msg = "Client (%s, %s) connected" % addr
-        print( msg )
-        log ( msg )
+      if(sock.type==2): #UDP
+        data, addr = udp_serverSocket.recvfrom(RECV_BUFFER)
+        data = data.decode('utf-8')
+        print("leu --%s--"% data)
+      else: #TCP
+        #New connection
+        mensagem = ""
+        if sock == serverSocket:
+          # Handle the case in which there is a new connection recieved through server_socket
+          sockfd, addr = serverSocket.accept()
+          fd_list.append(sockfd)
+          msg = "Client (%s, %s) connected" % addr
+          print( msg )
+          log ( msg )
 
-      #Some incoming message from a client
-      else:
-        data = sock.recv(RECV_BUFFER).decode('utf-8')
-        if not data: #Fecha conexão
-          close_connection(sock)
-          continue
-        peer_name = sock.getpeername()
-        log( "Recebeu de %s:%d: ---%s---" % (peer_name[0], peer_name[1], data ))
-        comando = data.split()[0]
-        if( comando == "LOGIN" ):
-          usuario = data.split()[1]
-          chat_port = data.split()[2]
-          entry = UserEntry(usuario,sock,0, chat_port, 0)
-          found = False
-          for entry in user_list:
-            if (entry.nickname == usuario):
-              found = True
-          if(found == False):
-            user_list.append( entry )
-            send("OK", sock)
-          else:
-            send("NOK", sock)
-          print(str(len(user_list)) + " usuarios logados.")
-        elif( comando == "LIST" ):
-          for entry in user_list:
-            time_logged_in = int(time()) - entry.login_time
-            linha = entry.nickname + " " + str(time_logged_in) + "\n"
-            mensagem += linha
-          if(len(user_list) > 0):
-            send(mensagem,sock)
-          else:
-            send("Ninguém online.",sock)
-        elif( comando == "HB" ):
-          refresh_heartbeat(sock)
-        elif( comando == "LOGOUT" ):
-          usuario = data.split()[1]
-          for entry in user_list:
-            if(entry.nickname == usuario):
-              mensagem = "User " + str(usuario) + " logged out."
-              print(msg)
-              log (msg)
-              user_list.remove( entry )
-        elif( comando == "CHAT" ):
-          usuario = data.split()[1]
-          buddy = data.split()[2]
-          log ("%s pediu para conectar-se com %s" %(usuario,buddy))
-          find = 0
-          for entry in user_list:
-            if (entry.nickname == buddy):
-              find = 1
-          if (find == 0):
-            send("NOK", sock)
-          for entry in user_list:
+        #Some incoming message from a client
+        else:
+          data = sock.recv(RECV_BUFFER).decode('utf-8')
+          if not data: #Fecha conexão
+            close_connection(sock)
+            continue
+          peer_name = sock.getpeername()
+          log( "Recebeu de %s:%d: ---%s---" % (peer_name[0], peer_name[1], data ))
+          comando = data.split()[0]
+          if( comando == "LOGIN" ):
+            usuario = data.split()[1]
+            chat_port = data.split()[2]
+            entry = UserEntry(usuario,sock,0, chat_port, 0)
+            found = False
+            for entry in user_list:
+              if (entry.nickname == usuario):
+                found = True
+            if(found == False):
+              user_list.append( entry )
+              send("OK", sock)
+            else:
+              send("NOK", sock)
+            print(str(len(user_list)) + " usuarios logados.")
+          elif( comando == "LIST" ):
+            for entry in user_list:
+              time_logged_in = int(time()) - entry.login_time
+              linha = entry.nickname + " " + str(time_logged_in) + "\n"
+              mensagem += linha
+            if(len(user_list) > 0):
+              send(mensagem,sock)
+            else:
+              send("Ninguém online.",sock)
+          elif( comando == "HB" ):
+            refresh_heartbeat(sock)
+          elif( comando == "LOGOUT" ):
+            usuario = data.split()[1]
+            for entry in user_list:
+              if(entry.nickname == usuario):
+                mensagem = "User " + str(usuario) + " logged out."
+                print(msg)
+                log (msg)
+                user_list.remove( entry )
+          elif( comando == "CHAT" ):
+            usuario = data.split()[1]
+            buddy = data.split()[2]
+            log ("%s pediu para conectar-se com %s" %(usuario,buddy))
+            find = 0
+            for entry in user_list:
               if (entry.nickname == buddy):
-                if (entry.is_chatting == 1):
-                  send("NOK", sock)
-                else:
-                  ip = entry.socket.getpeername()[0]
-                  print (ip)
-                  send("OK " + ip + " " + str(entry.chat_port), sock)
-          
+                find = 1
+            if (find == 0):
+              send("NOK", sock)
+            for entry in user_list:
+                if (entry.nickname == buddy):
+                  if (entry.is_chatting == 1):
+                    send("NOK", sock)
+                  else:
+                    ip = entry.socket.getpeername()[0]
+                    print (ip)
+                    send("OK " + ip + " " + str(entry.chat_port), sock)
+            
           
           
 except (KeyboardInterrupt, SystemExit):
