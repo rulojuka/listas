@@ -164,6 +164,13 @@ try:
         usuario = input('Escreva seu nickname: ')
         mensagem = "LOGIN " + usuario + " " + str(chatPort)
         envia(mensagem, clientSocket)
+        data = clientSocket.recv(2048).decode('utf-8')
+        if (data.split()[0] == "OK"):
+          print("Login feito com sucesso")
+        else:
+          print("Login falhou")
+          usuario = "anonymous"
+          continue        
         hb.beating = True
       elif( comando=="list" ):
         mensagem = "LIST"
