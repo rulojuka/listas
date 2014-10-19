@@ -38,14 +38,21 @@ Ex: ./cliente localhost 8008 5000
 ===========================================================
 
 	O compactado consiste em:
-	
+	cliente.py (codigo do cliente)
+	servidor.py (codigo so servidor)
+	LEIAME
+	log.txt
+	slides.pdf
+	server.csr
+	server.key
+	server.crt
 	Os três últimos são arquivos de certificado e chave rsa,
 necessários para construir o socket SSL.
 
 ===========================================================
 4. Log
 ===========================================================
-
+  
 	O servidor tem um log que estará no arquivo log.txt.
 	
 ===========================================================
@@ -54,7 +61,7 @@ necessários para construir o socket SSL.
 
 	O servidor reconhece os seguintes comandos:
 	
-- login <nickname>:
+- login 
 	Utilizado para o usuário fazer login no servidor, este comando irá 
 	pedir um nickname.
 - logout:
@@ -62,8 +69,8 @@ necessários para construir o socket SSL.
 - list:
 	Utilizado para listar todos os usuarios online, que estão 
 conectados no mesmo protocolo.
-- chat <usuario>:
-	Utilizado para começar um chat com <usuario>
+- chat
+	Utilizado para começar um chat com com outro usuario
 - quit/exit:
   Utilizado para desconectar do servidor.
 
@@ -71,5 +78,5 @@ conectados no mesmo protocolo.
 	Utilizado para terminar a conversa atual.
 
 -FILE <nome_do_arquivo> 
-	Utilizado para enviar <nome_do_arquivo>·
+	Utilizado para enviar <nome_do_arquivo>.
 	
