@@ -50,7 +50,21 @@ class ListenerSocket(object):
           sleep(0.1)
           writer.send("SENT %s" % file_path)
           continue
-        
+      elif (data.split()[0] == "SENDING"):
+          print ("Comecou a receber arquivo.")
+          arq = open(data.split()[1], 'wb')
+          while 1:
+            data, addr = self.listen_socket.recvfrom(RECV_BUFFER)
+            print("data eh --%s--" % data)
+            lista_split = data.split()
+            if( len(lista_split)>0 and lista_split[0] == b"SENT"):
+              break
+            if( not data or len(lista_split)==0 or lista_split[0] == "SENT"):
+              break
+            arq.write(data)
+          arq.close()
+          print ("Recebeu arquivo inteiro.")
+          continue  
       else:
         print("Chegou mensagem")
         print (data)
@@ -76,7 +90,7 @@ class UDPWriter(object):
   def send_file(self, file_path):
     arq = open(file_path, 'rb')
     for line in arq.readlines():
-      self.socket.send( line )
+      self.socket.sendto( line ,(self.ip,self.port))
     arq.close()
     print("Terminou de enviar o arquivo.")
 
