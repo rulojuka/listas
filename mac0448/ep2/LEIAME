@@ -1,0 +1,75 @@
+Stefano Tommasini						7278080
+Alessandro Wagner		        6850476
+===========================================================
+
+===========================================================
+1. Sobre a linguagem escolhida
+===========================================================
+
+	Optamos implementar o EP na linguagem python, versão 3.
+Normalmente disponível em /usr/bin/python3.
+Um shebang foi colocado no início de cada código para chamar
+executar. 
+
+	
+	Escolhemos esta linguagem por ser uma linguagem que não
+conheciamos, pela facilidade da manipulação de sockets e 
+de strings.
+
+===========================================================
+2. Rodando o Servidor e o Cliente
+===========================================================
+
+Para executar o servidor:
+./servidor <port>
+  Onde port é a porta que será utilizada
+Ex: ./servidor 8008
+
+
+Para rodar o cliente:
+./cliente <ip> <port> <chatport>
+  Onde ip é o ip do cliente, port é a porta que será utilizada
+para comunicação com o servidor e chat port é a port utilizada
+para fazer o chat
+Ex: ./cliente localhost 8008 5000
+
+===========================================================
+3. Arquivo rar
+===========================================================
+
+	O compactado consiste em:
+	
+	Os três últimos são arquivos de certificado e chave rsa,
+necessários para construir o socket SSL.
+
+===========================================================
+4. Log
+===========================================================
+
+	O servidor tem um log que estará no arquivo log.txt.
+	
+===========================================================
+6. Usando o cliente
+===========================================================
+
+	O servidor reconhece os seguintes comandos:
+	
+- login <nickname>:
+	Utilizado para o usuário fazer login no servidor, este comando irá 
+	pedir um nickname.
+- logout:
+	Utilizado para desconectar o usuário do servidor.
+- list:
+	Utilizado para listar todos os usuarios online, que estão 
+conectados no mesmo protocolo.
+- chat <usuario>:
+	Utilizado para começar um chat com <usuario>
+- quit/exit:
+  Utilizado para desconectar do servidor.
+
+-disconecct :
+	Utilizado para terminar a conversa atual.
+
+-FILE <nome_do_arquivo> 
+	Utilizado para enviar <nome_do_arquivo>·
+	
