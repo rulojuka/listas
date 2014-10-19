@@ -23,6 +23,7 @@ class UserEntry(object):
   def one_more_fail(self):
     self.failed_heartbeats = self.failed_heartbeats + 1
 
+
 class HeartbeatChecker(object):
 
   def __init__(self, time, max_failures):
@@ -137,8 +138,15 @@ try:
           usuario = data.split()[1]
           chat_port = data.split()[2]
           entry = UserEntry(usuario,sock,0, chat_port, 0)
-          if(user_list.count( entry ) == 0):
+          found = False
+          for entry in user_list:
+            if (entry.nickname == usuario):
+              found = True
+          if(found == False):
             user_list.append( entry )
+            send("OK", sock)
+          else:
+            send("NOK", sock)
           print(str(len(user_list)) + " usuarios logados.")
         elif( comando == "LIST" ):
           for entry in user_list:
