@@ -169,6 +169,11 @@ try:
       elif( comando=="list" ):
         mensagem = "LIST"
         envia(mensagem, clientSocket)
+        data = clientSocket.recv(2048).decode('utf-8')
+        words = data.split('\n')
+        print("Lista de usuários:")
+        for word in words:
+          print (word)
       elif( comando=="logout" ):
         mensagem = "LOGOUT " + usuario
         envia(mensagem, clientSocket)

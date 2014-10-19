@@ -147,6 +147,8 @@ try:
             mensagem += linha
           if(len(user_list) > 0):
             send(mensagem,sock)
+          else:
+            send("Ninguém online.",sock)
         elif( comando == "HB" ):
           refresh_heartbeat(sock)
         elif( comando == "LOGOUT" ):
