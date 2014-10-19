@@ -36,6 +36,21 @@ class ListenerSocket(object):
       data = data.decode('utf-8')
       if (len(data) == 0):
         continue
+      elif (data.split()[0] == "CONN"):
+        print("ENTROU AQUI!!")
+        buddyip = data.split()[1]
+        buddyport = (int)(data.split()[2])
+        chatting = True
+        writer = UDPWriter(buddyip,buddyport)
+      elif (data.split()[0] == "FILE"):
+          file_path = data.split()[1]
+          writer.send("SENDING %s" % file_path)
+          print("Enviando arquivo --%s--"% file_path)
+          writer.send_file( file_path )
+          sleep(0.1)
+          writer.send("SENT %s" % file_path)
+          continue
+        
       else:
         print("Chegou mensagem")
         print (data)
@@ -58,14 +73,12 @@ class UDPWriter(object):
   def send(self,message):
     self.socket.sendto( message.encode('utf-8') ,(self.ip,self.port))
     
-  #def send_file(self, file_path):
-  #  arq = open(file_path, 'rb')
-  #  for line in arq.readlines():
-  #    lock.acquire()
-  #    self.socket.send( line )
-  #    lock.release()
-  #  arq.close()
-  #  print("Terminou de enviar o arquivo.")
+  def send_file(self, file_path):
+    arq = open(file_path, 'rb')
+    for line in arq.readlines():
+      self.socket.send( line )
+    arq.close()
+    print("Terminou de enviar o arquivo.")
 
 try:
   while 1:
@@ -75,9 +88,6 @@ try:
     if (chatting):
       if(comando.split()[0] == "FILE"):
         writer.send(comando)
-      elif(comando.split()[0] == "DISCONNECT"):
-        writer.send(comando)
-        writer.disconnect()
       else:
         writer.send(comando)
     else:

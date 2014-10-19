@@ -13,7 +13,7 @@ class UserEntry(object):
     self.nickname = nickname
     self.socket = sock
     self.failed_heartbeats = failed_heartbeats
-    self.chat_port = chat_port
+    self.chat_port = int(chat_port)
     self.chat_ip = chat_ip
     self.is_chatting = is_chatting
     self.login_time = int( time() )
@@ -161,6 +161,22 @@ try:
           usuario = data.split()[1]
           buddy = data.split()[2]
           log ("%s pediu para conectar-se com %s" %(usuario,buddy))
+          ip_usuario = ""
+          porta_usuario = 0
+          ip_buddy = ""
+          porta_buddy = 0
+          for entry in udp_user_list:
+            if(entry.nickname == usuario):
+              ip_usuario = entry.chat_ip
+              porta_usuario = entry.chat_port
+          for entry in udp_user_list:
+            if(entry.nickname == buddy):
+              ip_buddy = entry.chat_ip
+              porta_buddy = entry.chat_port
+          print(ip_usuario)
+          print(porta_usuario)
+          print(ip_buddy)
+          print(porta_buddy)
           find = 0
           for entry in udp_user_list:
             if (entry.nickname == buddy):
@@ -174,6 +190,10 @@ try:
                   udp_send("NOK", sock, addr[0], addr[1])
                 else:
                   udp_send("OK " + entry.chat_ip + " " + str(entry.chat_port), sock, addr[0], addr[1])
+                  log ("Também conectando %s a %s" %(buddy,usuario))
+                  udp_send("CONN " + ip_usuario + " " + str(porta_usuario), sock, ip_buddy, porta_buddy)
+                  
+          
       else: #TCP
         #New connection
         mensagem = ""
