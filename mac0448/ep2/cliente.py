@@ -29,6 +29,14 @@ class Heartbeat(object):
       if( self.beating ):
         envia("HB", self.sock)
         sleep(self.delay)
+ 
+ 
+ arq=open('File.rar','rb')
+
+print "enviado  arquivo"
+for i in arq.readlines():
+        #print i
+        s.send(i)
         
 class ListenerSocket(object):
 
@@ -55,6 +63,16 @@ class ListenerSocket(object):
           print("You are connected to %s."% buddy)
           print(chatting)
         elif (data.split()[0] == "FILE"):
+          writer.send_file( data.split()[1] )
+          continue
+        elif (data.split()[0] == "SENDING"):
+          arq = open(file_path, 'wb')
+    while 1:
+      dados=conn.recv(1024)
+      if not dados:
+              break
+      arq.write(dados)
+    print "Recebeu arquivo inteiro."
           continue
         else:
           print (data)
@@ -74,6 +92,11 @@ class TCPWriter(object):
 
   def send(self,message):
     envia(message, self.socket)
+    
+  def send_file(file_path)
+    arq = open(file_path, 'rb')
+    for line in arq.readlines():
+      self.send(line)
 
       
 if( len(sys.argv)<=1 or len(sys.argv)>4):
@@ -113,8 +136,11 @@ try:
   while 1:
     comando = input('Escreva a mensagem: ')
     if (chatting):
-      print('%s: ' % usuario)
-      writer.send(comando)
+      if(comando.split()[0] == "FILE"):
+        writer.send(comando)
+        writer.receive_file(comando.split()[1])
+      else:
+        writer.send(comando)
     else:
       mensagem = ""
       if( comando=="login" ):
