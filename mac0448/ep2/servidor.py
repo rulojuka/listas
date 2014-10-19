@@ -48,7 +48,11 @@ class HeartbeatChecker(object):
 def send(msg, sock):
   sock.send( msg.encode('utf-8') )
   peer_name = sock.getpeername()
-  log( "Enviando para %s:%d : ---%s---" % (peer_name[0], peer_name[1], msg ))
+  log( "[TCP] Enviando para %s:%d : ---%s---" % (peer_name[0], peer_name[1], msg ))
+
+def udp_send(msg, sock, ip, port):
+  sock.sendto( msg.encode('utf-8') ,(ip,port))
+  log( "[UDP] Enviando para %s:%d : ---%s---" % (ip, port, msg ))
 
 def log(event):
   log_file = open('log.txt', 'a')
@@ -58,7 +62,9 @@ def log(event):
   log_file.close()
 
 global user_list
+global udp_user_list
 user_list = []
+udp_user_list = []
 
 def refresh_heartbeat(sock):
   for entry in user_list:
@@ -123,7 +129,33 @@ try:
       if(sock.type==2): #UDP
         data, addr = udp_serverSocket.recvfrom(RECV_BUFFER)
         data = data.decode('utf-8')
-        print("leu --%s--"% data)
+        log( "[UDP] Recebeu de %s:%d: ---%s---" % (addr[0], addr[1], data ))
+        comando = data.split()[0]
+        if( comando == "LOGIN" ):
+          usuario = data.split()[1]
+          print("Usuario --%s--"% usuario)
+          chat_port = data.split()[2]
+          new_entry = UserEntry(usuario,sock,0, chat_port, 0)
+          found = False
+          for entry in udp_user_list:
+            if (entry.nickname == usuario):
+              found = True
+          if(found == False):
+            udp_user_list.append( new_entry )
+            udp_send("OK", sock, addr[0], addr[1])
+          else:
+            udp_send("NOK", sock, addr[0], addr[1])
+          print(str(len(udp_user_list)) + " usuarios logados.")
+        elif( comando == "LIST" ):
+            mensagem=""
+            for entry in udp_user_list:
+              time_logged_in = int(time()) - entry.login_time
+              linha = entry.nickname + " " + str(time_logged_in) + "\n"
+              mensagem += linha
+            if(len(udp_user_list) > 0):
+              udp_send(mensagem,sock, addr[0], addr[1])
+            else:
+              udp_send("Ninguém online.",sock, addr[0], addr[1])
       else: #TCP
         #New connection
         mensagem = ""
@@ -142,18 +174,18 @@ try:
             close_connection(sock)
             continue
           peer_name = sock.getpeername()
-          log( "Recebeu de %s:%d: ---%s---" % (peer_name[0], peer_name[1], data ))
+          log( "[TCP] Recebeu de %s:%d: ---%s---" % (peer_name[0], peer_name[1], data ))
           comando = data.split()[0]
           if( comando == "LOGIN" ):
             usuario = data.split()[1]
             chat_port = data.split()[2]
-            entry = UserEntry(usuario,sock,0, chat_port, 0)
+            new_entry = UserEntry(usuario,sock,0, chat_port, 0)
             found = False
             for entry in user_list:
               if (entry.nickname == usuario):
                 found = True
             if(found == False):
-              user_list.append( entry )
+              user_list.append( new_entry )
               send("OK", sock)
             else:
               send("NOK", sock)
