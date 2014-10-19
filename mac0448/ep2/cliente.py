@@ -29,14 +29,6 @@ class Heartbeat(object):
       if( self.beating ):
         envia("HB", self.sock)
         sleep(self.delay)
- 
- 
- arq=open('File.rar','rb')
-
-print "enviado  arquivo"
-for i in arq.readlines():
-        #print i
-        s.send(i)
         
 class ListenerSocket(object):
 
@@ -63,17 +55,31 @@ class ListenerSocket(object):
           print("You are connected to %s."% buddy)
           print(chatting)
         elif (data.split()[0] == "FILE"):
-          writer.send_file( data.split()[1] )
+          file_path = data.split()[1]
+          writer.send("SENDING %s" % file_path)
+          print("Enviando arquivo --%s--"% file_path)
+          writer.send_file( file_path )
+          sleep(0.1)
+          writer.send("SENT %s" % file_path)
           continue
         elif (data.split()[0] == "SENDING"):
-          arq = open(file_path, 'wb')
-    while 1:
-      dados=conn.recv(1024)
-      if not dados:
+          print ("Comecou a receber arquivo.")
+          arq = open(data.split()[1], 'wb')
+          while 1:
+            data = chatfd.recv(RECV_BUFFER)
+            print("data eh --%s--" % data)
+            lista_split = data.split()
+            if( len(lista_split)>0 and lista_split[0] == b"SENT"):
               break
-      arq.write(dados)
-    print "Recebeu arquivo inteiro."
+            if( not data or len(lista_split)==0 or lista_split[0] == "SENT"):
+              break
+            arq.write(data)
+          arq.close()
+          print ("Recebeu arquivo inteiro.")
           continue
+        elif (data.split()[0] == "DISCONNECT"):
+          writer.disconnect()
+          break
         else:
           print (data)
           
@@ -89,14 +95,24 @@ class TCPWriter(object):
     global chatting
     self.socket.connect((self.ip, self.port))
     chatting = True
+   
+  def disconnect(self):
+    global chatting
+    print("Seu chat foi encerrado.")
+    self.socket.close()
+    chatting = False
 
   def send(self,message):
     envia(message, self.socket)
     
-  def send_file(file_path)
+  def send_file(self, file_path):
     arq = open(file_path, 'rb')
     for line in arq.readlines():
-      self.send(line)
+      lock.acquire()
+      self.socket.send( line )
+      lock.release()
+    arq.close()
+    print("Terminou de enviar o arquivo.")
 
       
 if( len(sys.argv)<=1 or len(sys.argv)>4):
@@ -138,7 +154,9 @@ try:
     if (chatting):
       if(comando.split()[0] == "FILE"):
         writer.send(comando)
-        writer.receive_file(comando.split()[1])
+      elif(comando.split()[0] == "DISCONNECT"):
+        writer.send(comando)
+        writer.disconnect()
       else:
         writer.send(comando)
     else:
