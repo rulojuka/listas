@@ -116,7 +116,7 @@ class TCPWriter(object):
 
       
 if( len(sys.argv)<=1 or len(sys.argv)>4):
-  print( "Usage: ./servidor.py ip porta chat_port" )
+  print( "Usage: ./cliente.py ip porta chat_port" )
   sys.exit(0)
 
 serverName = sys.argv[1]
