@@ -9,39 +9,46 @@ Alessandro Wagner		        6850476
 	Optamos implementar o EP na linguagem python, versão 3.
 Normalmente disponível em /usr/bin/python3.
 Um shebang foi colocado no início de cada código para chamar
-executar. 
+diretamente o script com ./servidor.py por exemplo. 
 
-	
-	Escolhemos esta linguagem por ser uma linguagem que não
-conheciamos, pela facilidade da manipulação de sockets e 
-de strings.
+	Escolhemos esta linguagem pela facilidade da manipulação
+de sockets e de strings.
 
 ===========================================================
 2. Rodando o Servidor e o Cliente
 ===========================================================
 
 Para executar o servidor:
-./servidor <port>
+./servidor.py <port>
   Onde port é a porta que será utilizada
-Ex: ./servidor 8008
+Ex: ./servidor.py 8008
 
 
 Para rodar o cliente:
-./cliente <ip> <port> <chatport>
-  Onde ip é o ip do cliente, port é a porta que será utilizada
-para comunicação com o servidor e chat port é a port utilizada
-para fazer o chat
-Ex: ./cliente localhost 8008 5000
+./cliente.sh [tcp|udp] <ip> <port> <chatport>
+  Onde [tcp|udp] é o protocolo a ser utilizado, ip é o ip
+do cliente, port é a porta que será utilizada para
+comunicação com o servidor e chatport é a porta utilizada
+para fazer o chat.
+Ex: ./cliente.sh tcp localhost 8008 5000
+
+  Utilizamos um bash script simples para chamar o script
+python correto (udp ou tcp), separando o código do cliente
+em 3 arquivos distintos (cliente_udp.py, cliente_tcp.py e o
+script seletor cliente.sh)
+  Além disso, não utilizamos um Makefile por não ser
+necessário compilar os scripts da linguagem Python.
 
 ===========================================================
-3. Arquivo rar
+3. Arquivo tar.gz
 ===========================================================
 
-	O compactado consiste em:
-	cliente.py (codigo do cliente)
+	O arquivo compactado consiste em:
+	cliente.sh (script seletor do cliente)
+	cliente_udp.py (código do cliente udp)
+	cliente_tcp.py (código do cliente tcp)
 	servidor.py (codigo so servidor)
 	LEIAME
-	log.txt
 	slides.pdf
 	server.csr
 	server.key
@@ -74,7 +81,7 @@ conectados no mesmo protocolo.
 - quit/exit:
   Utilizado para desconectar do servidor.
 
--disconecct :
+- DISCONNECT :
 	Utilizado para terminar a conversa atual.
 
 -FILE <nome_do_arquivo> 
