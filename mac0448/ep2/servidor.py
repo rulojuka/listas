@@ -9,11 +9,12 @@ from time import time
 import sys, select, ssl
 
 class UserEntry(object):
-  def __init__(self, nickname, sock, failed_heartbeats, chat_port, is_chatting):
+  def __init__(self, nickname, sock, failed_heartbeats, chat_port, is_chatting, chat_ip='127.0.0.1'):
     self.nickname = nickname
     self.socket = sock
     self.failed_heartbeats = failed_heartbeats
     self.chat_port = chat_port
+    self.chat_ip = chat_ip
     self.is_chatting = is_chatting
     self.login_time = int( time() )
     
@@ -135,7 +136,7 @@ try:
           usuario = data.split()[1]
           print("Usuario --%s--"% usuario)
           chat_port = data.split()[2]
-          new_entry = UserEntry(usuario,sock,0, chat_port, 0)
+          new_entry = UserEntry(usuario,sock,0, chat_port, 0, addr[0])
           found = False
           for entry in udp_user_list:
             if (entry.nickname == usuario):
@@ -156,6 +157,23 @@ try:
               udp_send(mensagem,sock, addr[0], addr[1])
             else:
               udp_send("Ninguém online.",sock, addr[0], addr[1])
+        elif( comando == "CHAT" ):
+          usuario = data.split()[1]
+          buddy = data.split()[2]
+          log ("%s pediu para conectar-se com %s" %(usuario,buddy))
+          find = 0
+          for entry in udp_user_list:
+            if (entry.nickname == buddy):
+              find = 1
+          if (find == 0):
+            udp_send("NOK", sock, addr[0], addr[1])
+          else:
+            for entry in udp_user_list:
+              if (entry.nickname == buddy):
+                if (entry.is_chatting == 1):
+                  udp_send("NOK", sock, addr[0], addr[1])
+                else:
+                  udp_send("OK " + entry.chat_ip + " " + str(entry.chat_port), sock, addr[0], addr[1])
       else: #TCP
         #New connection
         mensagem = ""
