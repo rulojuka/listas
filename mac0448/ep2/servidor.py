@@ -5,6 +5,7 @@ from threading import Thread
 import threading
 from time import sleep
 from time import ctime
+from time import time
 import sys, select, ssl
 
 class UserEntry(object):
@@ -14,6 +15,7 @@ class UserEntry(object):
     self.failed_heartbeats = failed_heartbeats
     self.chat_port = chat_port
     self.is_chatting = is_chatting
+    self.login_time = int( time() )
     
   def refresh(self):
     self.failed_heartbeats = 0
@@ -140,8 +142,11 @@ try:
           print(str(len(user_list)) + " usuarios logados.")
         elif( comando == "LIST" ):
           for entry in user_list:
-            mensagem += entry.nickname + '\n'
-          #send(mensagem,sock)
+            time_logged_in = int(time()) - entry.login_time
+            linha = entry.nickname + " " + str(time_logged_in) + "\n"
+            mensagem += linha
+          if(len(user_list) > 0):
+            send(mensagem,sock)
         elif( comando == "HB" ):
           refresh_heartbeat(sock)
         elif( comando == "LOGOUT" ):
