@@ -1,0 +1,41 @@
+Temos 25 minutos de apresentação. O Daniel prefere que apresente em MENOS DE 25min.
+Metade do tempo será gasto com os slides e metade com a parte prática.
+
+Slides:
+
+1 - Título, nomes e nusps.
+2 - SSH e DropbearSSH
+  Falar muito rapidamente sobre o que é o SSH (todo mundo já sabe), explicar que o
+  Dropbear é pequeno e é voltado para sistemas embarcados, usando dados como o 110kB
+  Statically Linked Binary das Features do site. Utilizar também outras métricas como
+  uma comparação do número de linhas entre o DropbearSSH e o OpenSSH
+3 - Sistemas Embarcados
+  Falar sobre a escassez de recursos nesses tipos de máquinas, a necessidade de um
+  programa específico para eles, dar alguns exemplos de utilização (roteadores, etc)
+  Dar exemplos numéricos de processamento e memória disponível.
+4 - O Exploit
+  Mostrar o número CVE e o título do exploit. Explicar como ele pode ser utilizado
+  para causar um DoS no servidor descomprimindo um arquivo zlib de tamanho arbitrário.
+5 - O Exploit - Código
+  Mostrar o código do arquivo packet.c nas versões 2013.58 e 2013.59, em especial da
+  função buf_decompress.
+6 - O teste
+  Apresentar a metodologia de testes. Dizer quais são as máquinas virtuais utilizadas,
+  o processamento e a memória do servidor
+
+
+Parte prática:
+
+1 - Subir as máquinas virtuais (provavelmente apenas uma, o servidor).
+2 - Abrir o wireshark em todas.
+2 - Mostrar novamente o ambiente utilizado.
+3 - Compilar o código do servidor versão 2013.58 (Será que isso demora muito?)
+    (Na máquina do lab X, demorou 13s o ./configure e 30s para o make)
+4 - Subir o servidor na máquina virtual.
+5 - Mostrar o arquivo compactado que vai quebrar o serviço
+6 - Descompactar tal arquivo usando SSH
+7 - Mostrar a máquina estourando a memória.
+8 - (Possivelmente reiniciar a máquina virtual)
+9 - Mostrar o patch do código de algum jeito (tanto abrindo o patch quanto editando direto)
+10 - Recompilar e subir o Dropbear
+11 - Descompactar o mesmo arquivo e mostrar a mensagem de erro.
