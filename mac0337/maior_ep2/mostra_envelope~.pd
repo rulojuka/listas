@@ -1,0 +1,20 @@
+#N canvas 534 304 450 300 10;
+#X obj -457 -680 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1
+1 1;
+#X obj -502 -583 snapshot~;
+#X obj -457 -629 t b b;
+#X obj -428 -587 counter 255;
+#X obj -457 -650 metro 20;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array \$0-teste 256 float 2;
+#X coords 0 1 256 -1 200 140 1 0 0;
+#X restore -314 -788 graph;
+#X obj -501 -551 tabwrite \$0-teste;
+#X obj -489 -750 inlet~;
+#X connect 0 0 4 0;
+#X connect 1 0 6 0;
+#X connect 2 0 1 0;
+#X connect 2 1 3 0;
+#X connect 3 0 6 1;
+#X connect 4 0 2 0;
+#X connect 7 0 1 0;
