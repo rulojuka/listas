@@ -1,0 +1,24 @@
+#N canvas 819 214 570 482 10;
+#X obj 27 84 inlet;
+#X obj 89 78 inlet;
+#X obj 138 79 inlet;
+#X obj 187 76 inlet;
+#X obj 233 78 inlet;
+#X obj 292 77 inlet;
+#X obj 115 208 ADSRexponencial~;
+#X msg 161 138 0;
+#X obj 165 107 loadbang;
+#X obj 115 239 outlet~;
+#X text 28 19 Inlets: 1 - Bang a - Tempo de ataque b - Amplitude de
+sustentaçao c - Tempo de sustentaçao d - Tempo de relaxamento final
+e - beta.;
+#X connect 0 0 6 0;
+#X connect 1 0 6 1;
+#X connect 2 0 6 2;
+#X connect 2 0 6 4;
+#X connect 3 0 6 5;
+#X connect 4 0 6 6;
+#X connect 5 0 6 7;
+#X connect 6 0 9 0;
+#X connect 7 0 6 3;
+#X connect 8 0 7 0;

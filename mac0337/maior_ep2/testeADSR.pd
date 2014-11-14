@@ -1,4 +1,4 @@
-#N canvas 699 107 600 453 10;
+#N canvas 158 275 661 540 10;
 #X obj 76 213 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 108 240 ADSRlinear~;
@@ -16,10 +16,13 @@
 #X obj 298 319 mostra_envelope~;
 #X floatatom 451 167 5 0 0 0 - - -;
 #X obj 438 100 hsl 128 15 0.001 20 0 0 empty empty empty -2 -8 0 10
--262144 -1 -1 0 1;
+-262144 -1 -1 3500 1;
 #X obj 327 249 ADSRexponencial~;
 #X obj 250 220 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
+#X obj 452 238 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 466 282 ASR~;
 #X connect 0 0 1 0;
 #X connect 1 0 10 1;
 #X connect 1 0 12 0;
@@ -33,19 +36,27 @@
 #X connect 3 0 15 1;
 #X connect 4 0 1 3;
 #X connect 4 0 15 3;
+#X connect 4 0 18 1;
+#X connect 4 0 18 4;
 #X connect 5 0 1 2;
 #X connect 5 0 15 2;
+#X connect 5 0 18 2;
 #X connect 6 0 1 4;
 #X connect 6 0 15 4;
 #X connect 7 0 1 5;
 #X connect 7 0 15 5;
+#X connect 7 0 18 3;
 #X connect 8 0 1 6;
 #X connect 8 0 15 6;
 #X connect 9 0 10 0;
 #X connect 10 0 11 0;
 #X connect 10 0 11 1;
 #X connect 13 0 15 7;
+#X connect 13 0 18 5;
 #X connect 14 0 13 0;
-#X connect 15 0 12 0;
 #X connect 15 0 10 1;
+#X connect 15 0 12 0;
 #X connect 16 0 15 0;
+#X connect 17 0 18 0;
+#X connect 18 0 12 0;
+#X connect 18 0 10 1;
