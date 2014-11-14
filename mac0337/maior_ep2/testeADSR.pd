@@ -1,4 +1,4 @@
-#N canvas 336 142 600 453 10;
+#N canvas 699 107 600 453 10;
 #X obj 76 213 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 108 240 ADSRlinear~;
@@ -16,7 +16,7 @@
 #X obj 298 319 mostra_envelope~;
 #X floatatom 451 167 5 0 0 0 - - -;
 #X obj 438 100 hsl 128 15 0.001 20 0 0 empty empty empty -2 -8 0 10
--262144 -1 -1 3800 1;
+-262144 -1 -1 0 1;
 #X obj 327 249 ADSRexponencial~;
 #X obj 250 220 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
