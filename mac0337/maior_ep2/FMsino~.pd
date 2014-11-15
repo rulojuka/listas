@@ -1,4 +1,4 @@
-#N canvas 399 344 450 300 10;
+#N canvas 86 525 450 300 10;
 #X obj 48 45 inlet~;
 #X obj 172 42 inlet~;
 #X text 43 15 amplitude;
@@ -13,10 +13,6 @@
 #X obj 282 40 expr sqrt(2);
 #X obj 280 11 loadbang;
 #X obj 213 82 expr~ $v1 * $f2;
-#X obj 338 207 snapshot~;
-#X obj 340 236 print;
-#X obj 378 173 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
 #X connect 0 0 3 0;
 #X connect 1 0 3 1;
 #X connect 1 0 13 0;
@@ -30,6 +26,3 @@
 #X connect 11 0 13 1;
 #X connect 12 0 11 0;
 #X connect 13 0 3 2;
-#X connect 13 0 14 0;
-#X connect 14 0 15 0;
-#X connect 16 0 14 0;
