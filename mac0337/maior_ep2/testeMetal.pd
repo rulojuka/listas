@@ -1,31 +1,50 @@
-#N canvas 184 187 450 530 10;
+#N canvas 97 170 680 705 10;
 #X declare -lib windowing;
-#X obj 130 149 FMmetal~;
-#X obj 203 48 hsl 128 15 0 2 0 0 empty empty empty -2 -8 0 10 -262144
+#X obj 317 201 FMmetal~;
+#X obj 390 100 hsl 128 15 0 2 0 0 empty empty empty -2 -8 0 10 -262144
 -1 -1 0 1;
-#X floatatom 205 75 5 0 0 0 - - -;
-#X obj 201 106 sig~;
-#X obj 148 -57 vsl 15 128 20 20000 1 0 empty empty empty 0 -9 0 10
--262144 -1 -1 4600 1;
-#X floatatom 155 80 5 0 0 0 - - -;
-#X obj 154 110 sig~;
-#X floatatom 75 80 5 0 0 0 - - -;
-#X obj 75 103 sig~;
-#X obj 79 -64 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 3900 1;
-#X obj 129 207 output~;
-#X obj 229 199 mostra;
-#X msg 257 80 0.5;
-#X connect 0 0 10 0;
-#X connect 0 0 10 1;
-#X connect 0 0 11 0;
+#X floatatom 392 127 5 0 0 0 - - -;
+#X obj 388 158 sig~;
+#X obj 335 -5 vsl 15 128 20 20000 1 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 4800 1;
+#X floatatom 342 132 5 0 0 0 - - -;
+#X obj 341 162 sig~;
+#X obj 316 259 output~;
+#X obj 416 251 mostra;
+#X msg 444 132 0.5;
+#X obj 98 110 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 149 -42 hsl 128 15 0 10000 0 0 empty empty empty -2 -8 0 10
+-262144 -1 -1 3500 1;
+#X floatatom 161 -8 5 0 0 0 - - -;
+#X text 193 -9 Duracao;
+#X obj 127 140 ADSRlinear~;
+#X obj 108 37 / 6;
+#X msg 139 52 1;
+#X obj 99 -36 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 172 49 0.6;
+#X obj 209 39 / 2;
+#X connect 0 0 7 0;
+#X connect 0 0 7 1;
+#X connect 0 0 8 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
 #X connect 3 0 0 2;
 #X connect 4 0 5 0;
 #X connect 5 0 6 0;
 #X connect 6 0 0 1;
-#X connect 7 0 8 0;
-#X connect 8 0 0 0;
-#X connect 9 0 7 0;
-#X connect 12 0 3 0;
+#X connect 9 0 3 0;
+#X connect 10 0 14 0;
+#X connect 11 0 12 0;
+#X connect 12 0 15 0;
+#X connect 12 0 19 0;
+#X connect 14 0 0 0;
+#X connect 15 0 14 1;
+#X connect 15 0 14 3;
+#X connect 15 0 14 6;
+#X connect 16 0 14 2;
+#X connect 17 0 16 0;
+#X connect 17 0 18 0;
+#X connect 18 0 14 4;
+#X connect 19 0 14 5;
