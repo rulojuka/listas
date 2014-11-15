@@ -1,0 +1,32 @@
+#N canvas 196 186 444 471 10;
+#X declare -lib windowing;
+#X obj 330 14 vsl 15 128 20 20000 1 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 9600 1;
+#X floatatom 337 151 5 0 0 0 - - -;
+#X obj 336 181 sig~;
+#X obj 254 319 output~;
+#X obj 354 311 mostra;
+#X obj 35 221 mostra_envelope~;
+#X obj 48 117 Rexponencial~;
+#X obj 22 69 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 75 55 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 80 78 15000;
+#X obj 130 53 hsl 128 15 0.001 5 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 6200 1;
+#X floatatom 129 81 5 0 0 0 - - -;
+#X obj 263 233 FMsino~;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 12 1;
+#X connect 6 0 5 0;
+#X connect 6 0 12 0;
+#X connect 7 0 6 0;
+#X connect 8 0 9 0;
+#X connect 9 0 6 1;
+#X connect 10 0 11 0;
+#X connect 11 0 6 2;
+#X connect 12 0 4 0;
+#X connect 12 0 3 0;
+#X connect 12 0 3 1;
