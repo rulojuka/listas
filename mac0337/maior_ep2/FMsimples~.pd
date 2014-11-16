@@ -1,4 +1,4 @@
-#N canvas 1076 331 546 570 10;
+#N canvas 272 433 413 402 10;
 #X obj 91 56 inlet~;
 #X text 86 41 Amplitude;
 #X obj 96 293 *~;
