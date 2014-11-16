@@ -1,4 +1,4 @@
-#N canvas 665 90 584 710 10;
+#N canvas 662 95 584 710 10;
 #X declare -lib windowing;
 #X obj 66 71 inlet~;
 #X obj 151 71 loadbang;
@@ -9,14 +9,12 @@
 #X text 332 62 Define o tamanho da janela de analise;
 #X text 107 215 FFT real;
 #X text 238 245 Magnitude da FFT;
-#X text 192 276 Plota o espectro;
+#X text 273 275 Plota o espectro;
 #X text 308 145 Plota a forma de onda;
 #X obj 336 189 import windowing;
 #X obj 334 82 block~ 4096;
-#X obj 64 276 tabwrite~ Espectro_Original;
-#X obj 151 145 tabwrite~ Forma_de_Onda_Original;
-#N canvas 0 0 450 300 (subpatch) 0;
-#X array Forma_de_Onda_Original 2205 float 1;
+#N canvas 65 87 450 300 (subpatch) 0;
+#X array \$0-forma-original 2205 float 1;
 #A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -85,9 +83,9 @@
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0;
 #X coords 0 1.1 2204 -1.1 400 140 1 0 0;
-#X restore 57 333 graph;
+#X restore 52 323 graph;
 #N canvas 0 0 450 300 (subpatch) 0;
-#X array Espectro_Original 2048 float 1;
+#X array \$0-espectro-original 2048 float 1;
 #A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -160,12 +158,14 @@
 #X text 67 639 1k;
 #X obj 151 112 metro 500;
 #X text 223 112 Define a taxa de atualizacao das janelas (500ms);
-#X connect 0 0 13 0;
+#X obj 149 167 tabwrite~ \$0-forma-original;
+#X obj 64 276 tabwrite~ \$0-espectro-original;
 #X connect 0 0 3 0;
+#X connect 0 0 22 0;
 #X connect 1 0 2 0;
-#X connect 2 0 22 0;
+#X connect 2 0 20 0;
 #X connect 3 0 4 0;
 #X connect 3 1 4 1;
-#X connect 4 0 12 0;
-#X connect 22 0 12 0;
-#X connect 22 0 13 0;
+#X connect 4 0 23 0;
+#X connect 20 0 22 0;
+#X connect 20 0 23 0;
