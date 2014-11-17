@@ -1,0 +1,19 @@
+#N canvas 182 406 472 389 10;
+#X obj 112 240 output~;
+#X obj 170 6 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 189 107 pack;
+#X msg 231 58 5;
+#X msg 176 71 440;
+#X obj 169 33 t b b;
+#X msg 111 142 440 \, 5;
+#X obj 113 184 toca_orgao;
+#X connect 1 0 5 0;
+#X connect 2 0 7 0;
+#X connect 3 0 2 1;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X connect 5 1 3 0;
+#X connect 6 0 7 0;
+#X connect 7 0 0 0;
+#X connect 7 0 0 1;

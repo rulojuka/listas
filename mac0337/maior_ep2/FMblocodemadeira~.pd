@@ -1,4 +1,4 @@
-#N canvas 871 212 450 565 10;
+#N canvas 868 217 450 565 10;
 #X obj 48 52 inlet~;
 #X obj 172 49 inlet~;
 #X text 43 22 amplitude;
@@ -11,7 +11,7 @@
 #X obj 71 139 r~ \$0-amplitude;
 #X obj 219 150 r~ \$0-amplitude;
 #X obj 219 172 calcula_indice~;
-#X obj 282 47 expr 80/55;
+#X obj 282 47 expr 55/80;
 #X connect 0 0 8 0;
 #X connect 1 0 3 1;
 #X connect 1 0 7 0;
