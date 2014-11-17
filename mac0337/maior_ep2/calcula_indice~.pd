@@ -1,0 +1,35 @@
+#N canvas 561 517 450 300 10;
+#X obj 63 51 inlet~;
+#X obj 71 198 outlet~;
+#X obj 152 17 loadbang;
+#X msg 144 51 0;
+#X msg 200 49 25;
+#X obj 64 89 expr~ pow($v1 \, 3);
+#X obj 246 185 snapshot~;
+#X floatatom 246 213 5 0 0 0 - - -;
+#X obj 254 162 metro 10;
+#X obj 256 141 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 64 119 expr~ ($v1*$f3) + (1 - $v1)*$f2;
+#X floatatom 18 36 5 0 0 0 - - -;
+#X obj 17 61 sig~;
+#X obj 21 -12 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 189 -4 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 139 189 mostra_envelope~;
+#X connect 0 0 5 0;
+#X connect 2 0 3 0;
+#X connect 2 0 4 0;
+#X connect 3 0 10 1;
+#X connect 4 0 10 2;
+#X connect 5 0 10 0;
+#X connect 6 0 7 0;
+#X connect 8 0 6 0;
+#X connect 9 0 8 0;
+#X connect 10 0 6 0;
+#X connect 10 0 15 0;
+#X connect 10 0 1 0;
+#X connect 11 0 12 0;
+#X connect 13 0 11 0;
+#X connect 14 0 2 0;
