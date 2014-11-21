@@ -1,0 +1,17 @@
+CVE:
+  http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-4421
+Discussão do bug:
+  https://bugzilla.redhat.com/show_bug.cgi?id=1017983
+Bugfix:
+  https://secure.ucc.asn.au/hg/dropbear/rev/0bf76f54de6f
+Configuração
+  http://wiki.openwrt.org/doc/uci/dropbear
+
+Site oficial:
+  https://matt.ucc.asn.au/dropbear/dropbear.html
+Configuração de 110kb:
+  http://lists.ucc.gu.uwa.edu.au/pipermail/dropbear/2004q3/000022.html
+Dropbear 2013.58 (com bug) (18 April 2013):
+  https://matt.ucc.asn.au/dropbear/releases/dropbear-2013.58.tar.bz2
+Dropbear 2013.59 (sem bug) (4 October 2013):
+  https://matt.ucc.asn.au/dropbear/releases/dropbear-2013.59.tar.bz2

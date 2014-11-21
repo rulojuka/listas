@@ -1,0 +1,38 @@
+Teste no meu pc:
+  Primeiro configure não funcionou - zlib missing.
+  
+  
+  
+  sudo apt-get install zlibc zlib1g zlib1g-dev
+  mkdir /home/rulojuka/dropbear58
+  ./configure --prefix="/home/rulojuka/dropbear58/" (~6s)
+  make PROGRAMS="dropbear dbclient dropbearkey dropbearconvert scp" (~15s)
+  make PROGRAMS="dropbear dbclient dropbearkey dropbearconvert scp" install
+  
+Executável gerado: 215,3 kB (215.268 bytes)
+
+  /home/rulojuka/dropbear58/bin/dropbearkey -t rsa -f dropbear_rsa_host_key
+  sudo /home/rulojuka/dropbear58/sbin/dropbear -r /home/rulojuka/dropbear58/bin/dropbear_rsa_host_key 
+  
+Instalando máquina virtual:
+
+Ubuntu 14.04-1 64bits
+RAM 512MB (padrão do VirtualBox)
+HD 8Gb (padrão do VirtualBox)
+Rede modo Bridge
+Instalação (13min sem instalar pacotes de línguas)
+
+Usuário/senha: ep3-1
+Hostname: ep31-VirtualBox
+
+Copiando dropbear:
+  scp rulojuka@<ip>:/home/rulojuka/workspace/listas/mac0448/ep4/dropbear-2013.58.tar.bz2
+  
+Instalando:
+  sudo apt-get install zlibc zlib1g zlib1g-dev
+  make
+  sudo make install
+  
+Subindo servidor:
+  sudo /home/ep3-1/dropbear58/sbin/dropbear -r /home/ep3-1/dropbear58/bin/rsa_key
+
