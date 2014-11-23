@@ -1,8 +1,11 @@
 require './host'
 require './router'
 require './dns_server'
+require './http_server'
+require './http_client'
 require './sniffer'
 require './link'
+require './command'
 
 class Simulator
   def initialize(file)
@@ -10,8 +13,11 @@ class Simulator
 		@hosts = Hash.new
 		@routers = Hash.new
 		@dns_servers = Hash.new
+	  @http_servers = Hash.new
+	  @http_clients = Hash.new
 		@sniffers = Hash.new
 		@links = Array.new
+		@commands = Array.new
   end
   
   def simulate
@@ -30,6 +36,11 @@ class Simulator
         puts e.message
       end
     end
+    execute
+  end
+  
+  def execute
+    
   end
   
   def debug
@@ -41,7 +52,12 @@ class Simulator
     puts "Links debug:"
     @links.each do |link|
       link.debug
-    end  
+    end
+    
+    puts "Commands debug:"
+    @commands.each do |command|
+      command.debug
+    end
   end
 
   def create_entity(name,arguments)
@@ -52,10 +68,14 @@ class Simulator
       @routers[name] = Router.new(name,number_of_interfaces)
 		elsif (arguments =~ /DNSServer/)
       @dns_servers[name] = DNSServer.new(name)
+    elsif (arguments =~ /HTTPServer/)
+      @http_servers[name] = HTTPServer.new(name)
+    elsif (arguments =~ /HTTPClient/)
+      @http_clients[name] = HTTPClient.new(name)
 		elsif (arguments =~ /Sniffer/)
       @sniffers[name] = Sniffer.new(name)
     else
-      raise "Not implemented yet."
+      raise "Not implemented yet." #FTP server and client
     end
   end
   
@@ -88,12 +108,30 @@ class Simulator
         host_name = arguments[2]
         if( is_a_dns_server?(agent_name) )
           @hosts[host_name].agent = @dns_servers[agent_name]
+        elsif( is_a_http_server?(agent_name) )
+          @hosts[host_name].agent = @http_servers[agent_name]
+        elsif( is_a_http_client?(agent_name) )
+          @hosts[host_name].agent = @http_clients[agent_name]
         else
           raise "Not implemented yet."
         end
       end
     elsif( arguments.first == "at" )
-      puts "application packet sent"
+      if(arguments[2] =~ /finish/)
+        puts "finish"
+      else
+        time = arguments[1]
+        agent_name = arguments[2].gsub("\"", "")
+        command = arguments[3]
+        to_name = arguments[4].gsub("\"", "")
+        
+        selected_host = @hosts.select { |key,value| value.agent.name == agent_name }
+        from_name = nil
+        selected_host.each_key{ |key| from_name = key }
+        
+        command = Command.new(time,from_name,command,to_name)
+        @commands << command
+      end
     else
       if( is_a_host?( arguments[0]) ) 
         host = arguments[0]
@@ -123,6 +161,14 @@ class Simulator
   
   def is_a_dns_server?(node)
     @dns_servers[node]!=nil
+  end
+  
+  def is_a_http_server?(node)
+    @http_servers[node]!=nil
+  end
+
+  def is_a_http_client?(node)
+    @http_clients[node]!=nil
   end
   
   def create_duplex_link(node1, node2, speed, delay)
