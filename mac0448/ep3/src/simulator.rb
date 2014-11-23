@@ -18,23 +18,30 @@ class Simulator
     while line = @file.gets
       action = line.partition(" ").first
       arguments = line.partition(" ").last
-      if action == "set"
-        name = arguments.partition(" ").first
-        entity = arguments.partition(" ").last
-        begin
-  		    create_entity(name,entity)
-        rescue
-          puts "Not implemented yet."
+      begin
+        if action == "set"
+          name = arguments.partition(" ").first
+          entity = arguments.partition(" ").last
+    		    create_entity(name,entity)
+        elsif action == "$simulator"
+          simulate_action( arguments.gsub("$", " ").split(" ") )
         end
-      elsif action == "$simulator"
-        simulate_action( arguments.gsub("$", " ").split(" ") )
+      rescue Exception => e
+        puts e.message
       end
     end
-    # DEBUG
+  end
+  
+  def debug
+    puts "Routers debug:"
     @routers.each do |key,value|
       value.debug
     end
     
+    puts "Links debug:"
+    @links.each do |link|
+      link.debug
+    end  
   end
 
   def create_entity(name,arguments)
@@ -60,7 +67,31 @@ class Simulator
       delay = arguments[4].to_i;
       create_duplex_link(node1, node2, speed, delay)
     elsif( arguments.first == "attach-agent" )
-      puts "attach"
+      if( is_a_sniffer?( arguments[1]) )
+        sniffer = @sniffers[arguments[1]]
+        sniffer.file_path = arguments[4].gsub("\"", "")
+        
+        from_name = arguments[2].split(".").first
+        to_name = arguments[3].split(".").first
+        
+        from = is_a_host?(from_name) ? @hosts[from_name] : @routers[from_name]
+        to = is_a_host?(to_name) ? @hosts[to_name] : @routers[to_name]
+        
+        forward_link = @links.select { |link| link.from == from and link.to == to}.first
+        backward_link = @links.select { |link| link.from == to and link.to == from}.first
+        
+        sniffer.forward_link = forward_link
+        sniffer.backward_link = backward_link
+        
+      else
+        agent_name = arguments[1]
+        host_name = arguments[2]
+        if( is_a_dns_server?(agent_name) )
+          @hosts[host_name].agent = @dns_servers[agent_name]
+        else
+          raise "Not implemented yet."
+        end
+      end
     elsif( arguments.first == "at" )
       puts "application packet sent"
     else
@@ -86,13 +117,18 @@ class Simulator
     @hosts[node]!=nil
   end
   
+  def is_a_sniffer?(node)
+    @sniffers[node]!=nil
+  end
+  
+  def is_a_dns_server?(node)
+    @dns_servers[node]!=nil
+  end
+  
   def create_duplex_link(node1, node2, speed, delay)
     x = Link.new() # Logical link from node1 to node2
     y = Link.new() # Logical link from node2 to node1
-    @links << x
-    @links << y
-    
-    
+
     if( is_a_router?(node1) )
       router = node1.split(".").first
       interface = node1.split(".").last.to_i
@@ -100,8 +136,8 @@ class Simulator
       y.to   = @routers[router]
       @routers[router].links[interface] = x;
     else
-      x.to   = @hosts[node1]
-      y.from = @hosts[node1]
+      x.from = @hosts[node1]
+      y.to   = @hosts[node1]
     end
     
     if( is_a_router?(node2) )
@@ -111,12 +147,15 @@ class Simulator
       x.to   = @routers[router]
       @routers[router].links[interface] = y;
     else
-      y.to   = @hosts[node2]
-      x.from = @hosts[node2]
+      y.from = @hosts[node2]
+      x.to   = @hosts[node2]
     end
     
     x.speed = y.speed = speed
-    x.delay = y.delay = delay
+    x.delay = y.delay = delay 
+    
+    @links << x
+    @links << y
   end
   
   def configure_host(host_name,ip,default_gateway,dns)
