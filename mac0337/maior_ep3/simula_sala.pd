@@ -1,0 +1,4 @@
+#N canvas 626 140 598 743 10;
+#X obj 110 216 le_entrada_do_arquivo_texto pequena.txt;
+#X obj 337 271 print saida;
+#X connect 0 7 1 0;
