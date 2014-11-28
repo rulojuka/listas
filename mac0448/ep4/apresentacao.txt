@@ -1,0 +1,11 @@
+packet.c
+  Linha 423: Aqui é chamado buf_resize com um size ilimitado.
+
+buffer.c
+  Linha 83: buf_resize passa por uma verificação de tamanho, porém, esse tamanho é setado como 10^9 na linha 35
+
+dbutil.c
+  Linha 823: Mostra que o m_realloc faz uma chamada direta a realloc, portando size está em bytes.
+  
+common-kex.c 
+  Linha 416: Checagem do algoritmo de compressão

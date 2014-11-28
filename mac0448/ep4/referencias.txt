@@ -1,4 +1,6 @@
-CVE:
+Dropbear SSH: memory exhaustion DoS via large decompressed payloads
+
+CVE (Entry date - 12 June 2013):
   http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-4421
 Discussão do bug:
   https://bugzilla.redhat.com/show_bug.cgi?id=1017983
@@ -6,6 +8,9 @@ Bugfix:
   https://secure.ucc.asn.au/hg/dropbear/rev/0bf76f54de6f
 Configuração
   http://wiki.openwrt.org/doc/uci/dropbear
+  
+  http://vuxml.freebsd.org/freebsd/8c9b48d1-3715-11e3-a624-00262d8b701d.html
+  http://www.securityfocus.com/bid/62958/exploit
 
 Site oficial:
   https://matt.ucc.asn.au/dropbear/dropbear.html

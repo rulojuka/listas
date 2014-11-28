@@ -34,5 +34,8 @@ Instalando:
   sudo make install
   
 Subindo servidor:
-  sudo /home/ep3-1/dropbear58/sbin/dropbear -r /home/ep3-1/dropbear58/bin/rsa_key
+  sudo /home/ep3-1/dropbear58/sbin/dropbear -r /home/ep3-1/dropbear58/bin/rsa_key -d /home/ep3-1/dropbear58/bin/dss_key
+  
+Chamando cliente
+  ssh 127.0.0.1 -C (para criptografar pacotes)
 
