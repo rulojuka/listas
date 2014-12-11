@@ -1,4 +1,25 @@
-#N canvas 626 140 598 743 10;
-#X obj 110 216 le_entrada_do_arquivo_texto pequena.txt;
-#X obj 337 271 print saida;
+#N canvas 425 82 598 493 10;
+#X obj 70 147 le_entrada_do_arquivo_texto pequena.txt;
+#X obj 297 202 print saida;
+#X obj 207 243 calcula_raio_inicial;
+#X obj 39 25 loadbang;
+#X obj 38 6 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 20 294 calcula_indice_maximo;
+#X obj 67 183 unpack f f f;
+#X obj 37 57 t b b b;
+#X floatatom 30 345 5 0 0 0 - - -;
+#X connect 0 0 6 0;
+#X connect 0 5 2 0;
+#X connect 0 6 2 1;
 #X connect 0 7 1 0;
+#X connect 2 0 5 1;
+#X connect 3 0 7 0;
+#X connect 4 0 3 0;
+#X connect 5 0 8 0;
+#X connect 6 0 5 2;
+#X connect 6 1 5 3;
+#X connect 6 2 5 4;
+#X connect 7 0 5 0;
+#X connect 7 1 2 0;
+#X connect 7 2 0 0;
