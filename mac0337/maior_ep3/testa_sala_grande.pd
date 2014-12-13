@@ -1,0 +1,2 @@
+#N canvas 239 182 450 300 10;
+#X obj 120 48 simula_sala grande.txt;
