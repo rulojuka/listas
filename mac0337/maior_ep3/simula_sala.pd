@@ -1,4 +1,4 @@
-#N canvas 331 82 713 493 10;
+#N canvas 310 82 713 493 10;
 #X obj 278 391 calcula_raio_inicial;
 #X obj 289 528 calcula_indice_maximo;
 #X obj 21 27 loadbang;
@@ -283,8 +283,8 @@
 #X obj 350 1420 r T;
 #X obj 276 51 le_entrada_do_arquivo_texto grande_alterada.txt;
 #X obj 54 7 r LOAD;
-#X obj 140 1425 s LOAD;
-#X obj 138 1392 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 140 1701 s LOAD;
+#X obj 138 1668 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 256 1527 print Calculando delta;
 #X obj 229 1551 expr acos(-1)*4/3*340*340*340 * ( 3*$f1*$f1/10 + 3*$f1/100
@@ -300,7 +300,11 @@
 #X obj 278 1685 r DELTA;
 #X obj 326 1686 r T;
 #X obj 238 1710 sorteia_indice;
-#X obj 238 1763 print sorteou;
+#X obj 306 1786 print sorteou;
+#X obj 241 1740 t f f;
+#X obj 263 1844 sorteia_paredes;
+#X obj 348 1812 r D;
+#X obj 268 1880 print sorteou_k_paredes;
 #X connect 0 0 11 0;
 #X connect 1 0 12 0;
 #X connect 2 0 81 0;
@@ -412,4 +416,8 @@
 #X connect 103 2 104 0;
 #X connect 105 0 107 1;
 #X connect 106 0 107 2;
-#X connect 107 0 108 0;
+#X connect 107 0 109 0;
+#X connect 109 0 110 0;
+#X connect 109 1 108 0;
+#X connect 110 0 112 0;
+#X connect 111 0 110 1;
