@@ -1,0 +1,20 @@
+#N canvas 170 164 450 300 10;
+#X obj 161 127 inlet;
+#X text 168 96 xyz;
+#X obj 326 121 inlet;
+#X text 315 95 raio_inicial;
+#X obj 255 124 inlet;
+#X text 255 97 ouvido;
+#X obj 55 123 inlet;
+#X text 50 95 bang;
+#X obj 73 223 expr if ($f1 < $f2 \, $f1 \, 0) \;;
+#X text 48 31 Retorna 0 se distancia eh maior que o raio da esfera
+ou a distancia \, caso contrario;
+#X obj 73 254 outlet;
+#X obj 74 187 calcula_distancia_entre_vetores;
+#X connect 0 0 11 1;
+#X connect 2 0 8 1;
+#X connect 4 0 11 2;
+#X connect 6 0 11 0;
+#X connect 8 0 10 0;
+#X connect 11 0 8 0;
