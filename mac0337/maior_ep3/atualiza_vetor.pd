@@ -1,0 +1,26 @@
+#N canvas 84 130 619 364 10;
+#X obj 89 99 inlet;
+#X obj 147 103 inlet;
+#X text 85 75 Valor;
+#X text 144 71 indice;
+#X obj 97 219 expr $f1+$f2;
+#X obj 147 132 t f f;
+#X obj 273 105 inlet;
+#X text 219 72 mensagem no formato \$0 (esquerdo|direito);
+#X msg 272 130 set \$1-resposta_impulsiva_\$2;
+#X obj 166 196 tabread;
+#X obj 96 245 tabwrite;
+#X obj 269 155 s nome_do_vetor;
+#X obj 155 170 r nome_do_vetor;
+#X text 92 26 Funciona como o tabwrite (Inlet valor: quente \, inlet
+indice: frio);
+#X connect 0 0 4 0;
+#X connect 1 0 5 0;
+#X connect 4 0 10 0;
+#X connect 5 0 10 1;
+#X connect 5 1 9 0;
+#X connect 6 0 8 0;
+#X connect 8 0 11 0;
+#X connect 9 0 4 1;
+#X connect 12 0 9 0;
+#X connect 12 0 10 1;
