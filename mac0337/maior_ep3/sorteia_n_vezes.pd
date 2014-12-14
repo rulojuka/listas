@@ -1,0 +1,37 @@
+#N canvas 82 133 512 380 10;
+#X obj 54 140 uzi;
+#X obj 55 166 sorteia_indice;
+#X obj 101 251 sorteia_paredes;
+#X obj 56 88 inlet;
+#X text 60 71 bang;
+#X obj 98 88 inlet;
+#X text 102 71 n;
+#X obj 145 86 inlet;
+#X text 133 66 delta_atual;
+#X obj 211 86 inlet;
+#X text 206 66 tempo total;
+#X obj 303 87 inlet;
+#X text 291 67 Dimensoes da sala;
+#X obj 52 307 outlet;
+#X text 51 327 indice;
+#X obj 99 306 outlet;
+#X text 98 326 k (numero de paredes);
+#X obj 49 229 t f f;
+#X text 63 12 Faz n sorteios \, porem so retorna aqueles que caem dentro
+do vetor;
+#X obj 51 201 select -1;
+#X text 60 38 A funcao retorna apenas a parte inteira do sorteio de
+paredes;
+#X obj 102 274 int;
+#X connect 0 0 1 0;
+#X connect 1 0 19 0;
+#X connect 2 0 21 0;
+#X connect 3 0 0 0;
+#X connect 5 0 0 1;
+#X connect 7 0 1 1;
+#X connect 9 0 1 2;
+#X connect 11 0 2 1;
+#X connect 17 0 2 0;
+#X connect 17 1 13 0;
+#X connect 19 1 17 0;
+#X connect 21 0 15 0;

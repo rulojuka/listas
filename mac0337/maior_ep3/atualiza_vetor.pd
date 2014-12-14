@@ -1,4 +1,4 @@
-#N canvas 359 153 619 364 10;
+#N canvas 355 163 619 364 10;
 #X obj 89 99 inlet;
 #X obj 147 103 inlet;
 #X text 85 75 Valor;
