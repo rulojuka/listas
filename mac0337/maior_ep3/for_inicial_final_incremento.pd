@@ -1,4 +1,4 @@
-#N canvas 251 82 516 493 10;
+#N canvas 249 82 516 493 10;
 #X obj 96 87 inlet;
 #X obj 145 87 inlet;
 #X obj 191 87 inlet;
@@ -26,10 +26,11 @@
 #X obj 13 167 r PARA_UZI;
 #X msg 13 187 break;
 #X obj 96 354 outlet;
+#X obj 27 110 t b b;
 #X connect 0 0 18 0;
 #X connect 1 0 13 0;
 #X connect 2 0 17 0;
-#X connect 3 0 9 0;
+#X connect 3 0 26 0;
 #X connect 9 0 12 0;
 #X connect 10 0 16 0;
 #X connect 11 2 19 0;
@@ -51,3 +52,5 @@
 #X connect 21 0 22 0;
 #X connect 23 0 24 0;
 #X connect 24 0 11 0;
+#X connect 26 0 9 0;
+#X connect 26 1 20 0;
