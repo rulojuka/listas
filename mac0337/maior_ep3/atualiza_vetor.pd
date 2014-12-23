@@ -1,4 +1,4 @@
-#N canvas 167 219 349 307 10;
+#N canvas 165 224 414 335 10;
 #X obj -52 80 inlet;
 #X obj -10 79 inlet;
 #X text -52 53 Valor;
@@ -7,7 +7,7 @@
 #X obj 63 78 inlet;
 #X obj 17 211 tabread;
 #X obj -55 259 tabwrite;
-#X text -71 9 Funciona como o tabwrite (Inlet valor: quente \, inlet
+#X text -51 11 Funciona como o tabwrite (Inlet valor: quente \, inlet
 indice: frio);
 #X msg 63 101 set \$1;
 #X text -13 52 Indice;
