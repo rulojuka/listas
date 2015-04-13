@@ -1,0 +1,12 @@
+# Latex
+.gitignore
+*.aux
+*.out
+*.toc
+*.pdf
+*.log
+tmp
+temp.tex
+*.swp
+*~
+.*
