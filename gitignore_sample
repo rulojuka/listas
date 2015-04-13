@@ -5,6 +5,8 @@
 *.toc
 *.pdf
 *.log
+*.nav
+*.snm
 tmp
 temp.tex
 *.swp
