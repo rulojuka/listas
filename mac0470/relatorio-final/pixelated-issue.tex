@@ -1,0 +1,9 @@
+\subsection*{\underline{Issue}:}
+O projeto está no Github, e utiliza o issue tracker do mesmo, buscando lá encontramos a seguinte issue (que na verdade se trata de uma feature request) e trabalhamos nela: https://github.com/pixelated-project/pixelated-user-agent/issues/384
+Resumindo, pede-se para implementar float labels (mais informações aqui http://bradfrost.com/blog/post/float-label-pattern) tanto para o Subject quanto para o Body na hora de compor uma mensagem/editar um rascunho.
+Apesar de ser uma feature pequena, ela nos exigiu uma boas horas de hacking, pois precisamos entender a estrutura do código do Pixelated para saber aonde fazer as modificações.
+    Tivemos que mexer com o HTML, com o CSS e com o Javascript, portanto tivemos que modificar 4 arquivos.
+Primeiramente nos preocupamos simplesmente em fazer a feature funcionar, depois, quando conseguimos, tivemos que refatorar o código para ficasse organizado e de boa qualidade, para podermos submetê-lo. Nesse momento tivemos dificuldade com a parte Javascript, pois essa parte do pixelated possui um estrutura bastante complexa.
+O processo de submissão foi o seguinte: fizemos um fork do projeto dentro do Github, em seguida clonamos esse fork do repositorio para nossa maquina, criamos uma nova branch para trabalhar, alteramos o código, fizemos o commit, fizemos o push e por ultimo fizemos o pull request, requisitando o merge da nossa branch com o projeto original.
+Surpreendentemente, recebemos feedback logo em seguida, em questão de minutos, já nos sugerindo alterações para melhorar a qualidade do código: renomear um selector CSS e mover uma função Javascript que criamos para outro arquivo.
+    Não houve tempo suficiente para fazer essas alterações antes da escrita desse relatório, mas faremos assim que possível, para que nossa contribuição seja incluída no Pixelated.
