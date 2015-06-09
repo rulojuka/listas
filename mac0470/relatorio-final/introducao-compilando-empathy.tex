@@ -4,29 +4,33 @@ Iniciamos o processo de compilação em 3 distribuições diferentes (ArchLinux,
 Debian e Ubuntu) e tivemos muita dificuldade em todas elas.
 
 Como o Empathy faz parte do projeto Gnome, ele possui várias dependências:
-
 \begin{lstlisting}[language=bash]
 	gnome-common, gettext, libglib2.0-dev, gtk-doc-tools, libxml2-dev, libtelepathy-glib-dev, libmissioncontrol-client-dev, libtelepathy-farsight-dev, libx11-dev, libgtk2.0-dev, libice-dev{a}, libcanberra-gtk-dev, libgstreamer-plugins-base0.10-dev, libebook1.2-dev, libnotify-dev, libunique-dev, libgnome-keyring-dev, libtelepathy-logger-dev, libwebkitgtk-3.0-dev, libgnutls-dev, libfolks-telepathy-dev, libcanberra-gtk3-dev, libgcr-3-dev, gsettings-desktop-schemas-dev
 \end{lstlisting}
-
-Primeira tentativa:
-Faltando:
+Na primeira tentativa de compilação faltaram as seguintes dependências:
+\begin{lstlisting}[language=bash]
   libyelp-dev yelp-tools -> itstool{a} libxslt1-dev{a} libyelp-dev yelp-tools zip{a}
   libsecret-1
-    Velhas:
-  {glib-2.0,gio-2.0} >= 2.33.3  -> 2.32.4 encontrado
+\end{lstlisting}
+    E essas outras estavam em versões antigas:
+\begin{lstlisting}[language=bash]
+  {glib-2.0,gio-2.0} >= 2.33.3 -> 2.32.4 encontrado
   telepathy-glib >= 0.22.0 -> 0.18.2 encontrado
-       gtk+-3.0 >= 3.5.1 -> 3.4.2 encontrado
-glib-2.33.3 -> libffi-dev (3.0.10-3)
-gtk+-3.6.0 -> glib-2.0 >= 2.33.1 -> 2.32.4 encontrado
-       -> atk >= 2.5.3 -> 2.4.0 encontrado
-Segunda tentativa:
-O configure passou nos testes para   gerar o primeiro binário mas falhou no segundo:
-    Faltando:
+  gtk+-3.0 >= 3.5.1 -> 3.4.2 encontrado
+  	glib-2.33.3 -> libffi-dev (3.0.10-3)
+  	gtk+-3.6.0 -> glib-2.0 >= 2.33.1 -> 2.32.4 encontrado
+               -> atk >= 2.5.3 -> 2.4.0 encontrado
+\end{lstlisting}
+Na segunda tentativa o \texttt{configure} passou nos testes para gerar o
+primeiro binário mas falhou no segundo:
+Faltaram as seguintes dependências:
+\begin{lstlisting}[language=bash]
 gee-0.8
 libpulse-mainloop-glib
 libpulse
-Velhas:
+\end{lstlisting}
+E essas outras estavam em versões antigas:
+\begin{lstlisting}[language=bash]
 folks >= 0.9.5 -> 0.6.9 encontrado
 folks-telepathy >= 0.9.5 -> encontrado 0.6.9
 glib-2.0 >= 2.37.6' -> 2.33.3 encontrado
@@ -35,12 +39,23 @@ gio-unix-2.0 >= 2.37.6 -> 2.33.3 encontrado
 telepathy-glib >= 0.23.2 -> 0.22.0 encontrado
 telepathy-logger-0.2 >= 0.8.0 -> 0.4.0 encontrado
 gtk+-3.0 >= 3.9.4 -> 3.6.0 encontrado
-webkitgtk-3.0 >= 1.9.1 -> 1.8.1 encontrado***
+webkitgtk-3.0 >= 1.9.1 -> 1.8.1 encontrado
+\end{lstlisting}
 
 Além das mesmas complicações, agora tivemos que compilar o webkitgtk-3.0.
-Essa dependências causou muito desgaste. Em particular, neste ponto, descobrimos que deveríamos ter tido instalada uma biblioteca chamada VALA antes de todo o processo de instalação.
-Compilamos o vala necessário, recompilamos todas as dependências, e tentamos compilar o webkitgtk-3.0. Durante a compilação, ocorreu um erro dizendo que os arquivos vala estão inconsistentes (redeclaração de classe). A partir desse momento, deixamos o projeto empathy.
-É necessário conhecer bem o sistema operacional para tentar compilar o Empathy, isso está comentado na seção 5.4.
+Essa dependências causou muito desgaste. Em particular, neste ponto, descobrimos
+que deveríamos ter instalado uma biblioteca chamada VALA antes de iniciar todo o
+processo de compilação.
+Compilamos o VALA necessário, recompilamos todas as dependências, e tentamos
+compilar o webkitgtk-3.0. Durante a compilação, ocorreu um erro dizendo que os
+arquivos VALA estão inconsistentes (redeclaração de classe). Nesse ponto ficamos
+bastante decepcionados com o projeto.
 
-Existem alguns projetos do gnome que fazem parte do gnome-love, uma iniciativa que existe para ajudar iniciantes que queiram começar a colaborar com projetos do gnome. Uma das ações desse projeto é a de marcar bugs adequados para iniciantes com a tag gnome-love.
-Quando fomos pesquisar bugs do Empathy no bugtracker deles, buscamos por bugs com a tag gnome-love e para nossa surpresa e desapontamento, só encontramos 3. Esse foi mais um dos motivos que nos desmotivou a trabalhar no Empathy.
+Além disso, existe uma iniciativa para ajudar iniciantes que queiram começar
+a colaborar com projetos do gnome. Uma das ações dessa iniciativa é a de marcar
+bugs adequados para iniciantes com a tag gnome-love. Quando fomos pesquisar bugs
+do Empathy no bugtracker do projeto, procuramos pela tag gnome-love e, para
+nossa surpresa e desapontamento, encontramos apenas três bugs com essa tag.
+
+Esse conjunto de motivos nos levou a abandonar o projeto Empathy e a procurar
+por um projeto mais amigável para desenvolvedores iniciantes.
