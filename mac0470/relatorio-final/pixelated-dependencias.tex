@@ -1,10 +1,29 @@
 \subsection*{\underline{Dependências}:}
 
-O pixelated-user-agent roda dentro de uma máquina virtual (para que haja uma maior segurança).
-    Ele possui como dependência o virtualbox e o vagrant, um software que cria e configura ambientes virtuais para desenvolvimento de forma automática. Ele pode ser visto como um encapsulador e gerenciador de instâncias virtualizadoras como VirtualBox, VMware, KVM, etc.
-Existem diversas outras dependências também, mas essas são automaticamente gerenciadas dentro da máquina virtual através do vagrant, portanto, usuários e mesmo desenvolvedores não precisam se preocupar com elas.
-Quanto aos conhecimentos necessários para trabalhar no Pixelated:
-Depende no que for trabalhar. No nosso caso, implementamos uma feature da interface web, portanto era necessario conhecimentos de desenvolvimento web, como HTML, Javascript e CSS.
-Para enviar as contribuiçoes é necessario saber usar o git, pois o projeto esta hospedado no Github.
+O Pixelated é formado por vários projetos pequenos, que implementam desde a
+interface gráfica do \emph{webmail} até a plataforma LEAP que gerencia a busca de
+chaves públicas e a criptografia final. Decidimos trabalhar no
+\texttt{pixelated-user-agent}, que é o cliente de email, interface direta com o
+usuário final.
 
-%TODO <Godz, aqui dá pra colocar a descriçao dos repositórios do Pixelated, ou uma versao resumida, aquilo que tá no diario; talvez de pra colocar mais coisas do diario aqui também, voce que sabe>
+O \texttt{pixelated-user-agent} roda dentro de uma máquina virtual (para facilitar
+uma configuração de alta segurança) e utiliza o \texttt{virtualbox} e o
+\texttt{vagrant} para criar esse ambiente virtual de forma automatizada.
+O \texttt{vagrant} pode ser visto como um encapsulador e gerenciador de
+instâncias virtualizadoras como \texttt{virtualbox}, \texttt{VMware},
+\texttt{KVM}, etc.
+
+Existem diversas outras dependências mas essas são automaticamente gerenciadas
+dentro da máquina virtual gerada através do \texttt{vagrant}. Portanto nem
+usuários e nem
+mesmo desenvolvedores precisam se preocupar com elas, a não ser que estejam
+trabalhando exatamente na parte da virtualização.
+
+Como decidimos trabalhar no \texttt{webmail}, os conhecimentos necessários
+incluíram o \texttt{vagrant} (necessário para subir o ambiente) e conhecimentos
+gerais de
+desenvolvimento web, como \texttt{HTML}, \texttt{Javascript} e \texttt{CSS}.
+
+Outros conhecimentos úteis são o git, que é usado como controle de versão,
+e também o \texttt{IRC}, que é bastante ativo no canal \texttt{\#pixelated} na rede
+\texttt{FreeNode}.
