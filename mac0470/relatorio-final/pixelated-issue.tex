@@ -1,9 +1,58 @@
-\subsection*{\underline{Issue}:}
-O projeto está no Github, e utiliza o issue tracker do mesmo, buscando lá encontramos a seguinte issue (que na verdade se trata de uma feature request) e trabalhamos nela: https://github.com/pixelated-project/pixelated-user-agent/issues/384
-Resumindo, pede-se para implementar float labels (mais informações aqui http://bradfrost.com/blog/post/float-label-pattern) tanto para o Subject quanto para o Body na hora de compor uma mensagem/editar um rascunho.
-Apesar de ser uma feature pequena, ela nos exigiu uma boas horas de hacking, pois precisamos entender a estrutura do código do Pixelated para saber aonde fazer as modificações.
-    Tivemos que mexer com o HTML, com o CSS e com o Javascript, portanto tivemos que modificar 4 arquivos.
-Primeiramente nos preocupamos simplesmente em fazer a feature funcionar, depois, quando conseguimos, tivemos que refatorar o código para ficasse organizado e de boa qualidade, para podermos submetê-lo. Nesse momento tivemos dificuldade com a parte Javascript, pois essa parte do pixelated possui um estrutura bastante complexa.
-O processo de submissão foi o seguinte: fizemos um fork do projeto dentro do Github, em seguida clonamos esse fork do repositorio para nossa maquina, criamos uma nova branch para trabalhar, alteramos o código, fizemos o commit, fizemos o push e por ultimo fizemos o pull request, requisitando o merge da nossa branch com o projeto original.
-Surpreendentemente, recebemos feedback logo em seguida, em questão de minutos, já nos sugerindo alterações para melhorar a qualidade do código: renomear um selector CSS e mover uma função Javascript que criamos para outro arquivo.
-    Não houve tempo suficiente para fazer essas alterações antes da escrita desse relatório, mas faremos assim que possível, para que nossa contribuição seja incluída no Pixelated.
+\subsection*{\underline{Funcionalidade adicionada}:}
+
+Buscando por \texttt{issues} no
+\href{https://github.com/pixelated-project/pixelated-user-agent/issues/}
+{GitHub}, encontramos um bugtracker bastante organizado, com tags para
+diferentes estágios de desenvolvimento (backlog, ready, development, etc),
+áreas de desenvolvimento (design, encryption, etc) e dificuldade (beginners).
+
+A \texttt{issue} escolhida foi a seguinte:
+\href{https://github.com/pixelated-project/pixelated-user-agent/issues/384}
+{Keep input label always present when composing an email}. Resumindo, pede-se
+para implementar float labels (mais informações
+\href{http://bradfrost.com/blog/post/float-label-pattern}{aqui} ) tanto para o
+Subject quanto para o Body na hora de compor uma mensagem/editar um rascunho.
+
+Apesar de ser uma feature pequena, ela nos exigiu muitas horas de hacking pois
+precisamos entender a estrutura do código do Pixelated para saber onde fazer as
+modificações. Tivemos que alterar o HTML, o CSS e o Javascript das seções de
+composição do email e alteramos, no total, 4 arquivos.
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.75\linewidth]{src/issue1.png}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{src/issue2.png}
+\end{subfigure}
+\caption*{Esboço da funcionalidade}
+\end{figure}
+
+Primeiramente nos preocupamos simplesmente em fazer a feature funcionar.
+Nesse passo, tivemos dificuldade com o código Javascript pois ele
+possui um estrutura bastante complexa no Pixelated nenhum dos integrantes do
+grupo tinha experiência com a organização de código defront-end.
+
+Depois, com a funcionalidade pronta, refatoramos o código para organizá-lo
+corretamente e melhorar sua qualidade antes de submetê-lo para o repositório oficial.
+
+O processo de submissão foi bem simples. Os passos foram os seguintes:
+  \begin{itemize}
+    \item Fizemos um fork do repositório oficial no GitHub.
+    \item Clonamos esse fork para a nossa máquina.
+    \item Criamos uma branch local.
+    \item Fizemos um commit com o código da funcionalidade
+    \item Subimos esse commit para a branch separada no nosso repositório remoto
+    \item Fizemos um pull request da branch de trabalho do nosso repositório
+    para a branch master do repositório oficial.
+  \end{itemize}
+
+Como já dito anteriormente, recebemos feedback logo em seguida, em questão de
+minutos, com sugestões de melhorias para o código como renomear um seletor CSS
+e mover uma função Javascript para o arquivo correto. Não houve tempo suficiente
+para fazer aplicarmos essas alterações antes da escrita desse relatório, mas
+as implementaremos assim que possível para que nossa contribuição seja incluída
+no Pixelated.
