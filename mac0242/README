@@ -1,0 +1,45 @@
+Alunos:
+	6850476 - Alessandro Palmeira
+	7577598 - João Marco Maciel da Silva
+Projeto disponível em https://gitorious.org/aventuralabprog2/aventuralabprog2
+
+========================================================================================
+  INSTALL AND RUN
+========================================================================================
+  crie uma pasta chamada "Example" dentro da pasta do projeto
+  rode o "make" no terminal
+  rode "make run" no terminal
+
+========================================================================================
+  CHANGE LOG
+========================================================================================
+
+version 0.01
+1ª fase:
+	Todo o código da primeira fase foi escrito na classe Motor.java
+	Falta:
+	 * limpar e refatorar código
+	 * imprimir as saídas dos lugares.
+	 
+2ª fase:
+	1 - Está inclusa no arquivo história
+	2 - Incluso na função de inicialização do Motor
+	3 - Adicionada na classe Lugar a função MostraObjetos que já utiliza a descrição
+curta ao invés de utilizar os artigos indefinidos.
+	4 - 
+	5 - 
+	6 - 
+	7 - 
+	8 - Em progresso.
+	
+========================================================================================
+  CONTROLE DE VERSÕES
+========================================================================================
+	A versão mais atualizada pode sempre ser baixada pelo git utilizando o comando 
+"git pull origin master" no diretório raiz da aventura ou clonado diretamente com o 
+comando "git clone git://gitorious.org/aventuralabprog2/aventuralabprog2.git" em um
+novo diretório.
+	No momento da correção, provavalmente alguns erros terão sido corrigidos da versão 
+entregue no paca e novas funcionalidades adicionadas. Além disso, o comando "git log" 
+também pode ser usado para verificar o histórico (incluindo as datas) de todas as 
+adições ao projeto.
