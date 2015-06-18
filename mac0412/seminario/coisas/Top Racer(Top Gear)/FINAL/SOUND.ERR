@@ -1,0 +1,9 @@
+Sound-Cpu Relocatable Macro Assembler  version 1.00
+Copyright (c) 1991   Nintendo of America Inc.
+Copyright (c) 1991   Intelligent Systems Co.,ltd.
+  548  0840  00 00 00                MOV     !CONT,A         ; timer stop
+***Undefined Symbol*********
+  553  084C  00 00 00                MOV     !CONT,A
+***Undefined Symbol*********
+Errors =     2
+  6297/164736 bytes Symbol Space Used 

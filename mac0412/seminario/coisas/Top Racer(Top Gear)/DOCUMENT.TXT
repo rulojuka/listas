@@ -1,0 +1,245 @@
+
+This document explaining sound objects. (".asm" and ".sod" file)
+Sound objects installing to following packed files.
+
+1) BXB.ZIP (FX1-BXB : Musical Instruments Sound object used game "BOMBUZAL")
+2) LGN.ZIP (FX3-LGN : Musical Instruments Sound object used game "LAGOON")
+3) DRK.ZIP (FX2-DRK : Musical Instruments Sound object used game "DRAKKHEN")
+
+sampled from 
+	D-10   (Roland LA synthesizer)
+	W-30   (Roland Music Work Station)
+	DX-7   (YAMAHA FM synthesizer)
+	DX-21  (YAMAHA FM synthesizer)
+	TR-707 (Roland rhythm composer)
+	R-8    (Roland thythm composer)
+	D-220  (Roland PCM sound module)
+
+1) BXB.ZIP (packed file size = 62424 bytes)
+
+name of so	size	compile	usage
+-----------------------------------------------------------------------
+bdr		8372	1971	bass drum
+cym_w30		10648	1782	W-30 cymbal
+dune		900	153	dual tune (lead)
+ep_w30		676	90	W-30 electric piano
+marimba		5332	1413	marimba
+moog_bas	5522	783	mini-moog like bass
+p3tom		2192	513	pitch 3 tom
+p3tom2		2192	513	pitch 3 tom (tuned)
+saw1		646	81	saw tooth 1
+saw12		646	81	saw tooth 1 ver.2
+setchh		3974	738	closed high hat (no compress)
+setchh50	1680	369	closed high hat (compress 50%)
+sin		750	108	sin wave
+snap75		1872	423	snap finger
+ss50		10384	2817	snare drum (compress 50%)
+synbass		2308	279	stnth bass
+th88		1872	423	tom high tuned
+tr707_sn	10384	2817	TR-707 snare (no compress)
+tr707s25	9392	2538	TR-707 snare (compress 25%)
+voice		2370	567	human voice
+voice2		2370	567	human voice (tuned)
+
+
+2) LGN.ZIP (packed file size = 142305 bytes)
+
+name of so	size	compile	usage
+-----------------------------------------------------------------------
+ac_piano	6290	882	accoustic piano
+bass		2308	279	bass
+clsd_h1		4400	1134	R-8 closed hi-hat
+crsh_c1		20400	5634	R-8 crash cymbal
+dist_w30	24688	3501	distorsion guitar
+dry_t3		9392	2538	R-8 dry tom
+dune		900	153	dual tune (lead)
+dune_s		900	153	dual tune short (lead)
+elec_org	962	162	electric organ
+ep_w30		676	90	electric piano
+fbass		2422	306	fletless bass
+fm01		706	90	DX-7 sound 1
+fm01h		752	99	DX-7 sound 1 high tuned
+fm01s		706	90	DX-7 sound 1 short
+fm02		962	162	DX-7 sound 2
+fm05		962	162	DX-7 sound 5
+fm06		964	162	DX-7 sound 6
+fm07		708	90	DX-7 sound 7
+fm07h		752	99	DX-7 sound 7 high tuned
+fm08		706	90	DX-7 sound 8
+fm09		962	162	DX-7 sound 9
+fm10		706	90	DX-7 sound 10
+fm13		4464	621	DX-7 sound 13
+fm14		5136	747	DX-7 sound 14
+fm14l		5136	747	DX-7 sound 14 long
+fm16		708	90	DX-7 sound 16
+fm18		708	90	DX-7 sound 18
+fm22		706	90	DX-7 sound 22
+fm23		708	90	DX-7 sound 23
+hallorg		1442	297	D-10 hall organ
+harpsi		708	90	D-10 harpsi boxes
+hb_high		752	99	D-10 harpsi boxes high tuned
+mncity50	8560	1179	D-10 Mid Night City (Romantic!)
+new_elec	580	54	DX-21 New electro
+open_h1		14384	3942	R-8 Open high hat
+pbas_w30	4464	621	W-30 Picked bass
+rimshot		2000	459	W-30 rim shot
+roomk150	5392	1413	R-8 room kick 1
+roomt3		12400	3384	R-8 room tom 3 (no compress)
+roomt350	9392	2538	R-8 room tom 3 (compress 50%)
+rvbs1		12400	3384	R-8 reverbed snare 1 (no compress)
+rvbs150		6384	1692	R-8 reverbed snare 1 (compress 50%)
+saw		750	108	saw tooth
+sawstrin	646	81	W-30 saw strings (De-tuned) SAW pad
+sftlead2	612	72	W-30 Soft lead 2
+sftlead3	612	72	W-30 Soft lead 3
+
+
+2) DRK.ZIP
+
+name of so	size	compile	usage
+-----------------------------------------------------------------------
+accordio	708	90	W-30 accordion
+add5_org	1922	432	D-10 Add 5th organ
+atomosph	22946	3213	D-10 nyron atomosphere
+bel_cr50	32176	4500	D-220 Bell cresta
+bgstr		9518	1431	D-10 back ground strings (no compress)
+bgstr50		5040	738	D-10 back ground strings (compress 50%)
+bgstr502	5040	738	D-10 back ground strings (tuned comp 50%)
+cowb_75		2896	711	W-30 cow bell (compress 75%)
+digi_vox	11854	1656	D-10 Voxy women sing
+di_vox50	5360	729	D-10 Voxy women sing (compress 50%)
+doom_t1		20400	5634	R-8 doom tom 1
+doomt150	10384	2817	R-8 doom tom 1 (compress 50%)
+harpw30		4428	594	W-30 harp
+impact_s	8400	2259	R-8 impact snare
+mandok50	5392	1413	R-8 mando kick 1 (compress 50%)
+open_s1		7376	1971	R-8 open snare 1
+panpipes	12428	1737	pan pipe
+panpi50		5616	765	pan pipe (compess 50%)
+pforgan		5136	747	D-10 PF organ 
+pizicato	60400	16884	W-30 pizicato
+pizic75		15376	4221	W-30 pizicato (compress 75%)
+pizic88		7888	2115	W-30 pizicato (compress 88%)
+room_k1		10384	2817	R-8 room kick 1 
+senseh88	15472	2169	5th sense horns (compress 88%)
+synbrass	12438	1611	synth brass
+t_piano		8648	1188	D-10 touch piano
+slead		612	72	soft lead original
+percep		10202	1404	D-10 percussion EP
+percep50	3696	486	D-10 percussion EP (compress 50%)
+
+
+most percussion instruments keynote is tuned "C3" (normal C)
+
+3c00h -- wave data top address table.
+3e00h -- ".sod" data table
+3f00h -- ".tan" data table
+4000h -- ".asm" wave data (ADPCM) table
+
+ex. sample.tan
+
+sn0:	equ	0
+
+p99:	equ	070h
+p90:	equ	060h
+p80:	equ	050h
+p70:	equ	040h
+p60:	equ	030h
+p50:	equ	020h
+p40:	equ	010h
+p20:	equ	000h
+
+v99:	equ	00fh
+v95:	equ	00eh
+v90:	equ	00dh
+v85:	equ	00ch
+v80:	equ	00bh
+v75:	equ	00ah
+v70:	equ	009h
+v65:	equ	008h
+v60:	equ	007h
+v55:	equ	006h
+v50:	equ	005h
+v45:	equ	004h
+v40:	equ	003h
+v30:	equ	002h
+v20:	equ	001h
+v10:	equ	000h
+
+gate:
+	db	050,101,127,152,178,203,229,252
+volt:
+	db	025,050,076,101,114,127,140,152,165,178,191,203,216,229,242,252
+
+
+This document explaining sound objects. (".asm" and ".sod" file)
+Sound objects installing to following packed files.
+
+TPREFF1.ZIP
+
+sampled from 
+	Out Run (coin up)
+	Turbo Out Run (coin up)
+
+TPREFF1.ZIP
+
+name of asm	size	compile	usage
+-----------------------------------------------------------------------
+BIGSPIN0 ASM    41319	6084	big spin the car (tuned c3)
+BIGSPIN1 ASM    20799	3042	(tuned c2)
+BIGSPIN2 ASM    10539	1521	(tuned c1)
+CRASH00  ASM    57195	8442	car crash the object (tuned c3)
+CRASH01  ASM    28683	4221	(tuned c2)
+CRASH02  ASM    14535	2115	(tuned c1)
+CRASH03  ASM     7407	1062	(tuned c1 ADPCM compress 50 percent)
+CRASH20  ASM   186255	27567	big crash (tuned c3)
+CRASH21  ASM    93267	13788	(tuned c2)
+CRASH22  ASM    46719	6894	(tuned c1)
+CRASH23  ASM    23499	3447	(tuned c1 ADPCM compress 50 percent)
+MOTOR    ASM     6327	909	Engine sound (tuned c3)
+PASSING0 ASM    87543	12942	Car passing dopler shift (tuned c3)
+PASSING1 ASM    43911	6471	(tuned c2)
+PASSING2 ASM    22095	3240	(tuned c1)
+SIDE     ASM     5463	783	tyre roar off side road (tuned c3)
+START0   ASM    38295	5634	start signal sound (tuned c3)
+START1   ASM    19287	2817	(tuned c2)
+START2   ASM     9783	1413	(tuned c1)
+TIRESPI2 ASM     7623	1098	tire spin (skid) (tuned c3 ADPCM compress)
+TIRESPIN ASM    15075	2196	(tuned c3 No compress)
+TURBO0   ASM    87543	12942	Nitro roar (tuned c3)
+TURBO1   ASM    43911	6471	(tuned c2)
+TURBO2   ASM    22095	3240	(tuned c1)
+TURBO3   ASM    11187	1620	(tuned c1 ADPCM compress 50 percent)
+WALL00   ASM   100935	14913	Engine sound inside tunnels (tuned c3)
+WALL01   ASM    50607	7461	(tuned c2)
+WALL02   ASM    25443	3735	(tuned c1)
+WALL20   ASM    28359	4167	Scrapping sound of side of tunnels (tuned c3)
+WALL21   ASM    14319	2088	(tuned c2)
+WALL22   ASM     7191	1035	(tuned c1)
+-----------------------------------------------------------------------
+
+c3 is controll-volume (CV --> height of sound). (a3 is 440Hz).
+
+Remaining following sound objects uploaded 2 or 3 days after.(via compu-serve)
+
+1) Engine reving at start of race.
+2) Cheer for end of race.
+
+If you need another sound samples , don't hesitate contact me.
+
+My opinion , following sound effects is making from normal musical instruments
+sound samples. (I think sampling is not better.)
+
+1) Refuelling noise.
+used saw.asm simple loop sound.
+2) Fuel low sound.
+3) Beep for selections in intro screen.
+used saw.asm simple beep sound.
+
+Best regards,
+
+
+Hiroyuki Masuno (23th Sep. / 1991) (Masuno sound service)
+
+
+

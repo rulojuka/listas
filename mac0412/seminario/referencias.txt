@@ -1,0 +1,35 @@
+História dos video-games:
+	
+	http://en.wikipedia.org/wiki/History_of_video_games
+	http://pt.wikipedia.org/wiki/Hist%C3%B3ria_dos_jogos_eletr%C3%B4nicos
+	http://en.wikipedia.org/wiki/Cathode_ray_tube_amusement_device
+	http://en.wikipedia.org/wiki/Magnavox
+Vários links:
+	http://ask.slashdot.org/story/12/08/07/1425221/ask-slashdot-understanding-the-snes
+Hardware geral:
+	http://www.caitsith2.com/snes/
+	http://digitalfantasy.angelfire.com/snes-hardware-specifications.html
+	http://en.wikipedia.org/wiki/Super_Nintendo_Entertainment_System_technical_specifications
+	http://de.academic.ru/dic.nsf/dewiki/1219157
+	http://pikensoft.com/old/docs/SNES_chip_labels.txt
+	http://nocash.emubase.de/fullsnes.txt
+Especificações Técnicas de todo o SNES:
+	http://wiki.superfamicom.org/snes/files/snesbase.7z
+Sound:
+	http://en.wikipedia.org/wiki/Nintendo_S-SMP
+	http://snesmusic.org/v2
+	http://snesmusic.org/files/spc700.html
+	http://web.archive.org/web/20090106230547/http://www.alpha-ii.com/snesmusic/files/spc700_apu_manual.txt
+Processor:
+	http://en.wikipedia.org/wiki/WDC_65816/65802
+	Complete datasheet:
+		http://westerndesigncenter.com/wdc/documentation/w65c816s.pdf
+	http://en.wikibooks.org/wiki/6502_Assembly
+PPU:
+	http://emu-docs.org/Super%20NES/General/snesdoc.html
+Programming:
+	http://en.wikibooks.org/wiki/Super_NES_Programming
+	http://wiki.superfamicom.org/snes/show/HomePage
+ROM Hacking:
+	http://www.romhacking.net
+	http://www.romhacking.net/start/

@@ -1,0 +1,25 @@
+
+;-------------------------------------------------------------------
+;                      Sound Sample Driver
+;
+;-------------------------------------------------------------------
+
+
+TEST	GROUP	0
+	PUBALL
+
+	INCLUDE		EQU.ASM		; ram equ table
+	INCLUDE		GAKEQU.ASM	; gakufu data define
+
+	ORG	$0800
+	INCLUDE		MAIN.ASM	; sound main routine
+	INCLUDE		GATEVOL.ASM	; gate-time & velocity data
+
+	INCLUDE		GAKUFU.GAK	; gakufu data
+;	INCLUDE		GAKUFU.GAK
+	INCLUDE		WAVES.SOD
+
+	END
+
+
+
