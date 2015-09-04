@@ -1,0 +1,4 @@
+Links úteis:
+
+rosettacode.org/wiki/Cholesky_decomposition
+http://www.sci.utah.edu/~wallstedt/LU.htm
