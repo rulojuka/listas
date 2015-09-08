@@ -2,6 +2,7 @@
 #include<math.h>
 
 #define nmax 100
+#define EPS 1E-9
 
 void le_entrada(int *n, double A[][nmax], double B[]);
 void imprime_matriz(int n, double A[][nmax]);
@@ -10,15 +11,33 @@ int cholcol(int n, double A[][nmax]);
 int cholcol_opt(int n, double A[][nmax]);
 int cholrow(int n, double A[][nmax]);
 
+int is_zero(double x);
+int forwcol (int n, double A[][nmax], double b[]);
+int forwrow (int n, double A[][nmax], double b[]);
+
 int main(){
   int n;
   double A[nmax][nmax];
-  double B[nmax];
-  le_entrada(&n, A, B);
+  double b[nmax];
+  int i;
+  le_entrada(&n, A, b);
+
+
+
+  /* Cholesky */
+  /*
   printf("Antes do Cholesky\n");
   imprime_matriz(n, A);
   cholrow(n, A);
   printf("Depois do Cholesky\n");
+  */
+
+  /* Forward subtitution */
+  forwcol(n,A,b);
+  for(i=0;i<n;i++){
+    printf("x[%d]: %lf\n",i+1,b[i]);
+  }
+
   imprime_matriz(n, A);
   return 0;
 }
@@ -163,3 +182,58 @@ int cholrow(int n, double A[][nmax]){
   }
   return 0;
 }
+
+int is_zero(double x){
+  return fabs(x) < EPS;
+}
+
+int forwcol (int n, double A[][nmax], double b[]){
+  int i,j;
+  for(j=0;j<n;j++){
+    if( is_zero(A[j][j]) )
+      return -1;
+    b[j] /= A[j][j];
+
+    for(i=j+1;i<n;i++){
+      b[i] -= A[i][j] * b[j];
+    }
+  }
+  return 0;
+}
+
+int forwrow (int n, double A[][nmax], double b[]){
+  int i,j;
+  for(i=0;i<n;i++){
+    for(j=0;j<i;j++){
+      b[i] -= A[i][j] * b[j];
+    }
+    if( is_zero(A[i][i]) )
+      return -1;
+    b[i] /= A[i][i];
+  }
+  return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
