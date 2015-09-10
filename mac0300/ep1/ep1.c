@@ -6,6 +6,9 @@
 
 void le_entrada(int *n, double A[][nmax], double B[]);
 void imprime_matriz(int n, double A[][nmax]);
+void imprime_vetor(int n, double b[]);
+void transpose(int n, double A[][nmax]);
+void swap(double *x, double *y);
 
 int cholcol(int n, double A[][nmax]);
 int cholcol_opt(int n, double A[][nmax]);
@@ -14,15 +17,19 @@ int cholrow(int n, double A[][nmax]);
 int is_zero(double x);
 int forwcol (int n, double A[][nmax], double b[]);
 int forwrow (int n, double A[][nmax], double b[]);
+int backcol (int n, double A[][nmax], double b[], int trans);
+int backrow (int n, double A[][nmax], double b[], int trans);
+
+int solveCholeskyCol (int n, double A[][nmax], double b[]);
+int solveCholeskyRow (int n, double A[][nmax], double b[]);
+
+
 
 int main(){
   int n;
   double A[nmax][nmax];
   double b[nmax];
-  int i;
   le_entrada(&n, A, b);
-
-
 
   /* Cholesky */
   /*
@@ -33,15 +40,29 @@ int main(){
   */
 
   /* Forward subtitution */
+  /*
   forwcol(n,A,b);
-  for(i=0;i<n;i++){
-    printf("x[%d]: %lf\n",i+1,b[i]);
-  }
+  imprime_vetor(n,b);
+  */
 
+
+  /* Resolve usando Cholesky */
+  printf("A eh:\n");
   imprime_matriz(n, A);
+  printf("b eh:\n");
+  imprime_vetor(n,b);
+
+  /* orientado a linhas*/
+  /*solveCholeskyRow(n,A,b);*/
+
+  /* orientado a colunas*/
+  solveCholeskyCol(n,A,b);
+
+  printf("x eh:\n");
+  imprime_vetor(n,b);
+
   return 0;
 }
-
 
 void le_entrada(int *n, double A[][nmax], double B[]){
   int i,j,k;
@@ -69,6 +90,28 @@ void imprime_matriz(int n, double A[][nmax]){
   }
 }
 
+void imprime_vetor(int n, double b[]){
+  int i;
+  for(i=0;i<n;i++){
+    printf("%lf\n",b[i]);
+  }
+}
+
+void transpose(int n, double A[][nmax]){
+  int i,j;
+  printf("transpondo\n");
+  for(i=0;i<n;i++)
+    for(j=i+1;j<n;j++)
+      swap(&A[i][j], &A[j][i]);
+}
+
+void swap(double *x, double *y){
+  double aux;
+  aux = *x;
+  *x = *y;
+  *y = aux;
+}
+
 /*
  * Implementa a decomposição de Cholesky com uma implementação orientada a
  * colunas que utiliza somente a parte triangular inferior da matriz A e retorna
@@ -92,7 +135,7 @@ int cholcol(int n, double A[][nmax]){
     for(j=0;j<k;j++){
       A[k][k] -= A[k][j] * A[k][j]; /* 1 FLOP */
     }
-   
+
     /* Verifica se matriz é definida-positiva */
     if(A[k][k] <= 0)
       return -1;
@@ -100,7 +143,7 @@ int cholcol(int n, double A[][nmax]){
       A[k][k] = sqrt(A[k][k]);
 
     /* Calcula R[i][k] para i>k */
-    for(i=k+1;i<n;i++){ 
+    for(i=k+1;i<n;i++){
       for(j=0;j<k;j++){
         A[i][k] -= A[i][j] * A[k][j]; /* 1 FLOP */
       }
@@ -120,19 +163,19 @@ int cholcol_opt(int n, double A[][nmax]){
 
     soma = 0.0;
     for(j=0;j<k;j++){
-      soma += A[k][j] * A[k][j]; 
+      soma += A[k][j] * A[k][j];
     }
     A[k][k] -= soma;
-   
+
     if(A[k][k] <= 0)
       return -1;
     else
       diagonal_atual = A[k][k] = sqrt(A[k][k]);
 
-    for(i=k+1;i<n;i++){ 
+    for(i=k+1;i<n;i++){
       soma = 0.0;
       for(j=0;j<k;j++){
-        soma += A[i][j] * A[k][j]; 
+        soma += A[i][j] * A[k][j];
       }
       A[i][k] = (A[i][k] - soma) / diagonal_atual;
     }
@@ -163,7 +206,7 @@ int cholrow(int n, double A[][nmax]){
     /* Calcula R[i][j] para j<i */
     for(j=0;j<i;j++){
       for(k=0;k<j;k++){
-        A[i][j] -= A[i][k]*A[j][k]; /* 1 FLOP */ 
+        A[i][j] -= A[i][k]*A[j][k]; /* 1 FLOP */
       }
       A[i][j] /= A[j][j]; /* 1 FLOP */
     }
@@ -214,26 +257,96 @@ int forwrow (int n, double A[][nmax], double b[]){
   return 0;
 }
 
+int backcol(int n, double A[][nmax], double b[], int trans){
+  int i,j;
+  if(trans == 0)
+  {
+    for(j=n-1;j>=0;j--){
+      if( is_zero(A[j][j]) )
+        return -1;
+      b[j] /= A[j][j];
+      for(i=j-1;i>=0;i--){
+        b[i] -= A[i][j] * b[j];
+      }
+    }
+  }
+  else{
+    for(j=n-1;j>=0;j--){
+      for(i=j+1;i<n;i++){
+        b[j] -= A[i][j] * b[i];
+      }
+      if( is_zero(A[j][j]) )
+        return -1;
+      b[j] /= A[j][j];
+    }
+  }
+  return 0;
+}
 
+int backrow (int n, double A[][nmax], double b[], int trans){
+  int i,j;
 
+  if(trans==0){
+    for(i=n-1;i>=0;i--){
+      for(j=i+1;j<n;j++){
+        b[i] -= A[i][j] * b[j];
+      }
+      if( is_zero(A[i][i]) )
+        return -1;
+      b[i] /= A[i][i];
+    }
+  }
+  else{
+    for(i=n-1;i>=0;i--){
+      if( is_zero(A[i][i]) )
+        return -1;
+      b[i] /= A[i][i];
+      for(j=0;j<i;j++){
+        b[j] -= A[i][j] * b[i];
+      }
+    }
+  }
+  return 0;
+}
 
+int solveCholeskyCol (int n, double A[][nmax], double b[]){
+  if( cholcol(n,A) == -1 )
+    return -1;
+  /* Agora A guarda o fator de Cholesky */
 
+  if(forwcol(n,A,b) == -1)
+    return -1;
+  /* Agora b guarda y, tal que C^t * y = b*/
 
+  /* Migué para testar o backcol com trans=0 */
+/*
+  transpose(n,A);
+  if(backcol(n,A,b,0) == -1)
+    return -1;
+*/
+  if(backcol(n,A,b,1) == -1)
+    return -1;
+  /* Agora b guarda x tal que A * x = b */
+  return 0;
+}
 
+int solveCholeskyRow (int n, double A[][nmax], double b[]){
+  if( cholrow(n,A) == -1 )
+    return -1;
+  /* Agora A guarda o fator de Cholesky */
 
+  if(forwrow(n,A,b) == -1)
+    return -1;
+  /* Agora b guarda y, tal que C^t * y = b*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* Migué para testar o backrow com trans=0 */
+/*
+  transpose(n,A);
+  if(backrow(n,A,b,0) == -1)
+    return -1;
+*/
+  if(backrow(n,A,b,1) == -1)
+    return -1;
+  /* Agora b guarda x tal que A * x = b */
+  return 0;
+}
