@@ -21,7 +21,7 @@ int main(){
     strcat(filename,atual);
     strcat(filename,".dat");
 
-    printf("filename atual eh --%s--\n",filename);
+    printf("Gerando %s\n",filename);
 
     srand(853);
 
