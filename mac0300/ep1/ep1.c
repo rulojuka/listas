@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<math.h>
 
-#define nmax 100
+#define nmax 1000
 #define EPS 1E-9
 
 void le_entrada(int *n, double A[][nmax], double B[]);
@@ -47,20 +47,25 @@ int main(){
 
 
   /* Resolve usando Cholesky */
+  /*
   printf("A eh:\n");
   imprime_matriz(n, A);
   printf("b eh:\n");
   imprime_vetor(n,b);
-
+*/
   /* orientado a linhas*/
-  /*solveCholeskyRow(n,A,b);*/
+  if( solveCholeskyRow(n,A,b) == 0 ){
 
   /* orientado a colunas*/
-  solveCholeskyCol(n,A,b);
+  /*solveCholeskyCol(n,A,b);*/
 
   printf("x eh:\n");
   imprime_vetor(n,b);
 
+  }
+  else{
+    printf("Matriz nao pode ser resolvida usando Cholesky.\n");
+  }
   return 0;
 }
 
@@ -72,11 +77,11 @@ void le_entrada(int *n, double A[][nmax], double B[]){
   linhas = (*n)*(*n);
   for(k=0;k<linhas;k++){
     scanf("%d %d %lf ",&i,&j,&x);
-    A[i-1][j-1] = x;
+    A[i][j] = x;
   }
   for(k=0;k<(*n);k++){
     scanf("%d %lf ",&i,&x);
-    B[i-1]=x;
+    B[i]=x;
   }
 }
 
