@@ -3,7 +3,7 @@ CFLAGS = -Wall -ansi -pedantic -lm
 
 I_DIR = include
 
-OBJS = lib_ep1.o io.o constantes.o
+OBJS = definido_positivo.o io.o constantes.o
 
 all: ep1.c $(OBJS)
 	$(CC) -o ep1 ep1.c $(OBJS) $(CFLAGS)
@@ -14,4 +14,4 @@ all: ep1.c $(OBJS)
 .PHONY: clean
 
 clean:
-	rm -f *.o *~ include/*~
+	rm -f *.o *~ include/*~ ep1

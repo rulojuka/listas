@@ -1,5 +1,5 @@
-#ifndef LIB_EP1_H
-#define LIB_EP1_H
+#ifndef DEFINIDO_POSITIVO_H
+#define DEFINIDO_POSITIVO_H
 
 #include "constantes.h"
 

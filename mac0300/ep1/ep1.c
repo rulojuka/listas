@@ -1,6 +1,5 @@
 #include<stdio.h>
-#include<math.h>
-#include"include/lib_ep1.h"
+#include"include/definido_positivo.h"
 #include"include/io.h"
 #include"include/constantes.h"
 
@@ -91,15 +90,12 @@ int solveCholeskyCol (int n, double A[][nmax], double b[]){
 }
 
 int solveCholeskyRow (int n, double A[][nmax], double b[]){
-  printf("entrou\n");
   if( cholrow(n,A) == -1 )
     return -1;
   /* Agora A guarda o fator de Cholesky */
-printf("passou\n");
   if(forwrow(n,A,b) == -1)
     return -1;
   /* Agora b guarda y, tal que C^t * y = b*/
-printf("passou\n");
 /* Migué para testar o backrow com trans=0 */
 /*
   transpose(n,A);
@@ -109,6 +105,5 @@ printf("passou\n");
   if(backrow(n,A,b,1) == -1)
     return -1;
   /* Agora b guarda x tal que A * x = b */
-  printf("passou\n");
   return 0;
 }

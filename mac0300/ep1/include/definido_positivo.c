@@ -1,7 +1,5 @@
-#include "lib_ep1.h"
+#include "definido_positivo.h"
 #include<math.h>
-#include<stdio.h>
-#include "io.h"
 
 /* Função local*/
 int is_zero(double x){
@@ -37,10 +35,6 @@ int cholcol(int n, double A[][nmax]){
 
 int cholrow(int n, double A[][nmax]){
   int i,j,k;
-  #ifdef DEBUG
-    printf("Calculando cholrow\n");
-    imprime_matriz(n,A);
-  #endif
   for(i=0;i<n;i++){
 
     /* Calcula R[i][j] para j<i */
@@ -58,7 +52,6 @@ int cholrow(int n, double A[][nmax]){
 
     /* Verifica se matriz é definida-positiva */
     if(A[i][i] <= 0){
-      printf("entrou aqui em %d\n",i);
       return -1;
     }
     else
