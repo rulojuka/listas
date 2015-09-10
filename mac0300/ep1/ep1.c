@@ -2,9 +2,7 @@
 #include"include/definido_positivo.h"
 #include"include/io.h"
 #include"include/constantes.h"
-
-void transpose(int n, double A[][nmax]);
-void swap(double *x, double *y);
+#include"include/auxiliar.h"
 
 int solveCholeskyCol (int n, double A[][nmax], double b[]);
 int solveCholeskyRow (int n, double A[][nmax], double b[]);
@@ -14,21 +12,6 @@ int main(){
   double A[nmax][nmax];
   double b[nmax];
   le_entrada(&n, A, b);
-
-  /* Cholesky */
-  /*
-  printf("Antes do Cholesky\n");
-  imprime_matriz(n, A);
-  cholrow(n, A);
-  printf("Depois do Cholesky\n");
-  */
-
-  /* Forward subtitution */
-  /*
-  forwcol(n,A,b);
-  imprime_vetor(n,b);
-  */
-
 
   /* Resolve usando Cholesky */
   /*
@@ -53,20 +36,6 @@ int main(){
   return 0;
 }
 
-void transpose(int n, double A[][nmax]){
-  int i,j;
-  printf("transpondo\n");
-  for(i=0;i<n;i++)
-    for(j=i+1;j<n;j++)
-      swap(&A[i][j], &A[j][i]);
-}
-
-void swap(double *x, double *y){
-  double aux;
-  aux = *x;
-  *x = *y;
-  *y = aux;
-}
 
 int solveCholeskyCol (int n, double A[][nmax], double b[]){
   if( cholcol(n,A) == -1 )
