@@ -6,6 +6,6 @@
 		#define nmax 1000
 	#endif
 
-	#define DEBUG
+	/*#define DEBUG*/
 
 #endif
