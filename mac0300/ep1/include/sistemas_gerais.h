@@ -4,5 +4,6 @@
 #include "constantes.h"
 
 int lurow(int n, double A[][nmax], int p[]);
+int ssrow(int n, double A[][nmax], int p[], double b[]);
 
 #endif

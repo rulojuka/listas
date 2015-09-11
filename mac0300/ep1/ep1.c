@@ -41,6 +41,8 @@ int main(){
 
   printf("A eh:\n");
   imprime_matriz(n, A);
+  printf("b eh:\n");
+  imprime_vetor(n, b);
 
   lurow(n,A,p);
 
@@ -48,6 +50,12 @@ int main(){
   imprime_matriz(n, A);
   printf("p eh:\n");
   imprime_vetor_inteiro(n,p);
+
+
+  ssrow(n,A,p,b);
+
+  printf("b eh:\n");
+  imprime_vetor(n,b);
   return 0;
 }
 
