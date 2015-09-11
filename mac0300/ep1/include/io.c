@@ -33,3 +33,10 @@ void imprime_vetor(int n, double b[]){
     printf("%.5e\n",b[i]);
   }
 }
+
+void imprime_vetor_inteiro(int n, int b[]){
+  int i;
+  for(i=0;i<n;i++){
+    printf("%d\n",b[i]);
+  }
+}

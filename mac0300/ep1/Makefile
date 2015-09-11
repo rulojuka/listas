@@ -3,7 +3,7 @@ CFLAGS = -Wall -ansi -pedantic -lm
 
 I_DIR = include
 
-OBJS = definido_positivo.o io.o constantes.o
+OBJS = definido_positivo.o io.o constantes.o sistemas_gerais.o auxiliar.o
 
 all: ep1.c $(OBJS)
 	$(CC) -o ep1 ep1.c $(OBJS) $(CFLAGS)

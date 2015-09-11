@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include"include/definido_positivo.h"
+#include"include/sistemas_gerais.h"
 #include"include/io.h"
 #include"include/constantes.h"
 #include"include/auxiliar.h"
@@ -11,6 +12,7 @@ int main(){
   int n;
   double A[nmax][nmax];
   double b[nmax];
+  int p[nmax];
   le_entrada(&n, A, b);
 
   /* Resolve usando Cholesky */
@@ -21,18 +23,31 @@ int main(){
   imprime_vetor(n,b);
 */
   /* orientado a linhas*/
-  if( solveCholeskyRow(n,A,b) == 0 ){
+
+  /*if( solveCholeskyRow(n,A,b) == 0 ){*/
 
   /* orientado a colunas*/
   /*solveCholeskyCol(n,A,b);*/
-
+/*
   printf("x eh:\n");
   imprime_vetor(n,b);
 
   }
   else{
     printf("Matriz nao pode ser resolvida usando Cholesky.\n");
-  }
+  }*/
+
+  /* Decomposicao LU */
+
+  printf("A eh:\n");
+  imprime_matriz(n, A);
+
+  lurow(n,A,p);
+
+  printf("A decomposicao LU de A eh:\n");
+  imprime_matriz(n, A);
+  printf("p eh:\n");
+  imprime_vetor_inteiro(n,p);
   return 0;
 }
 

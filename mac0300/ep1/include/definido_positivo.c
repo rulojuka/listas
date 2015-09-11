@@ -1,10 +1,6 @@
 #include "definido_positivo.h"
+#include "auxiliar.h"
 #include<math.h>
-
-/* Função local*/
-int is_zero(double x){
-  return fabs(x) < EPS;
-}
 
 int cholcol(int n, double A[][nmax]){
   int i,j,k;
