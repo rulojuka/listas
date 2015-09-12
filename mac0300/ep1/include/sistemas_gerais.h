@@ -1,3 +1,9 @@
+/*
+ * Nome: Alessandro Wagner Palmeira
+ * NUSP: 6850476
+ * EP1 de MAC300 - Métodos Numéricos de Álgebra Linear
+ * */
+
 #ifndef SISTEMAS_GERAIS_H
 #define SISTEMAS_GERAIS_H
 
