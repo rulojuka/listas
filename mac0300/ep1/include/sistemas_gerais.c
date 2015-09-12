@@ -6,6 +6,16 @@
 #include<stdio.h>
 #include"io.h"
 
+
+void forwrowunitario (int n, double A[][nmax], double b[]){
+  int i,j;
+  for(i=0;i<n;i++){
+    for(j=0;j<i;j++){
+      b[i] -= A[i][j] * b[j];
+    }
+  }
+}
+
 int lurow(int n, double A[][nmax], int p[]){
   int i,j,k;
   double maior;
@@ -44,18 +54,11 @@ int ssrow(int n, double A[][nmax], int p[], double b[]){
     swap(&b[i], &b[p[i]]);
   }
 
-  printf("Pb eh:\n");
-  imprime_vetor(n,b);
-
   /* Calcula y de Ly=Pb e salva em b*/
-  if( forwrow(n,A,b) == -1) /* FIXME precisa usar um forwrow alterado para que A[i][i] seja 1 */
-    return -1;
+  forwrowunitario(n,A,b);
 
-  printf("y eh:\n");
-  imprime_vetor(n,b);
-
-  /* Calcula Ux=y e salva em b */
-  if( backrow(n,A,b,0) == -1) /* FIXME precisa usar um forwrow alterado para que A[i][i] seja 1 */
+  /* Calcula x de Ux=y e salva em b */
+  if( backrow(n,A,b,0) == -1)
     return -1;
 
   return 0;

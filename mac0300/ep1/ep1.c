@@ -51,10 +51,9 @@ int main(){
   printf("p eh:\n");
   imprime_vetor_inteiro(n,p);
 
-
   ssrow(n,A,p,b);
 
-  printf("b eh:\n");
+  printf("x eh:\n");
   imprime_vetor(n,b);
   return 0;
 }
