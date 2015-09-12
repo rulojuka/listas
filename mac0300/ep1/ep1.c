@@ -38,20 +38,22 @@ int main(){
   }*/
 
   /* Decomposicao LU */
-
+/*
   printf("A eh:\n");
   imprime_matriz(n, A);
   printf("b eh:\n");
   imprime_vetor(n, b);
-
+*/
   lurow(n,A,p);
-
+  /*lucol(n,A,p);*/
+/*
   printf("A decomposicao LU de A eh:\n");
   imprime_matriz(n, A);
   printf("p eh:\n");
   imprime_vetor_inteiro(n,p);
-
+*/
   ssrow(n,A,p,b);
+  /*sscol(n,A,p,b);*/
 
   printf("x eh:\n");
   imprime_vetor(n,b);
