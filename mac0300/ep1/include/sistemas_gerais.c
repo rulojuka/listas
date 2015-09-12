@@ -3,6 +3,8 @@
 #include"definido_positivo.h"
 #include<math.h>
 
+/* FUNCAO LOCAL */
+/* Faz o pivoteamento parcial de uma submatriz principal da matriz A */
 int pivoteamento_parcial(int n, double A[][nmax], int p[], int k){
     int i;
     int pivo;
@@ -22,6 +24,8 @@ int pivoteamento_parcial(int n, double A[][nmax], int p[], int k){
     return 0;
 }
 
+/* FUNCAO LOCAL */
+/* Faz forward substitution orientado a colunas supondo que a diagonal é unitaria */
 void forwcolunitario (int n, double A[][nmax], double b[]){
   int i,j;
   for(j=0;j<n;j++){
@@ -31,6 +35,8 @@ void forwcolunitario (int n, double A[][nmax], double b[]){
   }
 }
 
+/* FUNCAO LOCAL */
+/* Faz forward substitution orientado a linhas supondo que a diagonal é unitaria */
 void forwrowunitario (int n, double A[][nmax], double b[]){
   int i,j;
   for(i=0;i<n;i++){

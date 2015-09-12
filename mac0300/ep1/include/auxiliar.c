@@ -1,5 +1,6 @@
-#include<math.h>
+#include"auxiliar.h"
 #include"constantes.h"
+#include<math.h>
 
 int is_zero(double x){
   return fabs(x) < EPS;

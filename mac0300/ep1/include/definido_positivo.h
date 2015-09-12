@@ -37,9 +37,15 @@ int cholcol(int n, double A[][nmax]);
  * */
 int cholrow(int n, double A[][nmax]);
 
+/*
+ * Implementa forward substitution orientado a colunas e a linhas
+*/
 int forwcol (int n, double A[][nmax], double b[]);
 int forwrow (int n, double A[][nmax], double b[]);
 
+/*
+ * Implementa backward substitution orientado a colunas e a linhas
+*/
 int backcol (int n, double A[][nmax], double b[], int trans);
 int backrow (int n, double A[][nmax], double b[], int trans);
 
