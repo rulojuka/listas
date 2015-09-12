@@ -1,0 +1,9 @@
+ep1
+*.o
+*.~
+*.dat
+*.out
+*.swp
+gen/genmatsim
+gen/genmatsima8
+gen/genmatsima9
