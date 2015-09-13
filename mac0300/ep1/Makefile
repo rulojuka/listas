@@ -1,9 +1,9 @@
 CC = gcc
-CFLAGS = -Wall -ansi -pedantic -lm
+CFLAGS = -lm
 
 I_DIR = include
 
-OBJS = definido_positivo.o io.o constantes.o sistemas_gerais.o auxiliar.o
+OBJS = definido_positivo.o io.o constantes.o sistemas_gerais.o auxiliar.o tempo.o
 
 all: ep1.c $(OBJS)
 	$(CC) -o ep1 ep1.c $(OBJS) $(CFLAGS)
