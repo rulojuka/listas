@@ -1,0 +1,62 @@
+Os tempos estão medidos em milisegundos.
+
+         |           DECOMPOSICAO DE CHOLESKY           |
+PROBLEMA |   ORIENTADA A LINHA   |  ORIENTADA A COLUNA  |
+         | A=GGt  | Gy=b | Gtx=y | A=GGt | Gy=b | Gtx=y |
+---------------------------------------------------------
+   1     |   2.44 | 0.07 | 0.07  |   0.59 | 0.02 | 0.02
+   2     |   4.77 | 0.06 | 0.07  |   4.65 | 0.08 | 0.07
+   3     |  15.61 | 0.14 | 0.16  |  15.82 | 0.20 | 0.15
+   4     |  36.58 | 0.24 | 0.28  |  37.27 | 0.38 | 0.27
+   5     |  71.30 | 0.38 | 0.43  |  72.28 | 0.82 | 0.53
+   6     | 122.73 | 0.54 | 0.61  | 122.50 | 0.92 | 0.63
+   7     | 193.69 | 0.74 | 0.85  | 193.50 | 1.10 | 0.85
+
+         |          DECOMPOSICAO LU          |
+PROBLEMA | ORIENT A LINHA  | ORIENT A COLUNA |
+         | PA=LU  | LUx=Pb | PA=LU  | LUx=Pb |
+----------------------------------------------
+   1     |   1.81 |  0.05  |   1.34 |  0.04  |
+   2     |   9.35 |  0.13  |  10.71 |  0.28  |
+   3     |  32.01 |  0.32  |  37.20 |  0.38  |
+   4     |  73.64 |  0.51  |  88.77 |  1.03  |
+   5     | 145.21 |  0.81  | 190.88 |  1.14  |
+   6     | 244.77 |  1.16  | 335.12 |  1.73  |
+   7     | 387.28 |  1.49  | 541.88 |  2.84  |
+
+Comentários:
+
+Informações do processador:
+	model name	: Intel(R) Core(TM) i5-4430 CPU @ 3.00GHz
+	cache size	: 6144 KB
+
+Como a maior matriz utilizada é de 700x700, com cada double ocupando 8 bytes,
+temos 3828,125 KB.
+Assim, eu não esperava a diferença observada entre as implementações
+orientadas a linhas e a colunas devido à possibilidade de colocar toda a matriz
+no cache durante a execução do programa.
+
+A pouca diferença na decomposição de Cholesky provavelmente se deve ao fato do
+Cholesky ser uma mescla de operações orientadas a linha e a coluna acontecendo
+ao mesmo tempo.
+
+Já na decomposição LU, existe uma grande diferença entre a orientação a linhas
+e a colunas, provavelmente pois suas operações são todas nessa mesma orientação,
+facilitando uma otimização por parte do compilador e do processador.
+
+Por fim, temos no tempo da decomposição LU aproximadamente o dobro da
+decomposição de Cholesky como esperado.
+Isso acontece pois o número de operações da Cholesky é metade da LU pois a
+primeira utiliza a simetria da matriz e, por isso, usa apenas metade dos FLOPs
+da segunda.
+
+
+
+
+
+
+
+
+
+
+

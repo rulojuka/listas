@@ -4,9 +4,11 @@
  * EP1 de MAC300 - Métodos Numéricos de Álgebra Linear
  * */
 
-#include<stdio.h>
-#include"include/constantes.h"
-#include"include/io.h"
+#include <stdio.h>
+#include "include/constantes.h"
+#include "include/io.h"
+#include "include/testa_cholesky.h"
+#include "include/testa_lu.h"
 
 int main(){
   int n;
@@ -16,34 +18,12 @@ int main(){
 
   le_entrada(&n, A, b);
 
-  printf("col: ");
-  testa_cholesky(n,A,b,1,0,1);
+  /* DESCOMENTE EXATAMENTE UMA DAS LINHAS ABAIXO */
 
-/*
-  printf("col: ");
-  testa_cholesky(n,A2,b2,1,0,1);
-*/
+  /*printf("CHOL row:\n");  testa_cholesky(n,A,b,0,0,1);*/
+  /*printf("CHOL col:\n");  testa_cholesky(n,A,b,1,0,1);*/
+  /*printf("LU row:\n");  testa_lu(n,A,b,p,0,0,1);*/
+  printf("LU col:\n");  testa_lu(n,A,b,p,1,0,1);
 
-
-  /* Decomposicao LU */
-/*
-  printf("A eh:\n");
-  imprime_matriz(n, A);
-  printf("b eh:\n");
-  imprime_vetor(n, b);
-
-  lurow(n,A,p);
-  lucol(n,A,p);
-
-  printf("A decomposicao LU de A eh:\n");
-  imprime_matriz(n, A);
-  printf("p eh:\n");
-  imprime_vetor_inteiro(n,p);
-
-  ssrow(n,A,p,b);
-  sscol(n,A,p,b);*/
-
-  /*printf("x eh:\n");
-  imprime_vetor(n,b);*/
   return 0;
 }

@@ -1,0 +1,33 @@
+/*
+ * Nome: Alessandro Wagner Palmeira
+ * NUSP: 6850476
+ * EP1 de MAC300 - Métodos Numéricos de Álgebra Linear
+ * */
+
+Este diretório contém:
+
+README - Este arquivo
+RESULTADOS.txt - Tabela com os tempos de execução do programa e os comentários pedidos.
+include/ - Diretório com os arquivos fonte e cabeçalhos do programa
+gen/ - Geradores fornecidos pelo professor.
+io/ - Arquivos de entrada e saída serão gerados aqui.
+ep1.c - Arquivo com alguns testes prontos.
+Makefile - Makefile que compila tudo e gera a entrada.
+testa_tudo.sh - Script bash que roda uma implementação de ep1 para todas as entradas geradas
+
+
+Para compilar o programa:
+$ make
+Para gerar as entradas a1.dat .. a9.dat:
+$ make gera_entrada
+Para rodar os testes de uma implementação específica vá no arquivo ep1.c,
+descomente uma das linhas de teste e rode
+./testa_tudo.sh
+
+Comentários:
+
+- O arquivo tempo.c só deveria funcionar no linux. Suas funções tem precisão de microsegundos.
+- A ISO C90 não aceita "long long" e nem "%lf", portanto, retirei a flag -pedantic da compilação.
+- As funções pedidas no enunciado estão disponíveis em definido_positivo.h e sistemas_gerais.h
+  Suas dependências são: <math.h>, "constantes.h" e "auxiliar.h".
+  Além disso, sistemas_gerais.c utiliza as funções backrow e backcol de "definito_positivo.h".

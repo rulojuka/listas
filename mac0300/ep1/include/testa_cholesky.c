@@ -7,11 +7,11 @@
 #include "testa_cholesky.h"
 #include "definido_positivo.h"
 #include "tempo.h"
+#include "io.h"
 #include <stdio.h>
 
 int testa_cholesky(int n, double A[][nmax], double b[], int modo, int imprime_solucao, int imprime_tempo){
  	unsigned long long mark0,mark1,mark2,mark3;
- 	double tempo1,tempo2,tempo3;
 
 /*
  	if(imprime_solucao){
@@ -59,11 +59,8 @@ int testa_cholesky(int n, double A[][nmax], double b[], int modo, int imprime_so
 
 
  	if(imprime_tempo){
-	 	tempo1 = converte_segundo(mark1-mark0);
-	 	tempo2 = converte_segundo(mark2-mark1);
-	 	tempo3 = converte_segundo(mark3-mark2);
- 		printf("%lf %lf %lf \n",tempo1,tempo2,tempo3);
- 	}
+    printf("| %6.2lf | %.2lf | %.2lf\n",converte_milisegundo(mark1-mark0),converte_milisegundo(mark2-mark1),converte_milisegundo(mark3-mark2));
+  }
 
 
  	if( imprime_solucao == 1){
@@ -71,4 +68,5 @@ int testa_cholesky(int n, double A[][nmax], double b[], int modo, int imprime_so
  		imprime_vetor(n,b);
  	}
 
+ 	return 0;
 }

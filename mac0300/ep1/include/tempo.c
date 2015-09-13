@@ -19,6 +19,6 @@ unsigned long long tempo_em_microsegundos(){
   return resp;
 }
 
-double converte_segundo(unsigned long long x){
+double converte_milisegundo(unsigned long long x){
 	return (double) (x/1000.0);
 }

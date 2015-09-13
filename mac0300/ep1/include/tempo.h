@@ -9,6 +9,6 @@
 
 /* Devolve o número de microsegundos desde a EPOCH */
 unsigned long long tempo_em_microsegundos();
-double converte_segundo(unsigned long long x);
+double converte_milisegundo(unsigned long long x);
 
 #endif
