@@ -11,7 +11,7 @@
 	extern const double EPS;
 	#ifndef nmax
 		/* nmax utilizado na definicao das matrizes */
-		#define nmax 1000
+		#define nmax 700
 	#endif
 
 	/*#define DEBUG*/

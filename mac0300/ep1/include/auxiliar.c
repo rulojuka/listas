@@ -8,6 +8,8 @@
 #include"constantes.h"
 #include<math.h>
 
+ #include<stdio.h>
+
 int is_zero(double x){
   return fabs(x) < EPS;
 }

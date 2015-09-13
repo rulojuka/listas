@@ -8,6 +8,8 @@
 #include <sys/time.h>
 #include <stddef.h>
 
+#include<stdio.h>
+
 unsigned long long tempo_em_microsegundos(){
   struct timeval tempo;
   unsigned long long resp = 0L;
@@ -15,4 +17,8 @@ unsigned long long tempo_em_microsegundos(){
   resp = (unsigned long long) (tempo.tv_sec * 1000000);
   resp += (unsigned long long) (tempo.tv_usec);
   return resp;
+}
+
+double converte_segundo(unsigned long long x){
+	return (double) (x/1000.0);
 }
