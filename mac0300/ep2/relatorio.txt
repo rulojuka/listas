@@ -1,0 +1,86 @@
+/*
+ * Nome: Alessandro Wagner Palmeira
+ * NUSP: 6850476
+ * EP2 de MAC300 - Métodos Numéricos de Álgebra Linear
+ * */
+
+Primeiramente li a Lecture 32 e gostei muito da simplicidade do Algoritmo de 
+Strassen para a multiplicação de matrizes. Ele leva O(n^log7) ~= O(2.8) e é
+muito fácil de entender (apesar de não ser nada fácil de descobrir). Olhando em
+outras fontes, descobri que apesar de sua velocidade e simplicidade, ele acaba
+sendo um pouco menos estável numericamente, além da necessidade de uma memória
+maior.
+
+Depois de ler a Lecture 38, vou resumir o que entendi do método de Gradientes
+Conjugados.
+Primeiramente, o algoritmo funciona para matrizes definidas positivas. Isso é
+necessário pois a definição de Norma-A, utilizada no algoritmo, é igual à
+sqrt(x^t*A*x), portanto, tal valor deve ser positivo.
+O algoritmo, então, gera uma sequência de {x_n pertencente a K_n} com a
+propriedade de que, no passo n, a norma-a de e_n é minimizada, onde
+K_n = <b,Ab,...,A^n-1b> e e_n = x - x_n .
+
+O algoritmo é bem simples:
+
+-----------------------------------------------------------------------------
+x_0 = 0
+r_0 = b
+p_0 = r_0
+
+para n = 1,2,3...
+  a_n = (r^t_n-1 * r_n-1)/(p^t_n-1 * A * p_n-1)     /* Tamanho do passo    */
+  x_n = x_n-1 + a_n * p_n-1                         /* Solução aproximada  */
+  r_n = r_n-1 - a_n * A * p_n-1                     /* Resíduo             */
+  b_n = (r^t_n * r_n)/(r^t_n-1 * r_n-1)             /* Melhora nesse passo */
+  p_n = r_n + b_n * p_n-1                           /* Direção da busca    */
+-----------------------------------------------------------------------------
+
+É fácil notar que apenas uma multiplicação de matriz por vetor é necessária a
+cada passo: A * p_n-1, apesar de ela aparecer duas vezes no algoritmo. Fora
+isso, todas as outras operações são apenas com vetores.
+
+Algumas propriedades do algoritmo:
+
+Propriedade 38.3:
+k_n = <x_1,x_2,...x_n> = <p_0,p_1,,...p_n-1> = <r_0,r_1,,...r_n-1> =
+    = <b,Ab,...,A^n-1b>
+
+Isso é fácil de observar, já que x_0 = 0 (pertencente a K_n) e r_0 = p_0 = b,
+(também pertencente a K_n). Além disso, todos os outros vetores são obtidos a
+partir de uma soma de um vetor anterior (que pertence a k_n) com um múltiplo de
+um vetor que também pertence a K_n.
+
+Propriedade 38.4:
+r^t_n * r_j = 0, para qualquer j < n
+
+Propriedade 38.5:
+p^t_n * A * p_j = 0, para qualquer j < n
+
+A prova dessas duas propriedades pode ser vista no livro. Em seguida, os autores
+provam que a convergência do erro é monotônica e que um erro e_n = 0 é alcançado
+para algum n <= m. É importante deixar claro que isso só é válido utilizando uma
+aritmética de precisão infinita. É possível o método não convergir se a matriz
+inicial for má-condicionada. Os autores terminam dizendo que a convergência
+teórica em m passos não tem relevância para o uso em computação científica.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
