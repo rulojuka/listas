@@ -1,0 +1,87 @@
+/*
+ * Nome: Alessandro Wagner Palmeira
+ * NUSP: 6850476
+ * EP2 de MAC300 - Métodos Numéricos de Álgebra Linear
+ * */
+
+--- Introdução ---
+
+Iniciei lendo todo o capítulo 3 do Watkins, como sugerido no enunciado. A
+leitura foi mais difícil do que o imaginado, mesmo complementada com as
+discussões em aula. Sendo assim, imagino que essa foi a parte mais difícil do
+ep: entender a utilidade das matrizes ortogonais, rotação de Givens, reflexão de
+Householder e como isso pode ser utilizado para resolver o problema dos
+quadrados mínimos com estabilidade computacional.
+
+Depois de entender toda a teoria, resolvi focar apenas na resolução por reflexão
+por haver pouco tempo e, dentre as alternativas, ser a de maior estabilidade e
+eficiência.
+
+--- Reflexão de Householder ---
+
+O problema da reflexão é o seguinte: Temos um vetor v que gera uma linha L.
+Gostaríamos de obter uma transformação linear representada por uma matriz Q tal
+que para qualquer x, Qx fosse refletido por L, ou seja, para toda componente de
+x ortogonal a v, essa componente fosse refletida ((Qx)_i = -x_i) e que a
+componente em L fosse mantida.
+
+Descobrimos que para um vetor u unitário (||u||_2 = 1), a matriz Q = I - 2uu^t
+é uma reflexão como mostrada acima.
+Além disso, para evitarmos a necessidade de um u unitário, podemos ver que as
+mesmas propriedades são válidas para a matriz Q = I - guu^t, onde
+g = 2 / ( ||u||_2^2 ), dobro do inverso do quadrado da norma-2 de u.
+
+A partir daí, gostaríamos de, dado um x, descobrir um Q e um y tal que Qx = y
+onde y = [ -t, 0, ... 0 ]^t.
+Como sabemos das propriedades das matrizes ortogonais, a norma-2 de x é a mesma
+de y, então, é fácil descobrir que (-t)^2 = ||y||. Só devemos tomar cuidado para
+esse cálculo não causar overflow. Isso é feito no método norma2_sem_overflow do
+ep3.c
+Assim, para um dado x, o método calcula_refletor calcula o refletor
+Q = (I - guu^t), armazenando u no lugar de x, armazenando -tau em B[0] e
+retornando o valor g.
+Note que para evitar o cancelamento, invertemos o valor de tau quando B[0] é
+negativo.
+
+Conforme descrito na seção "QR Decomposition by Reflectors" do livro, isso já é
+suficiente para decompor uma matriz A em uma matriz QR=A, tal que Q é diagonal
+superior e R é refletora porém esse método faz muito trabalho repetido e iremos
+evitar esse trabalho repetido na próxima parte.
+
+--- Decomposição QR usando Refletores ---
+
+--- Solucionando os mínimos quadrados usando a decomposição QR ---
+
+--- Conclusão ---
+
+Infelizmente não consegui concluir a decomposição QR utilizando todos os
+artifícios para que ela fosse eficiente e eficaz. Por outro lado, sinto que o
+entendimento da teoria ficou bastante claro e com mais um dia de trabalho,
+poderia implementar o algoritmo final.
+Além disso, gostaria de indicar que a falta de um caminho indicando
+detalhadamente (como no enunciado do EP1) ou mesmo de forma geral (como no
+enunciado do EP2) dificultou bastante o progresso do EP. Como não sabia
+exatamente por onde começar, acabei demorando muito para entender toda a teoria
+antes mesmo de escrever uma linha de código quando deveria ter feito o caminho
+em passos menores, entendendo cada seção e implementando-a, mesmo que uma futura
+otimização a tornasse obsoleta.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
