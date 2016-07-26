@@ -1,0 +1,21 @@
+Link no paca: http://paca.ime.usp.br/course/view.php?id=1050
+O Queiroz leu e comentou sobre o README disponível no paca.
+
+* Ler os capítulos 1 e 2 do livro do Muller até a quinta-feira.
+
+O capítulo 1 será passado muito por cima (Representação musical) e 
+o capítulo 2 será tomado como pré-requisito do curso.
+
+O professor passou pelo índice do livro comentando um pouco sobre cada um dos
+capítulos
+
+* Ler todos os títulos e abstracts e algumas introduções dos artigos disponíveis
+no paca até a quinta-feira (28-07).
+* Ler artigo de introdução do Downie Stephen disponível nos resources do README.
+
+Fizemos uma pequena introdução de cada pessoa para conhecer o background de cada
+um.
+
+Ver o artigo Audio Information Retrieval Tools de Tzanetakis e Cook.
+
+Por fim, ele começou a expor algumas coisa sobre o artigo do Downie Stephen.
