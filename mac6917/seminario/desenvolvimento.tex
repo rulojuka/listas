@@ -25,6 +25,27 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{\emph{Dynamic Time Warping (DTW)}}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{src/img/dtw.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Características}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{src/img/caracteristicas.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cromagrama}
+  \begin{center}
+    \includegraphics[width=0.45\textwidth]{src/img/cromagrama.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
   \frametitle{Rastreamento padrão baseado em representação simbólica musical}
   %\note[item]<100>{ Para ser possível o tracking é necessário...}
   Precisamos de uma representação da partitura\pause
@@ -52,9 +73,9 @@
   \frametitle{Rastreamento utilizando uma performance como referência}
   O rastreamento padrão funciona bem mas ganhamos algumas vantagens ao utilizar uma performance real como referência:\pause
   \begin{itemize}
-    \item Melhor qualidade\pause
-    \item Características mais próximas da performance ao vivo que queremos rastrear\pause
-    \item Maior similaridade sonora, principalmente em peças orquestradas\pause
+    \item Melhor qualidade
+    \item Características mais próximas da performance ao vivo que queremos rastrear
+    \item Maior similaridade sonora, principalmente em peças orquestradas
     \item Informações detalhadas de andamento, dinâmica e articulação
   \end{itemize}
 \end{frame}
@@ -113,7 +134,7 @@
   \begin{itemize}
     \item Melhoria nas peças orquestradas\pause
     \item Resultados se mostraram instáveis - algumas performances são mais similares entre si do que com a usada como referência \pause %Infelizmente
-    \item Resultados mostraram que algumas partes da peça tiveram erros frequentemente \pause %A peça é difícil mesmo
+    \item Resultados mostraram que algumas partes da peça tiveram erros em muitos rastreamentos \pause %A peça é difícil mesmo
     \item Utilizando diferentes performances como referência, alguns erros só apareciam em uma ou duas delas \pause
   \end{itemize}
   Isto levou à ideia de combinar o alinhamento de várias performances para diminuir estes erros.
@@ -134,7 +155,7 @@
     \item Várias anotações alinhadas são usadas em paralelo no rastreamento\pause
     \item Utilizamos a mediana \pause %Explicar o porquê
     \item Mais estabilidade em aplicações práticas \pause
-    \item Foram utilizadas 7 performances\pause 
+    \item Foram utilizadas 7 performances
 %\note[item]<100>{explicar tradeoff robustez x tempo de computação}
   \end{itemize}
 \end{frame}
