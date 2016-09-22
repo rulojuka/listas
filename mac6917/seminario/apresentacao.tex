@@ -59,7 +59,7 @@
   Essa tecnologia tem sido usado em aplicações práticas.\pause
   %Colocar vídeo do SmartMusic(1985) aqui
   \begin{itemize}
-    \item Antescofo\\\pause
+    \item Antescofo\\
     \item Tonara
   \end{itemize}
 \end{frame}
@@ -70,8 +70,8 @@
     \item Inicia-se com uma representação simbólica, como um arquivo MIDI ou MusicXML\\\pause
     \item Converte-o para um arquivo de áudio, usando um softare sintetizador\pause
       \begin{itemize}
-        \item Sabe-se o tempo de cada evento\\\pause
-        \item O problema se reduz a um alinhamento áudio-áudio
+        \item O problema se reduz a um alinhamento áudio-áudio\\\pause
+        \item Sabe-se o tempo de cada evento\\
       \end{itemize}
   \end{itemize}
 \end{frame}
@@ -79,7 +79,7 @@
 \begin{frame}
   \frametitle{Nova estratégia}
   \begin{itemize}
-    \item Primeiramente utilizamos uma outra performance da música e a alinhamos com a partitura automaticamente\\\pause
+    \item Primeiramente utilizamos uma outra performance da música e a alinhamos com a partitura de forma automatizada\\\pause
     \item Depois, utilizamos essa ``performance anotada'' como nova representação para o processo de rastreamento online\pause
   \end{itemize}
 
@@ -89,7 +89,7 @@
 
   As motivações são:\pause
   \begin{itemize}
-    \item Qualidade das \emph{features} extraídas\\\pause % O arquivo de áudio tem qualidade maior do que uma síntese
+    \item Qualidade das características extraídas\\\pause % O arquivo de áudio tem qualidade maior do que uma síntese
     \item Complexidade perdida na notação musical, que aparece em uma performance\pause % Como trilos, por exemplo
   \end{itemize}
   Porém, temos também uma desvantagem:\pause
@@ -99,27 +99,32 @@
 \end{frame}
 
 
-\section{Descrição dos dados}
+\section{Desenvolvimento}
 \begin{frame}
-  \frametitle{Visão Geral}
+  \frametitle{Descrição dos dados}
   \begin{center}
     \includegraphics[width=\textwidth]{src/img/1-Table1-1.png}
   \end{center}
+% As músicas automáticas foram gravadas com um piano MIDI
+% As músicas anotadas foram anotadas manulmente, no nível de nota no rachmaninoff
+% e pulso para as sinfonias
+% 7 Performances adicionais foram coletadas sem anotação, apenas para serem processadas de forma automática. Com exceção das que já tem 22 (7 foram escolhidas aleatoriamente dentre elas, sem repetir o performer)
+%(dizer que existem duas musicas orquestrais, dificuldade maior)
+%    (dizer que foi obtido mais de uma gravação da mesma musica)
 \end{frame}
 
-\section{Acompanhamento padrão}
 \begin{frame}
   \frametitle{Acompanhamento padrão baseado em representação simbólica musical}
   Abordagem baseada no algoritmo \emph{Dynamic Time Warping (DTW)} com algumas extensões:\pause % que possibilitam a aplicação em rastreamento online. [artigo 10]
   \begin{itemize}
     \item O caminho é computado de maneira incremental\\\pause
     \item A complexidade é reduzida para ser linear no tamanho da entrada\pause
-    \item Utiliza a estratégia \emph{backward-forward} %reconsidera decisoes passadas, aumenta robustez [artigo 4]
-    \item Modelo simples de andamento (\emph{Simple tempo model}) % aumenta a habilidade de o algoritmo lidar com diferencas no Andamento [artigo 3]
+    \item Utiliza a estratégia \emph{backward-forward} %reconsidera decisoes passadas, aumenta robustez [artigo 4] % aumenta a habilidade de o algoritmo lidar com diferencas no Andamento [artigo 3]
   \end{itemize}
 \end{frame}
 
-
+\section{Experimentos}
+\section{Conclusão}
 
 \begin{frame}
   \frametitle{Dúvidas?}
